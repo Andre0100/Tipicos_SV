@@ -18,7 +18,7 @@ import jakarta.ws.rs.core.MediaType;
 public class PupaSvApp extends Application{
     @GET
     @Produces({MediaType.APPLICATION_JSON})
-    public void getCine(){
+    public void getPupa(){
         System.out.println("PUPASV BIENVENIDOS");
     }
 }

@@ -4,6 +4,7 @@
  */
 package sv.edu.ues.occ.ingenieria.tpi335_2024.pupasv.entity;
 
+import jakarta.json.bind.annotation.JsonbTransient;
 import java.io.Serializable;
 import java.util.List;
 import jakarta.persistence.Basic;
@@ -17,6 +18,7 @@ import jakarta.persistence.NamedQueries;
 import jakarta.persistence.NamedQuery;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -98,6 +100,7 @@ public class Producto implements Serializable {
         this.comboDetalleList = comboDetalleList;
     }
 
+    @JsonbTransient
     public List<ProductoDetalle> getProductoDetalleList() {
         return productoDetalleList;
     }

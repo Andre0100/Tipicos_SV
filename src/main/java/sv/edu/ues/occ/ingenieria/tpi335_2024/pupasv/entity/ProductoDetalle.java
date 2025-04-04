@@ -4,6 +4,7 @@
  */
 package sv.edu.ues.occ.ingenieria.tpi335_2024.pupasv.entity;
 
+import jakarta.json.bind.annotation.JsonbTransient;
 import java.io.Serializable;
 import jakarta.persistence.Column;
 import jakarta.persistence.EmbeddedId;
@@ -13,6 +14,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.NamedQueries;
 import jakarta.persistence.NamedQuery;
 import jakarta.persistence.Table;
+import jakarta.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -81,6 +83,7 @@ public class ProductoDetalle implements Serializable {
         return producto;
     }
 
+    @JsonbTransient
     public void setProducto(Producto producto) {
         this.producto = producto;
     }
