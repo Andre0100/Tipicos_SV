@@ -5,11 +5,15 @@
 /home/natangh/TPI135/Projects/Proyecto-Pupas/Tipicos_SV/src/main/java/sv/edu/ues/occ/ingenieria/tpi335_2024/pupasv/boundary/resourcesInterfaz/Tarjeta.java
 /home/natangh/TPI135/Projects/Proyecto-Pupas/Tipicos_SV/src/main/java/sv/edu/ues/occ/ingenieria/tpi335_2024/pupasv/boundary/resourcesInterfaz/ServicioPagoTarjeta.java
 /home/natangh/TPI135/Projects/Proyecto-Pupas/Tipicos_SV/src/main/java/sv/edu/ues/occ/ingenieria/tpi335_2024/pupasv/entity/Combo.java
+/home/natangh/TPI135/Projects/Proyecto-Pupas/Tipicos_SV/src/main/java/sv/edu/ues/occ/ingenieria/tpi335_2024/pupasv/control/PagoBean.java
 /home/natangh/TPI135/Projects/Proyecto-Pupas/Tipicos_SV/src/main/java/sv/edu/ues/occ/ingenieria/tpi335_2024/pupasv/entity/Pago.java
+/home/natangh/TPI135/Projects/Proyecto-Pupas/Tipicos_SV/src/main/java/sv/edu/ues/occ/ingenieria/tpi335_2024/pupasv/control/ProductoPrecioBean.java
 /home/natangh/TPI135/Projects/Proyecto-Pupas/Tipicos_SV/src/main/java/sv/edu/ues/occ/ingenieria/tpi335_2024/pupasv/control/ComboBean.java
 /home/natangh/TPI135/Projects/Proyecto-Pupas/Tipicos_SV/src/main/java/sv/edu/ues/occ/ingenieria/tpi335_2024/pupasv/entity/ProductoDetallePK.java
 /home/natangh/TPI135/Projects/Proyecto-Pupas/Tipicos_SV/src/main/java/sv/edu/ues/occ/ingenieria/tpi335_2024/pupasv/entity/ComboDetalle.java
 /home/natangh/TPI135/Projects/Proyecto-Pupas/Tipicos_SV/src/main/java/sv/edu/ues/occ/ingenieria/tpi335_2024/pupasv/entity/PagoDetalle.java
+/home/natangh/TPI135/Projects/Proyecto-Pupas/Tipicos_SV/src/main/java/sv/edu/ues/occ/ingenieria/tpi335_2024/pupasv/control/PagoDetalleBean.java
+/home/natangh/TPI135/Projects/Proyecto-Pupas/Tipicos_SV/src/main/java/sv/edu/ues/occ/ingenieria/tpi335_2024/pupasv/control/ComboDetalleBean.java
 /home/natangh/TPI135/Projects/Proyecto-Pupas/Tipicos_SV/src/main/java/sv/edu/ues/occ/ingenieria/tpi335_2024/pupasv/entity/Orden.java
 /home/natangh/TPI135/Projects/Proyecto-Pupas/Tipicos_SV/src/main/java/sv/edu/ues/occ/ingenieria/tpi335_2024/pupasv/boundary/resourcesInterfaz/Paypal.java
 /home/natangh/TPI135/Projects/Proyecto-Pupas/Tipicos_SV/src/main/java/sv/edu/ues/occ/ingenieria/tpi335_2024/pupasv/control/utils/BankAccount.java

@@ -4,16 +4,17 @@
  */
 package sv.edu.ues.occ.ingenieria.tpi335_2024.pupasv.control;
 
+import jakarta.ejb.LocalBean;
+import jakarta.ejb.Stateless;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import java.io.Serializable;
 import sv.edu.ues.occ.ingenieria.tpi335_2024.pupasv.entity.Combo;
 
-/**
- *
- * @author morales
- */
+@Stateless
+@LocalBean
 public class ComboBean extends AbstractDataPersistence<Combo> implements Serializable{
+
     @PersistenceContext(unitName = "PupaPU")
     
     EntityManager em;
