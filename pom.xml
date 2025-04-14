@@ -14,6 +14,8 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <failOnMissingWebXml>false</failOnMissingWebXml>
         <jakartaee>10.0.0</jakartaee>
+        <!-- Configuracion liberty -->
+        <liberty.install.dir>${env.LIBERTY_INSTALL_DIR}</liberty.install.dir>
         <!--Aqui se pueden detallar versiones de dependencias-->
     </properties>
 
@@ -30,14 +32,22 @@
             <artifactId>jackson-databind</artifactId>
             <version>2.18.3</version>
         </dependency>
+
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>42.7.2</version>
+            <scope>runtime</scope>
+        </dependency>
         
         <!--Dependencias para pruebas unitarias-->
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter</artifactId>
-            <version>5.11.0-M2</version>
+            <version>5.11.1</version>
             <scope>test</scope>
         </dependency>
+
         <dependency>
             <groupId>org.mockito</groupId>
             <artifactId>mockito-junit-jupiter</artifactId>
@@ -68,13 +78,6 @@
         </dependency>
         
         <dependency>
-            <groupId>org.postgresql</groupId>
-            <artifactId>postgresql</artifactId>
-            <version>42.7.2</version>
-            <scope>test</scope>
-        </dependency>
-        
-        <dependency>
             <groupId>org.eclipse.persistence</groupId>
             <artifactId>org.eclipse.persistence.jpa</artifactId>
             <version>4.0.5</version>
@@ -89,8 +92,9 @@
                 <artifactId>liberty-maven-plugin</artifactId>
                 <version>3.10</version>
                 <configuration>
-                    <installDirectory>/usr/local/openliberty/wlp10_24_0_0_11</installDirectory>
+                    <installDirectory>${liberty.install.dir}</installDirectory>
                     <serverName>tpi335_2025</serverName>
+                    <configDirectory>src/main/liberty/config</configDirectory>
                 </configuration>
             </plugin>
            
@@ -176,7 +180,7 @@
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-failsafe-plugin</artifactId>
-                        <version>3.5.2</version>
+                        <version>3.5.1</version>
                         <executions>
                             <execution>
                                 <goals>

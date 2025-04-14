@@ -1,24 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <server description="new server">
 
-    <!-- Enable features -->
+    <!-- Features -->
     <featureManager>
         <feature>jakartaee-10.0</feature>
+        <feature>jdbc-4.3</feature>
     </featureManager>
 
-    <!-- This template enables security. To get the full use of all the capabilities, a keystore and user registry are required. -->
-    
-    <!-- For the keystore, default keys are generated and stored in a keystore. To provide the keystore password, generate an
-         encoded password using bin/securityUtility encode and add it below in the password attribute of the keyStore element.
-         Then uncomment the keyStore element. -->
-    <!--
-    <keyStore password=""/>
-    -->
-
-    <!--For a user registry configuration, configure your user registry. For example, configure a basic user registry using the
-        basicRegistry element. Specify your own user name below in the name attribute of the user element. For the password,
-        generate an encoded password using bin/securityUtility encode and add it in the password attribute of the user element.
-        Then uncomment the user element. -->
     <basicRegistry id="basic" realm="BasicRealm">
         <!-- <user name="yourUserName" password="" />  -->
     </basicRegistry>
@@ -33,32 +21,26 @@
 
     <!-- Default SSL configuration enables trust for default certificates from the Java runtime -->
     <ssl id="defaultSSLConfig" trustDefaultCerts="true" />
-    
-    
-      <!--Pool-->
 
+    <!-- JDBC DRIVER (USANDO LIBRERÍA EXTERNA) -->
     <jdbcDriver id="postgresql-driver"
                 javax.sql.XADataSource="org.postgresql.xa.PGXADataSource"
-                javax.sql.ConnectionPoolDataSource="org.postgresql.ds.PGConnectionPoolDataSource"
                 libraryRef="postgresql-library"/>
 
     <library id="postgresql-library">
-        <fileset id="PostgreSQLFileset" dir="/usr/local/openliberty/wlp10_24_0_0_11/lib/global" includes="postgresql-42.7.4.jar"/>
+        <fileset dir="${env.SHARED_LIB_DIR}/lib" includes="postgresql-*.jar"/>
     </library>
-    
-    
-    <dataSource id="PupaDataSource" jndiName="jdbc/pgdb" jdbcDriverRef="postgresql-driver" type="javax.sql.ConnectionPoolDataSource" transactional="true">
-        <properties servername="localhost" portNumber="5432" user="postgres" password="abc123" databaseName="pupaSV"/>
+
+    <!-- DATASOURCE (VARIABLES EXTERNAS)  -->
+    <dataSource id="PupaDataSource"
+                jndiName="jdbc/pgdb"
+                jdbcDriverRef="postgresql-driver"
+                type="javax.sql.ConnectionPoolDataSource">
+        <properties serverName="${DB_HOST}"
+                    portNumber="${DB_PORT}"
+                    user="${DB_USER}"
+                    password="${DB_PASSWORD}"
+                    databaseName="${DB_NAME}"/>
     </dataSource>
-    <!-- Driver JDBC de PostgreSQL -->
-    
-<!--    <library id="global">
-        <fileset dir="/usr/local/openliberty/wlp10_24_0_0_11/lib/global" includes="primefaces-14.0.5-jakarta.jar"/>
-    </library>-->
-    
-    <!--Aplicación-->
-    <application location="PupaSv-1.0-SNAPSHOT.war">
-        
-    </application>
-        
+
 </server>

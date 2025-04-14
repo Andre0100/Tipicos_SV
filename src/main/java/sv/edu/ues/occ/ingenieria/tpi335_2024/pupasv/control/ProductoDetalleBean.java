@@ -17,16 +17,14 @@ public class ProductoDetalleBean extends AbstractDataPersistence<ProductoDetalle
 
     @PersistenceContext(unitName = "PupaPU")
     EntityManager em;
-    
-  
+
+    public ProductoDetalleBean(){
+        super(ProductoDetalle.class);
+    }
+
     @Override
     public EntityManager getEntityManager() {
         return em;
     }
-    
-    
-    public ProductoDetalleBean(){
-        super(ProductoDetalle.class);
-    }
-    
+
 }
