@@ -23,7 +23,7 @@ import sv.edu.ues.occ.ingenieria.tpi335_2024.pupasv.control.ProductoDetalleBean;
  * @author morales
  */
 @Path("/productoDetalle")
-public class ProductoDetalle implements Serializable{
+public class ProductoDetalleResource implements Serializable{
 
     @Inject
     private ProductoDetalleBean pDBean;
