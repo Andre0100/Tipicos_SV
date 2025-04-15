@@ -83,6 +83,13 @@
             <version>4.0.5</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>sv.edu.ues.occ.ingenieria.tpi135.pupasv.core</groupId>
+            <artifactId>PupaSV</artifactId>
+            <version>1.0-SNAPSHOT</version>
+            <scope>test</scope>
+            <type>war</type>
+        </dependency>
     </dependencies>
     
     <build>
