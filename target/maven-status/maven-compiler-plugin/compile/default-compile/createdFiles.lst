@@ -1,8 +1,9 @@
+sv/edu/ues/occ/ingenieria/tpi335_2024/pupasv/boundary/rest/server/RestResourceHeaderPattern.class
 sv/edu/ues/occ/ingenieria/tpi335_2024/pupasv/entity/ComboDetallePK.class
 sv/edu/ues/occ/ingenieria/tpi335_2024/pupasv/entity/ComboDetalle.class
 sv/edu/ues/occ/ingenieria/tpi335_2024/pupasv/boundary/resourcesInterfaz/Tarjeta.class
-sv/edu/ues/occ/ingenieria/tpi335_2024/pupasv/control/AbstractDataPersistence.class
 sv/edu/ues/occ/ingenieria/tpi335_2024/pupasv/control/OrdenBean.class
+sv/edu/ues/occ/ingenieria/tpi335_2024/pupasv/control/AbstractDataPersistence.class
 sv/edu/ues/occ/ingenieria/tpi335_2024/pupasv/boundary/resourcesInterfaz/ProcesadorPagos.class
 sv/edu/ues/occ/ingenieria/tpi335_2024/pupasv/dto/OrdenDetalleDTO.class
 sv/edu/ues/occ/ingenieria/tpi335_2024/pupasv/control/ComboBean.class
@@ -29,6 +30,7 @@ sv/edu/ues/occ/ingenieria/tpi335_2024/pupasv/control/utils/InsufficientFundsExce
 sv/edu/ues/occ/ingenieria/tpi335_2024/pupasv/entity/OrdenDetalle.class
 sv/edu/ues/occ/ingenieria/tpi335_2024/pupasv/control/ComboDetalleBean.class
 sv/edu/ues/occ/ingenieria/tpi335_2024/pupasv/control/TipoProductoBean.class
+sv/edu/ues/occ/ingenieria/tpi335_2024/pupasv/boundary/rest/server/CorsResponseFilter.class
 sv/edu/ues/occ/ingenieria/tpi335_2024/pupasv/boundary/rest/server/ProductoDetalleResource.class
 sv/edu/ues/occ/ingenieria/tpi335_2024/pupasv/control/ProductoDetalleBean.class
 sv/edu/ues/occ/ingenieria/tpi335_2024/pupasv/entity/Orden.class
@@ -38,6 +40,6 @@ sv/edu/ues/occ/ingenieria/tpi335_2024/pupasv/entity/Combo.class
 sv/edu/ues/occ/ingenieria/tpi335_2024/pupasv/boundary/resourcesInterfaz/ServicioPago.class
 sv/edu/ues/occ/ingenieria/tpi335_2024/pupasv/boundary/rest/server/PupaSvApp.class
 sv/edu/ues/occ/ingenieria/tpi335_2024/pupasv/control/utils/Calculator.class
+sv/edu/ues/occ/ingenieria/tpi335_2024/pupasv/Main.class
 sv/edu/ues/occ/ingenieria/tpi335_2024/pupasv/dto/ProductoDTO.class
 sv/edu/ues/occ/ingenieria/tpi335_2024/pupasv/entity/ProductoDetallePK.class
-sv/edu/ues/occ/ingenieria/tpi335_2024/pupasv/Main.class

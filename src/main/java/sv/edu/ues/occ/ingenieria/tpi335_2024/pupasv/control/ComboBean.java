@@ -9,6 +9,7 @@ import jakarta.ejb.Stateless;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import java.io.Serializable;
+import java.util.List;
 import sv.edu.ues.occ.ingenieria.tpi335_2024.pupasv.entity.Combo;
 
 @Stateless
@@ -26,5 +27,13 @@ public class ComboBean extends AbstractDataPersistence<Combo> implements Seriali
     @Override
     public EntityManager getEntityManager(){
         return em;
+    }
+
+    public List<Combo> findRange(int first, int pageSize, boolean soloActivos) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    public long count(boolean soloActivos) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 }

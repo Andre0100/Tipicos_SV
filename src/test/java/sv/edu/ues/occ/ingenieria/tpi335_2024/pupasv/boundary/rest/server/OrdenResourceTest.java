@@ -43,7 +43,7 @@ public class OrdenResourceTest {
         // voy hacer mock de oBean 
         OrdenBean mockordenBean = Mockito.mock(OrdenBean.class); 
         Mockito.when(mockordenBean.findRange(first, pageSize)).thenReturn(LISTA_ORDEN); //sea llamado, devolverá LISTA_ORDEN.
-        Mockito.when(mockordenBean.count()).thenReturn(3l); 
+        Mockito.when(mockordenBean.count()).thenReturn(3l); // error por el tipo de dato 
         cut.ordenBean = mockordenBean; //
         Response resultado = cut.findRange(first, pageSize);  // el resultado deberia de ser un 200 
         
