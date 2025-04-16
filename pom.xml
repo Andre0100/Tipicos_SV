@@ -6,7 +6,7 @@
     <version>1.0-SNAPSHOT</version>
     <packaging>war</packaging>
     <name>PupaSv-1.0-SNAPSHOT</name>
-    
+
     <properties>
         <maven.compiler.source>21</maven.compiler.source>
         <maven.compiler.target>21</maven.compiler.target>
@@ -26,7 +26,7 @@
             <version>${jakartaee}</version>
             <scope>provided</scope>
         </dependency>
-        
+
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
@@ -39,7 +39,7 @@
             <version>42.7.2</version>
             <scope>runtime</scope>
         </dependency>
-        
+
         <!--Dependencias para pruebas unitarias-->
         <dependency>
             <groupId>org.junit.jupiter</groupId>
@@ -54,7 +54,7 @@
             <version>5.12.0</version>
             <scope>test</scope>
         </dependency>
-        
+
         <!--Depedencias para pruebas de integracion-->
         <dependency>
             <groupId>org.testcontainers</groupId>
@@ -62,36 +62,37 @@
             <version>1.20.4</version>
             <scope>test</scope>
         </dependency>
-        
+
         <dependency>
             <groupId>org.testcontainers</groupId>
             <artifactId>junit-jupiter</artifactId>
             <version>1.20.4</version>
             <scope>test</scope>
         </dependency>
-        
+
         <dependency>
             <groupId>org.testcontainers</groupId>
             <artifactId>postgresql</artifactId>
             <version>1.20.4</version>
             <scope>test</scope>
         </dependency>
-        
+
         <dependency>
             <groupId>org.eclipse.persistence</groupId>
             <artifactId>org.eclipse.persistence.jpa</artifactId>
             <version>4.0.5</version>
             <scope>test</scope>
         </dependency>
-        <dependency>
+
+        <!-- <dependency>
             <groupId>sv.edu.ues.occ.ingenieria.tpi135.pupasv.core</groupId>
             <artifactId>PupaSV</artifactId>
             <version>1.0-SNAPSHOT</version>
             <scope>test</scope>
             <type>war</type>
-        </dependency>
+        </dependency> -->
     </dependencies>
-    
+
     <build>
         <plugins>
             <plugin>
@@ -104,7 +105,7 @@
                     <configDirectory>src/main/liberty/config</configDirectory>
                 </configuration>
             </plugin>
-           
+
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -150,8 +151,8 @@
                     </execution>
                 </executions>
             </plugin>
-            
-<!--            plugin de maven para ejecutar pruebas unitarias
+
+<!--            plugin de maven para ejecutar pruebas unitarias -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
@@ -173,12 +174,12 @@
                         </configuration>
                     </execution>
                 </executions>
-            </plugin>-->
+            </plugin>
             <!--Misma configuracion para las puebras de integracion-->
         </plugins>
     </build>
-    
-    
+
+
     <profiles>
         <profile>
             <id>integracion-test</id>
@@ -209,5 +210,5 @@
             </build>
         </profile>
     </profiles>
-    
+
 </project>

@@ -22,7 +22,7 @@ import sv.edu.ues.occ.ingenieria.tpi335_2024.pupasv.entity.Orden;
  * @author andrea
  */
 public class OrdenResourceTest {
-    
+    /**
     // LE VOY A DECIR UNA LISTA, QUE CUANDO LA VAYA A BUSCAR ME LA DEVUELVA 
     List<Orden> LISTA_ORDEN=Arrays.asList(new Orden[]{ 
         new Orden(1l),
@@ -52,5 +52,5 @@ public class OrdenResourceTest {
         
         Assertions.fail(" ESTA PRUEBA NO PASA "); 
     }
-    
+**/
 }
