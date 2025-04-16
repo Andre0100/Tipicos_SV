@@ -4,6 +4,7 @@ sv/edu/ues/occ/ingenieria/tpi335_2024/pupasv/boundary/resourcesInterfaz/Tarjeta.
 sv/edu/ues/occ/ingenieria/tpi335_2024/pupasv/control/AbstractDataPersistence.class
 sv/edu/ues/occ/ingenieria/tpi335_2024/pupasv/control/OrdenBean.class
 sv/edu/ues/occ/ingenieria/tpi335_2024/pupasv/boundary/resourcesInterfaz/ProcesadorPagos.class
+sv/edu/ues/occ/ingenieria/tpi335_2024/pupasv/boundary/rest/server/CarritoResource.class
 sv/edu/ues/occ/ingenieria/tpi335_2024/pupasv/dto/OrdenDetalleDTO.class
 sv/edu/ues/occ/ingenieria/tpi335_2024/pupasv/control/ComboBean.class
 sv/edu/ues/occ/ingenieria/tpi335_2024/pupasv/boundary/rest/server/AbstractDataSource.class
@@ -16,11 +17,14 @@ sv/edu/ues/occ/ingenieria/tpi335_2024/pupasv/control/OrdenDetalleBean.class
 sv/edu/ues/occ/ingenieria/tpi335_2024/pupasv/control/PagoBean.class
 sv/edu/ues/occ/ingenieria/tpi335_2024/pupasv/boundary/resourcesInterfaz/ServicioPagoPaypal.class
 sv/edu/ues/occ/ingenieria/tpi335_2024/pupasv/boundary/rest/server/ProductoResource.class
+sv/edu/ues/occ/ingenieria/tpi335_2024/pupasv/dto/CarritoItemDTO.class
 sv/edu/ues/occ/ingenieria/tpi335_2024/pupasv/boundary/rest/server/TipoProductoResource.class
 sv/edu/ues/occ/ingenieria/tpi335_2024/pupasv/control/utils/BankAccount.class
 sv/edu/ues/occ/ingenieria/tpi335_2024/pupasv/control/ProductoBean.class
 sv/edu/ues/occ/ingenieria/tpi335_2024/pupasv/entity/ProductoDetalle.class
+sv/edu/ues/occ/ingenieria/tpi335_2024/pupasv/control/CarritoBean.class
 sv/edu/ues/occ/ingenieria/tpi335_2024/pupasv/entity/TipoProducto.class
+sv/edu/ues/occ/ingenieria/tpi335_2024/pupasv/dto/CarritoDTO.class
 sv/edu/ues/occ/ingenieria/tpi335_2024/pupasv/control/PagoDetalleBean.class
 sv/edu/ues/occ/ingenieria/tpi335_2024/pupasv/entity/PagoDetalle.class
 sv/edu/ues/occ/ingenieria/tpi335_2024/pupasv/control/OrdenDetallePKBean.class

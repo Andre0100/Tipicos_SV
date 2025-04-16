@@ -1,6 +1,8 @@
+/home/natangh/TPI135/Projects/Proyecto-Pupas/Tipicos_SV/src/main/java/sv/edu/ues/occ/ingenieria/tpi335_2024/pupasv/boundary/rest/server/CarritoResource.java
 /home/natangh/TPI135/Projects/Proyecto-Pupas/Tipicos_SV/src/main/java/sv/edu/ues/occ/ingenieria/tpi335_2024/pupasv/dto/OrdenDetalleDTO.java
 /home/natangh/TPI135/Projects/Proyecto-Pupas/Tipicos_SV/src/main/java/sv/edu/ues/occ/ingenieria/tpi335_2024/pupasv/Main.java
 /home/natangh/TPI135/Projects/Proyecto-Pupas/Tipicos_SV/src/main/java/sv/edu/ues/occ/ingenieria/tpi335_2024/pupasv/boundary/resourcesInterfaz/ServicioPagoPaypal.java
+/home/natangh/TPI135/Projects/Proyecto-Pupas/Tipicos_SV/src/main/java/sv/edu/ues/occ/ingenieria/tpi335_2024/pupasv/control/CarritoBean.java
 /home/natangh/TPI135/Projects/Proyecto-Pupas/Tipicos_SV/src/main/java/sv/edu/ues/occ/ingenieria/tpi335_2024/pupasv/control/OrdenBean.java
 /home/natangh/TPI135/Projects/Proyecto-Pupas/Tipicos_SV/src/main/java/sv/edu/ues/occ/ingenieria/tpi335_2024/pupasv/boundary/resourcesInterfaz/Tarjeta.java
 /home/natangh/TPI135/Projects/Proyecto-Pupas/Tipicos_SV/src/main/java/sv/edu/ues/occ/ingenieria/tpi335_2024/pupasv/boundary/resourcesInterfaz/ServicioPagoTarjeta.java
@@ -17,6 +19,7 @@
 /home/natangh/TPI135/Projects/Proyecto-Pupas/Tipicos_SV/src/main/java/sv/edu/ues/occ/ingenieria/tpi335_2024/pupasv/entity/Orden.java
 /home/natangh/TPI135/Projects/Proyecto-Pupas/Tipicos_SV/src/main/java/sv/edu/ues/occ/ingenieria/tpi335_2024/pupasv/boundary/resourcesInterfaz/Paypal.java
 /home/natangh/TPI135/Projects/Proyecto-Pupas/Tipicos_SV/src/main/java/sv/edu/ues/occ/ingenieria/tpi335_2024/pupasv/control/utils/BankAccount.java
+/home/natangh/TPI135/Projects/Proyecto-Pupas/Tipicos_SV/src/main/java/sv/edu/ues/occ/ingenieria/tpi335_2024/pupasv/dto/CarritoDTO.java
 /home/natangh/TPI135/Projects/Proyecto-Pupas/Tipicos_SV/src/main/java/sv/edu/ues/occ/ingenieria/tpi335_2024/pupasv/control/ProductoDetalleBean.java
 /home/natangh/TPI135/Projects/Proyecto-Pupas/Tipicos_SV/src/main/java/sv/edu/ues/occ/ingenieria/tpi335_2024/pupasv/control/OrdenDetallePKBean.java
 /home/natangh/TPI135/Projects/Proyecto-Pupas/Tipicos_SV/src/main/java/sv/edu/ues/occ/ingenieria/tpi335_2024/pupasv/boundary/rest/server/PupaSvApp.java
@@ -36,6 +39,7 @@
 /home/natangh/TPI135/Projects/Proyecto-Pupas/Tipicos_SV/src/main/java/sv/edu/ues/occ/ingenieria/tpi335_2024/pupasv/control/OrdenDetalleBean.java
 /home/natangh/TPI135/Projects/Proyecto-Pupas/Tipicos_SV/src/main/java/sv/edu/ues/occ/ingenieria/tpi335_2024/pupasv/boundary/rest/server/AbstractDataSource.java
 /home/natangh/TPI135/Projects/Proyecto-Pupas/Tipicos_SV/src/main/java/sv/edu/ues/occ/ingenieria/tpi335_2024/pupasv/entity/Producto.java
+/home/natangh/TPI135/Projects/Proyecto-Pupas/Tipicos_SV/src/main/java/sv/edu/ues/occ/ingenieria/tpi335_2024/pupasv/dto/CarritoItemDTO.java
 /home/natangh/TPI135/Projects/Proyecto-Pupas/Tipicos_SV/src/main/java/sv/edu/ues/occ/ingenieria/tpi335_2024/pupasv/control/utils/InsufficientFundsException.java
 /home/natangh/TPI135/Projects/Proyecto-Pupas/Tipicos_SV/src/main/java/sv/edu/ues/occ/ingenieria/tpi335_2024/pupasv/control/TipoProductoBean.java
 /home/natangh/TPI135/Projects/Proyecto-Pupas/Tipicos_SV/src/main/java/sv/edu/ues/occ/ingenieria/tpi335_2024/pupasv/control/ProductoBean.java
