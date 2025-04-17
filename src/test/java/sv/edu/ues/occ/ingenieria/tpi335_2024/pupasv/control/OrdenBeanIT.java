@@ -5,66 +5,28 @@
 package sv.edu.ues.occ.ingenieria.tpi335_2024.pupasv.control;
 
 import jakarta.persistence.EntityManager;
-import jakarta.persistence.EntityManagerFactory;
-import jakarta.persistence.Persistence;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.junit.jupiter.api.Assertions;
-import static org.junit.jupiter.api.Assertions.fail;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestMethodOrder;
-import org.testcontainers.containers.GenericContainer;
-import org.testcontainers.containers.Network;
-import org.testcontainers.containers.PostgreSQLContainer;
-import org.testcontainers.junit.jupiter.Container;
-import org.testcontainers.junit.jupiter.Testcontainers;
-import org.testcontainers.utility.DockerImageName;
+import org.junit.jupiter.api.extension.ExtendWith;
+import sv.edu.ues.occ.ingenieria.tpi335_2024.pupasv.boundary.rest.server.BaseIntegrationAbstract;
 import sv.edu.ues.occ.ingenieria.tpi335_2024.pupasv.entity.Orden;
+import testing.ContainerExtension;
 
 /**
  *
  * @author morales
  */
-@Testcontainers
-@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-public class OrdenBeanIT {
+@ExtendWith(ContainerExtension.class)
+public class OrdenBeanIT extends BaseIntegrationAbstract{
     
-    protected EntityManagerFactory emf;
-    
-    
-    static Network red = Network.newNetwork();
-    
-    @Container
-    static GenericContainer postgres = new PostgreSQLContainer("postgres:16-alpine")
-            .withDatabaseName("PupaSV")
-            .withPassword("abc123")
-            .withUsername("postgres")
-            .withInitScript("pupa_db.sql")
-            .withExposedPorts(5432)
-            .withNetworkAliases("db");
-    
-     // Latest liberty image
-    static final DockerImageName libertyImage = DockerImageName.parse("openliberty_pg:10.25.0.0.1");
-    
-    
-    
-    
-    
-    @BeforeAll
-    public void inicializar(){
-        Map<String, Object> propiedades = new HashMap<>();
-        propiedades.put("jakarta.persistence.jdbc.url", String.format("jdbc:postgresql://localhost:%d/PupaSV", postgres.getMappedPort(5432)));
-        emf = Persistence.createEntityManagerFactory("PupaIP", propiedades);
-    }
-    
+                
     @Test
     @Order(1)
     public void testContar(){

@@ -84,6 +84,35 @@
             <scope>test</scope>
         </dependency>
 
+          <!--Dependencias para pruebas de integración para el cliente -->
+        <dependency>
+            <groupId>org.glassfish.jersey.core</groupId>
+            <artifactId>jersey-client</artifactId>
+            <version>3.1.3</version> <!-- o la versión más reciente -->
+            <scope>test</scope> <!-- si solo lo usas para tests -->
+        </dependency>
+       
+        <dependency>
+            <groupId>org.glassfish.jersey.inject</groupId>
+            <artifactId>jersey-hk2</artifactId>
+            <version>3.1.3</version>
+            <scope>test</scope>
+        </dependency>
+        
+        <dependency>
+            <groupId>org.glassfish.jersey.media</groupId>
+            <artifactId>jersey-media-json-jackson</artifactId>
+            <version>3.1.3</version> <!-- Usa la misma versión que jersey-client -->
+            <scope>test</scope>
+        </dependency>
+        
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>1.4.14</version>
+            <scope>test</scope>
+        </dependency>
+
         <!-- <dependency>
             <groupId>sv.edu.ues.occ.ingenieria.tpi135.pupasv.core</groupId>
             <artifactId>PupaSV</artifactId>
