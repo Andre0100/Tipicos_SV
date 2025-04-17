@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report-3.0.xsd" version="3.0" name="sv.edu.ues.occ.ingenieria.tpi335_2024.pupasv.control.OrdenBeanTest" time="0.719" tests="4" errors="0" skipped="0" failures="0">
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report-3.0.xsd" version="3.0" name="sv.edu.ues.occ.ingenieria.tpi335_2024.pupasv.control.TipoProductoBeanTest" time="0.227" tests="6" errors="0" skipped="0" failures="0">
   <properties>
     <property name="java.specification.version" value="21"/>
     <property name="sun.jnu.encoding" value="UTF-8"/>
@@ -54,25 +54,28 @@
     <property name="sun.io.unicode.encoding" value="UnicodeLittle"/>
     <property name="java.class.version" value="65.0"/>
   </properties>
-  <testcase name="crearOrdenCarrito" classname="sv.edu.ues.occ.ingenieria.tpi335_2024.pupasv.control.OrdenBeanTest" time="0.685">
-    <system-out><![CDATA[OrdenBean --> crearOrdenCarrito
-]]></system-out>
-    <system-err><![CDATA[WARNING: A Java agent has been loaded dynamically (/home/natangh/.m2/repository/net/bytebuddy/byte-buddy-agent/1.14.15/byte-buddy-agent-1.14.15.jar)
-WARNING: If a serviceability tool is in use, please run with -XX:+EnableDynamicAgentLoading to hide this warning
-WARNING: If a serviceability tool is not in use, please run with -Djdk.instrument.traceUsage for more information
-WARNING: Dynamic loading of agents will be disallowed by default in a future release
-]]></system-err>
-  </testcase>
-  <testcase name="crearOrdenCarrito_CarritoNulo" classname="sv.edu.ues.occ.ingenieria.tpi335_2024.pupasv.control.OrdenBeanTest" time="0.004">
-    <system-out><![CDATA[OrdenBean --> crearOrdenCarrito_CarritoNulo
+  <testcase name="create" classname="sv.edu.ues.occ.ingenieria.tpi335_2024.pupasv.control.TipoProductoBeanTest" time="0.206">
+    <system-out><![CDATA[TipoProductoBeanTest --> create
 ]]></system-out>
   </testcase>
-  <testcase name="crearOrdenCarrito_CarritoVacio" classname="sv.edu.ues.occ.ingenieria.tpi335_2024.pupasv.control.OrdenBeanTest" time="0.003">
-    <system-out><![CDATA[OrdenBean --> crearOrdenCarrito_CarritoVacio
+  <testcase name="delete" classname="sv.edu.ues.occ.ingenieria.tpi335_2024.pupasv.control.TipoProductoBeanTest" time="0.005">
+    <system-out><![CDATA[TipoProductoBeanTest --> delete
 ]]></system-out>
   </testcase>
-  <testcase name="crearOrdenCarrito_SinIdOrden" classname="sv.edu.ues.occ.ingenieria.tpi335_2024.pupasv.control.OrdenBeanTest" time="0.004">
-    <system-out><![CDATA[OrdenBean --> crearOrdenCarrito_SinIdOrden
+  <testcase name="update" classname="sv.edu.ues.occ.ingenieria.tpi335_2024.pupasv.control.TipoProductoBeanTest" time="0.003">
+    <system-out><![CDATA[TipoProductoBeanTest --> update
+]]></system-out>
+  </testcase>
+  <testcase name="findById" classname="sv.edu.ues.occ.ingenieria.tpi335_2024.pupasv.control.TipoProductoBeanTest" time="0.003">
+    <system-out><![CDATA[TipoProductoBeanTest --> findById
+]]></system-out>
+  </testcase>
+  <testcase name="count" classname="sv.edu.ues.occ.ingenieria.tpi335_2024.pupasv.control.TipoProductoBeanTest" time="0.004">
+    <system-out><![CDATA[TipoProductoBeanTest --> count
+]]></system-out>
+  </testcase>
+  <testcase name="findRange" classname="sv.edu.ues.occ.ingenieria.tpi335_2024.pupasv.control.TipoProductoBeanTest" time="0.004">
+    <system-out><![CDATA[TipoProductoBeanTest --> findRange
 ]]></system-out>
   </testcase>
 </testsuite>

@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package sv.edu.ues.occ.ingenieria.tpi335_2024.pupasv.boundary.rest.server;
 
 import jakarta.inject.Inject;
@@ -21,14 +17,11 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import sv.edu.ues.occ.ingenieria.tpi335_2024.pupasv.control.CarritoBean;
 import sv.edu.ues.occ.ingenieria.tpi335_2024.pupasv.control.OrdenBean;
+import sv.edu.ues.occ.ingenieria.tpi335_2024.pupasv.dto.CarritoItemDTO;
 import sv.edu.ues.occ.ingenieria.tpi335_2024.pupasv.entity.Orden;
-
-/**
- *
- * @author morales
- */
-
 
 @Path("orden")
 public class OrdenResource implements Serializable {
@@ -37,6 +30,8 @@ public class OrdenResource implements Serializable {
 
     @Inject
     OrdenBean ordenBean;
+    @Inject
+    CarritoBean carritoBean;
     
 
     @GET
@@ -155,4 +150,29 @@ public class OrdenResource implements Serializable {
                     .build();
         }
     }
+
+    @POST
+    @Path("desde-carrito")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response ordenarDesdeCarrito(@QueryParam("sucursal") String sucursal) {
+        try {
+            List<CarritoItemDTO> itemsCarrito = carritoBean.obtenerItems();
+            if (itemsCarrito == null || itemsCarrito.isEmpty()) {
+                LOGGER.log(Level.WARNING, "No se puede ordenar con un carrito vacío.");
+                return Response.status(Response.Status.BAD_REQUEST)
+                        .entity("El carrito está vacío.")
+                        .build();
+            }
+            Orden orden = ordenBean.crearOrdenCarrito(itemsCarrito, sucursal);
+            carritoBean.limpiarCarrito();
+            LOGGER.log(Level.INFO, "Orden creada desde carrito con ID: {0}", orden.getIdOrden());
+            return Response.status(Response.Status.CREATED).entity(orden).build();
+        } catch (Exception e) {
+            LOGGER.log(Level.SEVERE, "Error al crear la orden desde el carrito. ", e);
+            return Response.serverError()
+                    .entity("Error al crear la orden: " + e.getMessage())
+                    .build();
+        }
+    }
+
 }
