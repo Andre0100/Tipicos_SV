@@ -92,6 +92,7 @@ public class Producto implements Serializable {
         this.observaciones = observaciones;
     }
 
+    @JsonbTransient
     public List<ComboDetalle> getComboDetalleList() {
         return comboDetalleList;
     }
@@ -109,6 +110,7 @@ public class Producto implements Serializable {
         this.productoDetalleList = productoDetalleList;
     }
 
+    @JsonbTransient
     public List<ProductoPrecio> getProductoPrecioList() {
         return productoPrecioList;
     }

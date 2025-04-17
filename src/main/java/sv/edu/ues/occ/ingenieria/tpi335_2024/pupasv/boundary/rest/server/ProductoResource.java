@@ -9,7 +9,9 @@ import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.DefaultValue;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.POST;
+import jakarta.ws.rs.PUT;
 import jakarta.ws.rs.Path;
+import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.QueryParam;
 import jakarta.ws.rs.core.Context;
@@ -41,7 +43,7 @@ public class ProductoResource implements Serializable{
             @DefaultValue("0")
             int first,
             @QueryParam("max")
-            @DefaultValue("20")
+            @DefaultValue("30")
             int max
             ){
         
@@ -62,6 +64,29 @@ public class ProductoResource implements Serializable{
             return Response.status(500).entity(e.getMessage()).build();
         }
     }
+    
+    
+    
+    @Path("/{id}")
+    @GET
+    @Produces({MediaType.APPLICATION_JSON})
+    public Response findById(@PathParam("id") Long id) {
+        if (id != null) {
+            try {
+                Producto encontrado= PBean.findById(id);
+                if (encontrado != null) {
+                    Response.ResponseBuilder builder = Response.ok(encontrado);
+                    return builder.build();
+                }
+                return Response.status(404).header("not-found-id", id).build();
+            }catch (Exception e) {
+                Logger.getLogger(getClass().getName()).log(Level.SEVERE, e.getMessage(), e);
+                return Response.status(500).entity(e.getMessage()).build();
+            }
+        }
+        return Response.status(422).header("wrong-parameter : id", id).build();
+    }
+
     
     @POST
     @Produces({MediaType.APPLICATION_JSON})
@@ -85,5 +110,25 @@ public class ProductoResource implements Serializable{
          return Response.status(500).header("Wrong-parameter", producto).build();
     }
     
+    @PUT
+    @Produces({MediaType.APPLICATION_JSON})
+    @Consumes({MediaType.APPLICATION_JSON})
+    public Response update(Producto producto, @Context UriInfo uriInfo){
+        if (producto != null && producto.getIdProducto() != null ) {
+            try {
+                PBean.update(producto);
+                if (producto.getIdProducto() !=null) {
+
+                    return Response.status(200).build();
+                }
+                return Response.status(500).header("process-error","Record couldnt be updated").build();
+            }catch (Exception e) {
+                Logger.getLogger(getClass().getName()).log(Level.SEVERE, e.getMessage(), e);
+                return Response.status(500).entity(e.getMessage()).build();
+            }
+        }
+        return Response.status(500).header("Wrong-parameter", producto).build();
+    }
     
 }
+
