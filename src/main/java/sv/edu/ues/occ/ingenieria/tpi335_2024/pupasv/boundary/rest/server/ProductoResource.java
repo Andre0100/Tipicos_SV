@@ -21,9 +21,11 @@ import jakarta.ws.rs.core.UriBuilder;
 import jakarta.ws.rs.core.UriInfo;
 import java.io.Serializable;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import sv.edu.ues.occ.ingenieria.tpi335_2024.pupasv.control.ProductoBean;
+import sv.edu.ues.occ.ingenieria.tpi335_2024.pupasv.dto.ProductoConPrecioDTO;
 import sv.edu.ues.occ.ingenieria.tpi335_2024.pupasv.entity.Producto;
 
 /**
@@ -31,13 +33,34 @@ import sv.edu.ues.occ.ingenieria.tpi335_2024.pupasv.entity.Producto;
  * @author morales
  */
 @Path("/producto")
+@Produces(MediaType.APPLICATION_JSON)
+@Consumes(MediaType.APPLICATION_JSON)
 public class ProductoResource implements Serializable{
     
+    private static final Logger LOG = Logger.getLogger(ProductoResource.class.getName());
+
+       
     @Inject
     private ProductoBean PBean;
     
+    
+    // Endpoint para obtener productos agrupados por tipo con sus precios
+    @Path("/por-tipo")
     @GET
-    @Produces({MediaType.APPLICATION_JSON})
+    public Response getProductosAgrupadosPorTipo() {
+        try {
+            Map<String, List<ProductoConPrecioDTO>> productosPorTipo = PBean.getProductosAgrupadosPorTipo();
+            return Response.ok(productosPorTipo).build();
+        } catch (Exception e) {
+            LOG.log(Level.SEVERE, "Error al obtener productos por tipo", e);
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                         .entity("Error al obtener productos: " + e.getMessage())
+                         .build();
+        }
+    }
+    
+   
+    @GET
     public Response ProductoList(
             @QueryParam("first")
             @DefaultValue("0")
@@ -67,9 +90,8 @@ public class ProductoResource implements Serializable{
     
     
     
-    @Path("/{id}")
+    @Path("/{id}/detalle}")
     @GET
-    @Produces({MediaType.APPLICATION_JSON})
     public Response findById(@PathParam("id") Long id) {
         if (id != null) {
             try {
@@ -87,10 +109,8 @@ public class ProductoResource implements Serializable{
         return Response.status(422).header("wrong-parameter : id", id).build();
     }
 
-    
+       
     @POST
-    @Produces({MediaType.APPLICATION_JSON})
-    @Consumes({MediaType.APPLICATION_JSON})
     public Response create(Producto producto, @Context UriInfo uriInfo){
         if(producto != null && producto.getIdProducto() == null){
             try {
@@ -111,8 +131,6 @@ public class ProductoResource implements Serializable{
     }
     
     @PUT
-    @Produces({MediaType.APPLICATION_JSON})
-    @Consumes({MediaType.APPLICATION_JSON})
     public Response update(Producto producto, @Context UriInfo uriInfo){
         if (producto != null && producto.getIdProducto() != null ) {
             try {
@@ -128,6 +146,30 @@ public class ProductoResource implements Serializable{
             }
         }
         return Response.status(500).header("Wrong-parameter", producto).build();
+    }
+    
+    @Path("/activos")
+    @GET
+    public Response ProductosActivos(
+            @QueryParam("first")
+            @DefaultValue("0")
+            int first,
+            @QueryParam("max")
+            @DefaultValue("30")
+            int max){
+        try {
+            if(first >= 0 && max >= 0 && max <= 50){
+                List encontrados = PBean.findByActivo();
+                Response.ResponseBuilder builder = Response.ok(encontrados).
+                        type(MediaType.APPLICATION_JSON);
+                return builder.build();
+            }else{
+                return Response.status(422).header("wrong parameter, first:", first+",max: "+max  ).header("wrong parameter : max","s").build();
+            }
+        } catch (Exception e) {
+            Logger.getLogger(getClass().getName()).log(Level.SEVERE, e.getMessage(), e);
+            return Response.status(500).entity(e.getMessage()).build();
+        }
     }
     
 }

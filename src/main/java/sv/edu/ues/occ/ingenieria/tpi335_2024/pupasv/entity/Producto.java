@@ -28,6 +28,20 @@ import jakarta.xml.bind.annotation.XmlTransient;
 @Table(name = "producto")
 @NamedQueries({
     @NamedQuery(name = "Producto.findAll", query = "SELECT p FROM Producto p"),
+    @NamedQuery(name = "Producto.findByBebida", query = "SELECT p FROM Producto p JOIN p.productoDetalleList pd JOIN pd.tipoProducto tp WHERE tp.nombre = 'bebida' AND p.activo = true"),
+    @NamedQuery(
+    name = "Producto.findByTipoConPrecio",
+    query = "SELECT p, pp FROM Producto p " +
+            "JOIN p.productoDetalleList pd " +
+            "JOIN pd.tipoProducto tp " +
+            "LEFT JOIN p.productoPrecioList pp ON " +
+            "pp.idProducto = p AND pp.fechaDesde = (" +
+            "   SELECT MAX(pp2.fechaDesde) FROM ProductoPrecio pp2 " +
+            "   WHERE pp2.idProducto = p AND " +
+            "   (pp2.fechaHasta IS NULL OR pp2.fechaHasta >= CURRENT_DATE)" +
+            ") " +
+            "WHERE tp.nombre = :nombreTipo AND p.activo = true"
+),
     @NamedQuery(name = "Producto.findByIdProducto", query = "SELECT p FROM Producto p WHERE p.idProducto = :idProducto"),
     @NamedQuery(name = "Producto.findByNombre", query = "SELECT p FROM Producto p WHERE p.nombre = :nombre"),
     @NamedQuery(name = "Producto.findByActivo", query = "SELECT p FROM Producto p WHERE p.activo = :activo"),

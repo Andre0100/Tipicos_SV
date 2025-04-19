@@ -27,6 +27,10 @@ import jakarta.persistence.Table;
 @Table(name = "tipo_producto")
 @NamedQueries({
     @NamedQuery(name = "TipoProducto.findAll", query = "SELECT t FROM TipoProducto t"),
+    @NamedQuery(
+    name = "TipoProducto.findAllNombres",
+    query = "SELECT DISTINCT tp.nombre FROM TipoProducto tp WHERE tp.activo = true"
+    ),
     @NamedQuery(name = "TipoProducto.findByIdTipoProducto", query = "SELECT t FROM TipoProducto t WHERE t.idTipoProducto = :idTipoProducto"),
     @NamedQuery(name = "TipoProducto.findByNombre", query = "SELECT t FROM TipoProducto t WHERE t.nombre = :nombre"),
     @NamedQuery(name = "TipoProducto.findByActivo", query = "SELECT t FROM TipoProducto t WHERE t.activo = :activo"),
