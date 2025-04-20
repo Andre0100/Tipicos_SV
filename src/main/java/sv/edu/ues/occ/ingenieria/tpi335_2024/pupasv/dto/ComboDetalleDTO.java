@@ -12,7 +12,8 @@ import java.io.Serializable;
  *
  * @author andrea
  */
-class ComboDetalleDTO implements Serializable{
+
+public class ComboDetalleDTO implements Serializable{ 
     
     private Long idDetalle;
 
@@ -57,6 +58,4 @@ class ComboDetalleDTO implements Serializable{
         this.cantidad = cantidad;
     }
 } 
-
-
 

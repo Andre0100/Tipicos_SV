@@ -60,10 +60,13 @@ public class Producto implements Serializable {
     private Boolean activo;
     @Column(name = "observaciones")
     private String observaciones;
+    
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "producto")
     private List<ComboDetalle> comboDetalleList;
+    
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "producto")
     private List<ProductoDetalle> productoDetalleList;
+    
     @OneToMany(mappedBy = "idProducto")
     private List<ProductoPrecio> productoPrecioList;
 

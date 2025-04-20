@@ -14,26 +14,47 @@ import sv.edu.ues.occ.ingenieria.tpi335_2024.pupasv.entity.Combo;
 
 @Stateless
 @LocalBean
-public class ComboBean extends AbstractDataPersistence<Combo> implements Serializable{
+public class ComboBean extends AbstractDataPersistence<Combo> implements Serializable {
 
     @PersistenceContext(unitName = "PupaPU")
-    
-    EntityManager em;
-    
-    public ComboBean(){
+    public EntityManager em;
+
+    public ComboBean() {
         super(Combo.class);
     }
-    
+
+    // setter temporal solo para pruebas
+    public void setEntityManager(EntityManager em) {
+        this.em = em;
+    }
+
     @Override
-    public EntityManager getEntityManager(){
+    public EntityManager getEntityManager() {
         return em;
     }
 
     public List<Combo> findRange(int first, int pageSize, boolean soloActivos) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        if (first < 0 || pageSize < 0) { // 👈 Validación crítica
+            throw new IllegalArgumentException("first y pageSize no pueden ser negativos");
+        }
+
+        String queryName = soloActivos ? "Combo.findActivos" : "Combo.findAll";
+        return em.createNamedQuery(queryName, Combo.class)
+                .setFirstResult(first)
+                .setMaxResults(pageSize)
+                .getResultList();
     }
 
     public long count(boolean soloActivos) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        String queryName = soloActivos ? "Combo.countActivos" : "Combo.countAll";
+        return em.createNamedQuery(queryName, Long.class)
+                .getSingleResult();
     }
+
+    public Combo findByIdWithDetalles(Integer idCombo) {
+        return em.createNamedQuery("Combo.findWithDetalles", Combo.class)
+                .setParameter("idCombo", idCombo)
+                .getSingleResult();
+    }
+
 }

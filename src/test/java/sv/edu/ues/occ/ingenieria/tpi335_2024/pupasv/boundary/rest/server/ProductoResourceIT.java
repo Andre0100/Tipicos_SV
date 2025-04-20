@@ -22,72 +22,70 @@ import sv.edu.ues.occ.ingenieria.tpi335_2024.pupasv.entity.Producto;
  *
  * @author morales
  */
-
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-public class ProductoResourceIT extends BaseIntegrationAbstract{
-    
+public class ProductoResourceIT extends BaseIntegrationAbstract {
+
     @Test
     @Order(1)
-    public void testCreate(){
+    public void testCreate() {
         System.out.println("Test crear");
-        
+
         //Prueba de error 500 si la entidad es nula
         Producto invalidoProducto = null;
-        
-         Response respuestaInvalida = target.path("producto")
-            .request(MediaType.APPLICATION_JSON)
-            .post(Entity.entity(invalidoProducto, MediaType.APPLICATION_JSON));
-    
+
+        Response respuestaInvalida = target.path("producto")
+                .request(MediaType.APPLICATION_JSON)
+                .post(Entity.entity(invalidoProducto, MediaType.APPLICATION_JSON));
+
         assertEquals(500, respuestaInvalida.getStatus());
-        
+
         //Prueba 201 entidad creada
         Producto nuevoProducto = new Producto();
         nuevoProducto.setNombre("Producto test");
         nuevoProducto.setActivo(true);
         nuevoProducto.setObservaciones("Producto para prueba IT");
-        
+
         System.out.println("ID PRODUCTO" + nuevoProducto.getIdProducto());
-        
+
         //Hacer solicitud post
         Response respuesta = target.path("producto")
                 .request(MediaType.APPLICATION_JSON)
                 .post(Entity.entity(nuevoProducto, MediaType.APPLICATION_JSON));
-        
-        System.out.println("error respuesta"+ respuesta);
-        
 
-         if(respuesta.getStatus() == 500) {
+        System.out.println("error respuesta" + respuesta);
+
+        if (respuesta.getStatus() == 500) {
             String errorDetails = respuesta.readEntity(String.class);
             System.out.println("ERROR DETAILS: " + errorDetails);
-                
-            MultivaluedMap<String, String> ss =respuesta.getStringHeaders();
-            
-             System.out.println("   AAA" + ss);
+
+            MultivaluedMap<String, String> ss = respuesta.getStringHeaders();
+
+            System.out.println("   AAA" + ss);
             // Verificar logs adicionales del servidor
             //System.out.println("=== Server Error Logs ===");
             //System.out.println(.getLogs());
         }
-        
+
         assertNotNull(respuesta);
         assertEquals(201, respuesta.getStatus());
-        
+
         //Verificar la ubicación del nuevo producto
         String location = respuesta.getHeaderString("Location");
         assertNotNull(location);
         System.out.println("Nuevo Producto creado en: " + location);
-        
+
         String idStr = location.substring(location.lastIndexOf('/') + 1);
         Long idCreado = Long.valueOf(idStr);
         assertNotNull(idCreado);
-    
+
     }
-    
+
     @Test
     @Order(2)
-    public void testUpdate(){
-        
+    public void testUpdate() {
+
         System.out.println("Test Update");
-    
+
         Producto nuevoProducto = new Producto();
         nuevoProducto.setNombre("Producto para Actualizar");
         nuevoProducto.setActivo(true);
@@ -100,23 +98,23 @@ public class ProductoResourceIT extends BaseIntegrationAbstract{
         assertEquals(201, createResponse.getStatus());
         String location = createResponse.getHeaderString("Location");
         assertNotNull(location);
-        
-        Long idProducto = Long.valueOf(location.substring(location.lastIndexOf("/")+1));
-        
+
+        Long idProducto = Long.valueOf(location.substring(location.lastIndexOf("/") + 1));
+
         //Modificar el producto
         Producto productoActualizado = new Producto();
         productoActualizado.setIdProducto(idProducto);
         productoActualizado.setNombre("Producto actualizado");
         productoActualizado.setObservaciones("Producto actualiza con el test");
-        
+
         Response updateResponse = target.path("producto")
                 .request()
                 .put(Entity.entity(productoActualizado, MediaType.APPLICATION_JSON));
-        
+
         assertNotNull(updateResponse);
         assertEquals(200, updateResponse.getStatus());
-        
-       //Verificar los cambios, obteniendo por id
+
+        //Verificar los cambios, obteniendo por id
         Response getResponse = target.path("producto").path(idProducto.toString())
                 .request(MediaType.APPLICATION_JSON)
                 .get();
@@ -125,8 +123,7 @@ public class ProductoResourceIT extends BaseIntegrationAbstract{
         assertEquals("Producto actualizado", productoVerificado.getNombre());
         assertEquals("Producto actualiza con el test", productoVerificado.getObservaciones());
     }
-    
-    
+
     @Test
     @Order(3)
     public void testFindRange() {
@@ -135,11 +132,10 @@ public class ProductoResourceIT extends BaseIntegrationAbstract{
         Response respuesta = target.path("producto").request(MediaType.APPLICATION_JSON).get();
         assertNotNull(respuesta);
         assertEquals(200, respuesta.getStatus());
-        List<Producto> registros = respuesta.readEntity(new GenericType<List<Producto>>(){});
+        List<Producto> registros = respuesta.readEntity(new GenericType<List<Producto>>() {
+        });
         assertNotNull(registros);
         assertEquals(2, registros.size());
     }
-    
-    
-}
 
+}

@@ -15,8 +15,12 @@ import jakarta.ws.rs.Path;
 import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.QueryParam;
+import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+import jakarta.ws.rs.core.UriBuilder;
+import jakarta.ws.rs.core.UriInfo;
+import jakarta.validation.Valid; 
 import java.io.Serializable;
 import java.util.List;
 import java.util.logging.Level;
@@ -32,152 +36,109 @@ import sv.edu.ues.occ.ingenieria.tpi335_2024.pupasv.entity.Combo;
 @Path("combo")
 public class ComboResource implements Serializable {
 
-    private static final Logger LOGGER = Logger.getLogger(ComboResource.class.getName());
-
     @Inject
-    ComboBean comboBean;
+    private ComboBean CBean;
+
+    private static final Logger LOG = Logger.getLogger(ComboResource.class.getName());
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Response findRange(
-            @QueryParam("first") @DefaultValue("0") int first,
-            @QueryParam("page_Size") @DefaultValue("50") int pageSize,
-            @QueryParam("activos") @DefaultValue("true") boolean soloActivos) {
+    public Response list(
+        @QueryParam("first") @DefaultValue("0") int first,
+        @QueryParam("max")   @DefaultValue("30") int max,
+        @QueryParam("activos") @DefaultValue("true") boolean activos
+    ) {
         try {
-            List<Combo> lista = comboBean.findRange(first, pageSize, soloActivos);
-            long total = comboBean.count(soloActivos);
-            LOGGER.log(Level.INFO, "Consultando combos: desde {0}, tamaño página {1}, solo activos: {2}", 
-                    new Object[]{first, pageSize, soloActivos});
-            return Response.ok(lista)
-                    .header(RestResourceHeaderPattern.TOTAL_REGISTROS, total)
+            if (first < 0 || max <= 0 || max > 50) {
+                return Response.status(422)
+                    .header("error", "first >= 0, 1 <= max <= 50")
                     .build();
+            }
+            List<Combo> encontrados = CBean.findRange(first, max, activos);
+            long total = CBean.count(activos);
+            return Response.ok(encontrados)
+                .header("Total-Combos", total)
+                .build();
         } catch (Exception e) {
-            LOGGER.log(Level.SEVERE, "Error al consultar combos. Parámetros: first={0}, pageSize={1}, soloActivos={2}", 
-                    new Object[]{first, pageSize, soloActivos});
-            LOGGER.log(Level.SEVERE, "Detalle del error: ", e);
-            return Response.serverError()
-                    .header(RestResourceHeaderPattern.DETALLE_ERROR, "Error interno del servidor")
-                    .build();
+            LOG.log(Level.SEVERE, e.getMessage(), e);
+            return Response.status(500).entity(e.getMessage()).build();
         }
     }
 
     @GET
-    @Path("{id}")
+    @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response findById(@PathParam("id") Long id) {
-        try {
-            Combo combo = comboBean.findById(id);
-            if (combo != null) {
-                LOGGER.log(Level.INFO, "Combo encontrado ID: {0}", id);
-                return Response.ok(combo).build();
-            } else {
-                LOGGER.log(Level.WARNING, "Combo no encontrado ID: {0}", id);
-                return Response.status(Response.Status.NOT_FOUND)
-                        .header(RestResourceHeaderPattern.DETALLE_ERROR, "Combo no encontrado")
-                        .build();
-            }
-        } catch (Exception e) {
-            LOGGER.log(Level.SEVERE, "Error al buscar Combo ID: {0}", id);
-            LOGGER.log(Level.SEVERE, "Detalle del error: ", e);
-            return Response.serverError()
-                    .header(RestResourceHeaderPattern.DETALLE_ERROR, e.getMessage())
-                    .build();
+        if (id == null) {
+            return Response.status(422).header("error", "ID nulo").build();
         }
-    }
-
-    @GET
-    @Path("{id}/detalles")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response findDetallesByComboId(@PathParam("id") Long id) {
         try {
-            Combo combo = comboBean.findById(id);
-            if (combo != null) {
-                LOGGER.log(Level.INFO, "Consultando detalles del combo ID: {0}", id);
-                return Response.ok(combo.getComboDetalleList()).build();
-            } else {
-                LOGGER.log(Level.WARNING, "Combo no encontrado al buscar detalles ID: {0}", id);
-                return Response.status(Response.Status.NOT_FOUND)
-                        .header(RestResourceHeaderPattern.DETALLE_ERROR, "Combo no encontrado")
-                        .build();
+            Combo combo = CBean.findByIdWithDetalles(id.intValue());
+            if (combo == null) {
+                return Response.status(404).header("error", "Combo no encontrado").build();
             }
+            return Response.ok(combo).build();
         } catch (Exception e) {
-            LOGGER.log(Level.SEVERE, "Error al buscar detalles del Combo ID: {0}", id);
-            LOGGER.log(Level.SEVERE, "Detalle del error: ", e);
-            return Response.serverError()
-                    .header(RestResourceHeaderPattern.DETALLE_ERROR, e.getMessage())
-                    .build();
+            LOG.log(Level.SEVERE, e.getMessage(), e);
+            return Response.status(500).entity(e.getMessage()).build();
         }
     }
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response create(Combo combo) {
+    public Response create(Combo combo, @Context UriInfo uriInfo) {
+        if (combo == null || combo.getIdCombo() != null) {
+            return Response.status(422).header("error", "ID debe ser null al crear").build();
+        }
         try {
-            if (combo == null) {
-                LOGGER.log(Level.WARNING, "Intento de crear Combo con datos nulos");
-                return Response.status(RestResourceHeaderPattern.STATUS_PARAMETRO_FALTANTE)
-                        .header(RestResourceHeaderPattern.DETALLE_ERROR, RestResourceHeaderPattern.DETALLE_PARAMETRO_FALTANTE)
-                        .build();
-            }
-            comboBean.create(combo);
-            LOGGER.log(Level.INFO, "Combo creado exitosamente ID: {0}", combo.getIdCombo());
-            return Response.status(Response.Status.CREATED).entity(combo).build();
+            CBean.create(combo);
+            Long newId = combo.getIdCombo();
+            UriBuilder ub = uriInfo.getAbsolutePathBuilder().path(newId.toString());
+            return Response.created(ub.build()).build();
+        } catch (IllegalArgumentException ia) {
+            return Response.status(400).entity(ia.getMessage()).build();
+        } catch (IllegalStateException ie) {
+            return Response.status(409).entity(ie.getMessage()).build();
         } catch (Exception e) {
-            LOGGER.log(Level.SEVERE, "Error al crear Combo: ");
-            LOGGER.log(Level.SEVERE, "Detalle del error: ", e);
-            return Response.status(Response.Status.BAD_REQUEST)
-                    .header(RestResourceHeaderPattern.DETALLE_ERROR, "Datos inválidos: " + e.getMessage())
-                    .build();
+            LOG.log(Level.SEVERE, e.getMessage(), e);
+            return Response.status(500).entity(e.getMessage()).build();
         }
     }
 
     @PUT
-    @Path("{id}")
     @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response update(@PathParam("id") Long id, Combo combo) {
+    public Response update(Combo combo) {
+        if (combo == null || combo.getIdCombo() == null) {
+            return Response.status(422).header("error", "ID requerido para actualizar").build();
+        }
         try {
-            Combo existing = comboBean.findById(id);
-            if (existing == null) {
-                LOGGER.log(Level.WARNING, "Intento de actualizar Combo inexistente ID: {0}", id);
-                return Response.status(Response.Status.NOT_FOUND)
-                        .header(RestResourceHeaderPattern.DETALLE_ERROR, "Combo no encontrado")
-                        .build();
-            }
-            combo.setIdCombo(id); // Asegurar consistencia del ID
-            comboBean.update(combo);
-            LOGGER.log(Level.INFO, "Combo actualizado ID: {0}", id);
-            return Response.ok(combo).build();
+            CBean.update(combo);
+            return Response.ok().build();
+        } catch (IllegalArgumentException ia) {
+            return Response.status(400).entity(ia.getMessage()).build();
         } catch (Exception e) {
-            LOGGER.log(Level.SEVERE, "Error al actualizar Combo ID: {0}", id);
-            LOGGER.log(Level.SEVERE, "Detalle del error: ", e);
-            return Response.status(Response.Status.BAD_REQUEST)
-                    .header(RestResourceHeaderPattern.DETALLE_ERROR, "Error en actualización: " + e.getMessage())
-                    .build();
+            LOG.log(Level.SEVERE, e.getMessage(), e);
+            return Response.status(500).entity(e.getMessage()).build();
         }
     }
 
     @DELETE
-    @Path("{id}")
+    @Path("/{id}")
     public Response delete(@PathParam("id") Long id) {
+        if (id == null) {
+            return Response.status(422).header("error", "ID nulo").build();
+        }
         try {
-            Combo combo = comboBean.findById(id);
-            if (combo == null) {
-                LOGGER.log(Level.WARNING, "Intento de eliminar Combo inexistente ID: {0}", id);
-                return Response.status(Response.Status.NOT_FOUND)
-                        .header(RestResourceHeaderPattern.DETALLE_ERROR, "Combo no encontrado")
-                        .build();
-            }
-            comboBean.delete(combo);
-            LOGGER.log(Level.INFO, "Combo eliminado ID: {0}", id);
+            CBean.delete(CBean.findByIdWithDetalles(id.intValue()));
             return Response.noContent().build();
+        } catch (IllegalArgumentException ia) {
+            return Response.status(400).entity(ia.getMessage()).build();
+        } catch (IllegalStateException ie) {
+            // p.ej. no eliminar si tiene reservas asociadas
+            return Response.status(409).entity(ie.getMessage()).build();
         } catch (Exception e) {
-            LOGGER.log(Level.SEVERE, "Error al eliminar Combo ID: {0}", id);
-            LOGGER.log(Level.SEVERE, "Detalle del error: ", e);
-            return Response.serverError()
-                    .header(RestResourceHeaderPattern.DETALLE_ERROR, "Error interno: " + e.getMessage())
-                    .build();
+            LOG.log(Level.SEVERE, e.getMessage(), e);
+            return Response.status(500).entity(e.getMessage()).build();
         }
     }
 }

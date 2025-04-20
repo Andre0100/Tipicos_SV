@@ -1,18 +1,7 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package sv.edu.ues.occ.ingenieria.tpi335_2024.pupasv.entity;
 
 import java.io.Serializable;
-import jakarta.persistence.Column;
-import jakarta.persistence.EmbeddedId;
-import jakarta.persistence.Entity;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.NamedQueries;
-import jakarta.persistence.NamedQuery;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 /**
  *
@@ -25,21 +14,29 @@ import jakarta.persistence.Table;
     @NamedQuery(name = "ComboDetalle.findByIdCombo", query = "SELECT c FROM ComboDetalle c WHERE c.comboDetallePK.idCombo = :idCombo"),
     @NamedQuery(name = "ComboDetalle.findByIdProducto", query = "SELECT c FROM ComboDetalle c WHERE c.comboDetallePK.idProducto = :idProducto"),
     @NamedQuery(name = "ComboDetalle.findByCantidad", query = "SELECT c FROM ComboDetalle c WHERE c.cantidad = :cantidad"),
-    @NamedQuery(name = "ComboDetalle.findByActivo", query = "SELECT c FROM ComboDetalle c WHERE c.activo = :activo")})
+    @NamedQuery(name = "ComboDetalle.findByActivo", query = "SELECT c FROM ComboDetalle c WHERE c.activo = :activo")
+})
 public class ComboDetalle implements Serializable {
 
     private static final long serialVersionUID = 1L;
+
     @EmbeddedId
-    protected ComboDetallePK comboDetallePK;
-    @Column(name = "cantidad")
-    private Integer cantidad;
-    @Column(name = "activo")
-    private Boolean activo;
-    @JoinColumn(name = "id_combo", referencedColumnName = "id_combo", insertable = false, updatable = false)
-    @ManyToOne(optional = false)
+    private ComboDetallePK comboDetallePK;
+
+    @Column(name = "cantidad", nullable = false)
+    private int cantidad;
+
+    @Column(name = "activo", nullable = false)
+    private boolean activo = true;
+
+    @MapsId("idCombo")
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "id_combo", referencedColumnName = "id_combo")
     private Combo combo;
-    @JoinColumn(name = "id_producto", referencedColumnName = "id_producto", insertable = false, updatable = false)
-    @ManyToOne(optional = false)
+    
+    @MapsId("idProducto")
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "id_producto", referencedColumnName = "id_producto")
     private Producto producto;
 
     public ComboDetalle() {
@@ -102,20 +99,16 @@ public class ComboDetalle implements Serializable {
 
     @Override
     public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
         if (!(object instanceof ComboDetalle)) {
             return false;
         }
         ComboDetalle other = (ComboDetalle) object;
-        if ((this.comboDetallePK == null && other.comboDetallePK != null) || (this.comboDetallePK != null && !this.comboDetallePK.equals(other.comboDetallePK))) {
-            return false;
-        }
-        return true;
+        return (this.comboDetallePK != null || other.comboDetallePK == null)
+                && (this.comboDetallePK == null || this.comboDetallePK.equals(other.comboDetallePK));
     }
 
     @Override
     public String toString() {
         return "sv.edu.ues.occ.ingenieria.tpi335_2024.pupasv.entity.ComboDetalle[ comboDetallePK=" + comboDetallePK + " ]";
     }
-    
 }

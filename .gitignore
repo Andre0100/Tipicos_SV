@@ -1,2 +1,7 @@
+# .gitignore
 /target/
+
+
 /nb-configuration.xml
+
+.gitignore/ 
