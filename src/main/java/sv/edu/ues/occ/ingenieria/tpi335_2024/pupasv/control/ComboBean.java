@@ -56,5 +56,6 @@ public class ComboBean extends AbstractDataPersistence<Combo> implements Seriali
                 .setParameter("idCombo", idCombo)
                 .getSingleResult();
     }
+}
 
 }

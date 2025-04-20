@@ -29,6 +29,13 @@ public abstract class AbstractDataPersistenceTest <T>{
     @Test
     void create() {
         T entidad = crearInstancia();
+        AbstractDataPersistence<T> beanEmNull = new AbstractDataPersistence<T>(getClaseEntidad()) {
+            @Override
+            public EntityManager getEntityManager(){
+                return null;
+            }
+        };
+        assertThrows(IllegalStateException.class, () -> beanEmNull.create(entidad));
         assertThrows(IllegalArgumentException.class, () -> getBean().create(null));
         assertDoesNotThrow(() -> getBean().create(entidad));
     }
@@ -38,6 +45,13 @@ public abstract class AbstractDataPersistenceTest <T>{
         T entidad = crearInstancia();
         when(em.find(getClaseEntidad(),1)).thenReturn(entidad);
         assertThrows(IllegalArgumentException.class, () -> getBean().findById(null));
+        AbstractDataPersistence<T> beanEmNull = new AbstractDataPersistence<T>(getClaseEntidad()) {
+            @Override
+            public EntityManager getEntityManager(){
+                return null;
+            }
+        };
+        assertThrows(IllegalStateException.class, () -> beanEmNull.findById(1));
         assertDoesNotThrow(() -> {
             T resultado = getBean().findById(1);
             assertEquals(entidad, resultado);
@@ -47,6 +61,15 @@ public abstract class AbstractDataPersistenceTest <T>{
     @Test
     void findRange(){
         List<T> listaEsperada = listaInstancias();
+        assertThrows(IllegalArgumentException.class, () -> getBean().findRange(-1,10));
+        assertThrows(IllegalArgumentException.class, () -> getBean().findRange(0,0));
+        AbstractDataPersistence<T> beanEmNull = new AbstractDataPersistence<T>(getClaseEntidad()) {
+            @Override
+            public EntityManager getEntityManager(){
+                return null;
+            }
+        };
+        assertThrows(IllegalStateException.class, () -> beanEmNull.findRange(0,10));
         CriteriaBuilder cb = mock(CriteriaBuilder.class);
         CriteriaQuery<T> cq = mock(CriteriaQuery.class);
         Root<T> root = mock(Root.class);
@@ -68,8 +91,18 @@ public abstract class AbstractDataPersistenceTest <T>{
     void delete() {
         T entidad = crearInstancia();
         when(em.contains(entidad)).thenReturn(true);
+        AbstractDataPersistence<T> beanEmNull = new AbstractDataPersistence<T>(getClaseEntidad()) {
+            @Override
+            public EntityManager getEntityManager(){
+                return null;
+            }
+        };
+        assertThrows(IllegalStateException.class, () -> beanEmNull.delete(entidad));
+        when(em.contains(entidad)).thenReturn(false);
+        when(em.merge(entidad)).thenReturn(entidad);
         assertThrows(IllegalArgumentException.class, () -> getBean().delete(null));
         assertDoesNotThrow(() -> getBean().delete(entidad));
+        verify(em).merge(entidad);
         verify(em).remove(entidad);
     }
 
@@ -77,6 +110,13 @@ public abstract class AbstractDataPersistenceTest <T>{
     void update(){
         T entidad = crearInstancia();
         when(em.merge(entidad)).thenReturn(entidad);
+        AbstractDataPersistence<T> beanEmNull = new AbstractDataPersistence<T>(getClaseEntidad()) {
+            @Override
+            public EntityManager getEntityManager(){
+                return null;
+            }
+        };
+        assertThrows(IllegalStateException.class, () -> beanEmNull.update(entidad));
         assertThrows(IllegalArgumentException.class, () -> getBean().update(null));
         T resultado = getBean().update(entidad);
         assertEquals(entidad, resultado);
@@ -84,6 +124,13 @@ public abstract class AbstractDataPersistenceTest <T>{
 
     @Test
     void count(){
+        AbstractDataPersistence<T> beanEmNull = new AbstractDataPersistence<T>(getClaseEntidad()) {
+            @Override
+            public EntityManager getEntityManager(){
+                return null;
+            }
+        };
+        assertThrows(IllegalStateException.class, beanEmNull::count);
         CriteriaBuilder cb = mock(CriteriaBuilder.class);
         CriteriaQuery<Long> cq = mock(CriteriaQuery.class);
         Root<T> root = mock(Root.class);
