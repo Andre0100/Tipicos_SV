@@ -84,7 +84,5 @@ public class ProductoBean extends AbstractDataPersistence<Producto> implements S
         }
         return resultados;
     }
-    
-      
-    
+
 }
