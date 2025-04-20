@@ -30,10 +30,10 @@ public class ComboBean extends AbstractDataPersistence<Combo> implements Seriali
     }
 
     public List<Combo> findRange(int first, int pageSize, boolean soloActivos) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 
     public long count(boolean soloActivos) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 }
