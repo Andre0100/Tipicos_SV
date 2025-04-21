@@ -28,9 +28,9 @@ public class OrdenBeanIT extends BaseIntegrationAbstract{
     
                 
     @Test
-    @Order(1)
+    @Order(2)
     public void testContar(){
-        System.out.println("ContarIT");
+        System.out.println("OrdenBean  -------   ContarIT");
         OrdenBean cut = new OrdenBean();
         
         EntityManager em = emf.createEntityManager();
@@ -43,9 +43,9 @@ public class OrdenBeanIT extends BaseIntegrationAbstract{
     }
     
     @Test
-    @Order(2)
+    @Order(1)
     public void insertar(){
-        System.out.println("InsertarIT");
+        System.out.println("OrdenBean  -------   Insertar");
         
         OrdenBean cut = new OrdenBean();
         EntityManager em = emf.createEntityManager();
@@ -53,18 +53,97 @@ public class OrdenBeanIT extends BaseIntegrationAbstract{
         cut.em = em;
         
         Orden registro = new Orden();
-        registro.setFecha(new Date()); // Fecha actual
-        registro.setSucursal("A001"); // Código de sucursal
-        registro.setAnulada(false); // No anulada
+        registro.setFecha(new Date()); 
+        registro.setFecha(new Date()); 
+        registro.setSucursal("A001"); 
+        registro.setAnulada(false); 
+        registro.setAnulada(false); 
         
+        Orden registro2 = new Orden();
+        registro2.setFecha(new Date()); 
+        registro2.setSucursal("ZARZA");
+        registro2.setAnulada(false); 
+        
+        Orden registro3 = new Orden();
+        registro3.setFecha(new Date()); 
+        registro3.setSucursal("ZARZA"); 
+        registro3.setAnulada(false); 
         try {
             cut.em.getTransaction().begin();
             cut.create(registro);
+            cut.create(registro2);
+            cut.create(registro3);
             cut.em.getTransaction().commit();
             Assertions.assertNotNull(registro.getIdOrden());
             System.out.println("Registro Creado con ID "+registro.getIdOrden());
+            System.out.println("Registro Creado con ID "+registro2.getIdOrden());
+            System.out.println("Registro Creado con ID "+registro3.getIdOrden());
             
+        } catch (Exception e) {
+            Logger.getLogger(getClass().getName()).log(Level.SEVERE, e.getMessage(), e);
+            try {
+                cut.em.getTransaction().rollback();
+            } catch (Exception ex) {
+                Logger.getLogger(getClass().getName()).log(Level.SEVERE, ex.getMessage(), ex);
+            }
+        }
+    }
+    
+    @Test
+    @Order(3)
+    public void actualizar(){
+        System.out.println("OrdenBean  -------   actualizar");
+        OrdenBean cut = new OrdenBean();
+        EntityManager em = emf.createEntityManager();
+        
+        cut.em = em;
+        
+        
+        try {
+            //obtener un registro
+            Orden registro =  cut.findById(3L);
+            registro.setAnulada(true);
             
+            cut.em.getTransaction().begin();
+            cut.update(registro);
+            cut.em.getTransaction().commit();
+            Assertions.assertEquals(true, registro.getAnulada());
+            System.out.println("Registro Actualizado"+ registro.getAnulada());
+   
+        } catch (Exception e) {
+            Logger.getLogger(getClass().getName()).log(Level.SEVERE, e.getMessage(), e);
+            try {
+                cut.em.getTransaction().rollback();
+            } catch (Exception ex) {
+                Logger.getLogger(getClass().getName()).log(Level.SEVERE, ex.getMessage(), ex);
+            }
+        }
+             
+        
+    }
+    
+    
+    @Test
+    @Order(4)
+    public void eliminar(){
+        System.out.println("OrdenBean  -------   eliminar");
+        OrdenBean cut = new OrdenBean();
+        EntityManager em = emf.createEntityManager();
+        
+        cut.em = em;
+        try {
+            //obtener un registro
+            Orden registro =  cut.findById(3L);
+            Assertions.assertNotNull(registro);
+            
+            cut.em.getTransaction().begin();
+            cut.delete(registro);
+            cut.em.getTransaction().commit();
+            
+            Orden eliminado =  cut.findById(3L);
+            Assertions.assertNull(eliminado);
+            System.out.println("Registro Eliminado");
+   
         } catch (Exception e) {
             Logger.getLogger(getClass().getName()).log(Level.SEVERE, e.getMessage(), e);
             try {

@@ -32,8 +32,8 @@ import sv.edu.ues.occ.ingenieria.tpi335_2024.pupasv.entity.ComboDetalle;
     @NamedQuery(name = "Combo.findByNombre", query = "SELECT c FROM Combo c WHERE c.nombre = :nombre"),
     @NamedQuery(name = "Combo.findByActivo", query = "SELECT c FROM Combo c WHERE c.activo = :true"), //campo activo debe existir
     @NamedQuery(name = "Combo.findByDescripcionPublica", query = "SELECT c FROM Combo c WHERE c.descripcionPublica = :descripcionPublica"),
-    @NamedQuery(name = "Combo.findWithDetalles",
-            query = "SELECT c FROM Combo c LEFT JOIN FETCH c.detalles WHERE c.id = :id"),
+//    @NamedQuery(name = "Combo.findWithDetalles",
+//            query = "SELECT c FROM Combo c LEFT JOIN FETCH c.detalles WHERE c.id = :id"),
     @NamedQuery(name = "Combo.findActivos",
             query = "SELECT c FROM Combo c WHERE c.activo = true ORDER BY c.idCombo"),
 

@@ -453,9 +453,9 @@ INSERT INTO public.tipo_producto VALUES (1, 'bebida', true, NULL);
 INSERT INTO public.tipo_producto VALUES (2, 'comida', true, NULL);
 INSERT INTO public.tipo_producto VALUES (3, 'tipicos', true, NULL);
 
-INSERT INTO public.orden VALUES (1431, '2025-01-01', 'ZARZA', false);
-INSERT INTO public.orden VALUES (1432, '2025-01-01', 'ZARZA', false);
-INSERT INTO public.orden VALUES (1433, '2025-01-01', 'ZARZA', false);
+--INSERT INTO public.orden VALUES (1431, '2025-01-01', 'ZARZA', false);
+--INSERT INTO public.orden VALUES (1432, '2025-01-01', 'ZARZA', false);
+--INSERT INTO public.orden VALUES (1433, '2025-01-01', 'ZARZA', false);
 
 
 --

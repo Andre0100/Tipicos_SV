@@ -28,7 +28,7 @@ public class ProductoResourceIT extends BaseIntegrationAbstract {
     @Test
     @Order(1)
     public void testCreate() {
-        System.out.println("Test crear");
+        System.out.println("ProductoResourceIT ---------->Test crear");
 
         //Prueba de error 500 si la entidad es nula
         Producto invalidoProducto = null;
@@ -45,13 +45,11 @@ public class ProductoResourceIT extends BaseIntegrationAbstract {
         nuevoProducto.setActivo(true);
         nuevoProducto.setObservaciones("Producto para prueba IT");
 
-        System.out.println("ID PRODUCTO" + nuevoProducto.getIdProducto());
-
         //Hacer solicitud post
         Response respuesta = target.path("producto")
                 .request(MediaType.APPLICATION_JSON)
                 .post(Entity.entity(nuevoProducto, MediaType.APPLICATION_JSON));
-
+        
         System.out.println("error respuesta" + respuesta);
 
         if (respuesta.getStatus() == 500) {
@@ -76,6 +74,7 @@ public class ProductoResourceIT extends BaseIntegrationAbstract {
 
         String idStr = location.substring(location.lastIndexOf('/') + 1);
         Long idCreado = Long.valueOf(idStr);
+        System.out.println("ID PRODUCTO" + idCreado);
         assertNotNull(idCreado);
 
     }
@@ -84,7 +83,7 @@ public class ProductoResourceIT extends BaseIntegrationAbstract {
     @Order(2)
     public void testUpdate() {
 
-        System.out.println("Test Update");
+        System.out.println("ProductoResourceIT----------->TestUpdate");
 
         Producto nuevoProducto = new Producto();
         nuevoProducto.setNombre("Producto para Actualizar");
@@ -127,7 +126,7 @@ public class ProductoResourceIT extends BaseIntegrationAbstract {
     @Test
     @Order(3)
     public void testFindRange() {
-        System.out.println("findRange");
+        System.out.println("ProductoResourceIT ---------------> TestfindRange");
         //assertTrue(openliberty.isRunning());
         Response respuesta = target.path("producto").request(MediaType.APPLICATION_JSON).get();
         assertNotNull(respuesta);
@@ -138,4 +137,39 @@ public class ProductoResourceIT extends BaseIntegrationAbstract {
         assertEquals(2, registros.size());
     }
 
+    @Test
+    @Order(4)
+    public void testDelete(){
+        System.out.println("ProductoResourceIT--------------> TestDelete");
+        
+        
+        //provocar excepción
+
+        //obtener el producto con 1
+        Response getResponse = target.path("producto").path("1")
+                .request(MediaType.APPLICATION_JSON)
+                .get();
+
+        assertEquals(200, getResponse.getStatus());
+        
+        Producto productoEliminar = getResponse.readEntity(Producto.class);
+        assertNotNull(productoEliminar);
+        assertEquals(Long.valueOf(1L), productoEliminar.getIdProducto());
+        
+        Long id = productoEliminar.getIdProducto();
+        
+        Response deleteResponse = target.path("producto").path(id.toString())
+                .request(MediaType.APPLICATION_JSON)
+                .delete();
+        
+        assertEquals(200, deleteResponse.getStatus());
+        
+        //Confirmar que el producto ya no exista
+        Response getproducto = target.path("producto").path(id.toString())
+                .request(MediaType.APPLICATION_JSON)
+                .get();
+        
+        assertEquals(404, getproducto.getStatus());
+    }
+    
 }

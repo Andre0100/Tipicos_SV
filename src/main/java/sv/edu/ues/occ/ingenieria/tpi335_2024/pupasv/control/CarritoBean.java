@@ -22,15 +22,20 @@ public class CarritoBean implements Serializable {
     @Inject
     ProductoPrecioBean productoPrecioBean;
 
-    public void agregarItem(CarritoItemDTO item) {
-        var productoPrecio = productoPrecioBean.findById(item.getIdProductoPrecio());
-        if (productoPrecio == null) {
-            throw new IllegalArgumentException("El producto no ha sido encontrado.");
+    public void agregarItem(List<CarritoItemDTO> items) {
+        
+        for(CarritoItemDTO item : items ){
+            var productoPrecio = productoPrecioBean.findById(item.getIdProductoPrecio());
+            if (productoPrecio == null) {
+                throw new IllegalArgumentException("El producto no ha sido encontrado.");
+            }
+            item.setNombreProducto(productoPrecio.getIdProducto().getNombre());
+            item.setPrecio(productoPrecio.getPrecioSugerido());
+            itemsCarrito.add(item);
         }
-        item.setNombreProducto(productoPrecio.getIdProducto().getNombre());
-        item.setPrecio(productoPrecio.getPrecioSugerido());
-        itemsCarrito.add(item);
+    
     }
+
     public void eliminarItem(Long idProductoPrecio) {
         itemsCarrito.removeIf(i -> i.getIdProductoPrecio().equals(idProductoPrecio));
     }

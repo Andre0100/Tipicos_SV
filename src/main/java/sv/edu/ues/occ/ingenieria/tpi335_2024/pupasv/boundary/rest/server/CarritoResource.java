@@ -4,6 +4,7 @@ import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+import java.util.List;
 import sv.edu.ues.occ.ingenieria.tpi335_2024.pupasv.control.CarritoBean;
 import sv.edu.ues.occ.ingenieria.tpi335_2024.pupasv.dto.CarritoDTO;
 import sv.edu.ues.occ.ingenieria.tpi335_2024.pupasv.dto.CarritoItemDTO;
@@ -16,9 +17,9 @@ public class CarritoResource {
     @Inject
     CarritoBean carritoBean;
 
-    @POST
-    public Response agregarItem(CarritoItemDTO item) {
-        carritoBean.agregarItem(item);
+      @POST
+    public Response agregarItems(List<CarritoItemDTO> items) {
+        carritoBean.agregarItem(items);
         return Response.ok().build();
     }
 
