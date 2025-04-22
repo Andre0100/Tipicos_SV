@@ -25,6 +25,13 @@ pipeline {
             }
         }
 
+        stage('Empaquetar') {
+            steps {
+                echo 'Empaquetando proyecto...'
+                sh 'mvn package'  // Empaqueta el proyecto WAR
+            }
+        }
+
         stage('Pruebas Unitarias') {
             steps {
                 echo 'Ejecutando pruebas unitarias...'
@@ -43,7 +50,7 @@ pipeline {
             steps {
                 echo 'Ejecutando pruebas de integración...'
                 sh '. $SETENV_PATH'  // Carga las variables de entorno
-                sh 'mvn verify -Pintegration-tests -Dtest=IntegrationTestSuite' 
+                sh 'mvn verify -Pintegration-tests -Dtest=IntegrationTestSuite'
             }
         }
 
