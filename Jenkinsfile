@@ -42,7 +42,8 @@ pipeline {
         stage('Pruebas de Integración') {
             steps {
                 echo 'Ejecutando pruebas de integración...'
-                sh '. $SETENV_PATH && mvn verify -Pintegration-tests -Dtest=IntegrationTestSuite'
+                sh '. $SETENV_PATH'  // Carga las variables de entorno
+                sh 'mvn verify -Pintegration-tests -Dtest=IntegrationTestSuite' 
             }
         }
 
