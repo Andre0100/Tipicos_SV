@@ -6,7 +6,9 @@ package testing;
 
 import org.junit.platform.suite.api.SelectClasses;
 import org.junit.platform.suite.api.Suite;
+import sv.edu.ues.occ.ingenieria.tpi335_2024.pupasv.boundary.rest.server.ComboResourceIT;
 import sv.edu.ues.occ.ingenieria.tpi335_2024.pupasv.boundary.rest.server.ProductoResourceIT;
+import sv.edu.ues.occ.ingenieria.tpi335_2024.pupasv.control.ComboBeanIT;
 import sv.edu.ues.occ.ingenieria.tpi335_2024.pupasv.control.OrdenBeanIT;
 
 /**
@@ -15,9 +17,10 @@ import sv.edu.ues.occ.ingenieria.tpi335_2024.pupasv.control.OrdenBeanIT;
 // */
 @Suite
 @SelectClasses({
+    ComboBeanIT.class,
     OrdenBeanIT.class,
-    
-    ProductoResourceIT.class  
+    ProductoResourceIT.class,
+    ComboResourceIT.class
 })
 public class IntegrationTestSuite {
     

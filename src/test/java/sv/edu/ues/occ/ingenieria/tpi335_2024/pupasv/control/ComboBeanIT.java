@@ -5,12 +5,16 @@
 package sv.edu.ues.occ.ingenieria.tpi335_2024.pupasv.control;
 
 import jakarta.persistence.EntityManager;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.junit.jupiter.api.extension.ExtendWith;
 import sv.edu.ues.occ.ingenieria.tpi335_2024.pupasv.boundary.rest.server.BaseIntegrationAbstract;
+import sv.edu.ues.occ.ingenieria.tpi335_2024.pupasv.entity.Combo;
 import testing.ContainerExtension;
 
 /**
@@ -31,12 +35,49 @@ public class ComboBeanIT extends BaseIntegrationAbstract{
         
         cut.em = em;
         
+        Combo combo1 = new Combo();
+        combo1.setNombre("Combo familiar");
+        combo1.setActivo(true);
+        combo1.setDescripcionPublica("Combo de 10 pupusas + gaseosas");
+        
+        Combo combo2 = new Combo();
+        combo2.setNombre("Combo Rapido");
+        combo2.setActivo(true);
+        combo2.setDescripcionPublica("Combo 2 Hamburguesas + bebida");
         
         try {
-            
+            cut.em.getTransaction().begin();
+            cut.create(combo1);
+            cut.create(combo2);
+            cut.em.getTransaction().commit();
+            Assertions.assertNotNull(combo1.getIdCombo());
+            Assertions.assertNotNull(combo2.getIdCombo());
+
         } catch (Exception e) {
+            Logger.getLogger(getClass().getName()).log(Level.SEVERE, e.getMessage(), e);
+            try {
+                cut.em.getTransaction().rollback();
+            } catch (Exception ex) {
+                Logger.getLogger(getClass().getName()).log(Level.SEVERE, ex.getMessage(), ex);
+            }
         }
          
+    }
+    
+    
+    @Test
+    @Order(2)
+    public void testContar(){
+        System.out.println("ComboBean  -------   ContarIT");
+        ComboBean cut = new ComboBean();
+        
+        EntityManager em = emf.createEntityManager();
+       
+        cut.em = em;
+        
+        int esperado = 2;
+        int resultado = cut.count();
+        Assertions.assertEquals(esperado, resultado);
     }
     
 }

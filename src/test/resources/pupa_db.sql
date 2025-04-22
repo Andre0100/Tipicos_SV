@@ -13,6 +13,22 @@ CREATE TABLE public.combo (
 
 ALTER TABLE public.combo OWNER TO postgres;
 
+CREATE SEQUENCE public.combo_id_combo_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER SEQUENCE public.combo_id_combo_seq OWNER TO postgres;
+
+
+
+ALTER SEQUENCE public.combo_id_combo_seq OWNED BY public.combo.id_combo;
+
+
+
 --
 -- TOC entry 225 (class 1259 OID 25334)
 -- Name: combo_detalle; Type: TABLE; Schema: public; Owner: postgres
