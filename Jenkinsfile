@@ -1,5 +1,8 @@
 pipeline {
     agent any
+    tools{
+        jdk 'jdk-21'
+    }
 
     environment {
         // Carga las variables de entorno desde setenv.sh
