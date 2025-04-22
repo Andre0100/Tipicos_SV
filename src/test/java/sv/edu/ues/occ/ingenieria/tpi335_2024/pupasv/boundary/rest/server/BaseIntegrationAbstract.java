@@ -41,8 +41,8 @@ public abstract class BaseIntegrationAbstract {
         assertTrue(postgres.isRunning());
         assertTrue(openliberty.isRunning());
         
-        System.out.println("=== PostgreSQL Logs ===");
-        System.out.println(postgres.getLogs());
+        //System.out.println("=== PostgreSQL Logs ===");
+        //System.out.println(postgres.getLogs());
         System.out.println("=== Liberty Logs ===");
         System.out.println(openliberty.getLogs());
         
