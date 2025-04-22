@@ -15,6 +15,7 @@ import org.junit.jupiter.api.TestMethodOrder;
 import org.junit.jupiter.api.extension.ExtendWith;
 import sv.edu.ues.occ.ingenieria.tpi335_2024.pupasv.boundary.rest.server.BaseIntegrationAbstract;
 import sv.edu.ues.occ.ingenieria.tpi335_2024.pupasv.entity.Combo;
+import sv.edu.ues.occ.ingenieria.tpi335_2024.pupasv.entity.Orden;
 import testing.ContainerExtension;
 
 /**
@@ -79,5 +80,39 @@ public class ComboBeanIT extends BaseIntegrationAbstract{
         int resultado = cut.count();
         Assertions.assertEquals(esperado, resultado);
     }
+    
+      @Test
+    @Order(3)
+    public void actualizar(){
+        System.out.println("ComboBean  -------   actualizar");
+        ComboBean cut = new ComboBean();
+        EntityManager em = emf.createEntityManager();
+        
+        cut.em = em;
+        
+        
+        try {
+            //obtener un registro
+            Combo registro =  cut.findById(1L);
+            registro.setNombre("Combo fin de semana");
+            
+            cut.em.getTransaction().begin();
+            cut.update(registro);
+            cut.em.getTransaction().commit();
+            Assertions.assertEquals("Combo fin de semana", registro.getNombre());
+            System.out.println("Registro Actualizado"+ registro.getNombre());
+   
+        } catch (Exception e) {
+            Logger.getLogger(getClass().getName()).log(Level.SEVERE, e.getMessage(), e);
+            try {
+                cut.em.getTransaction().rollback();
+            } catch (Exception ex) {
+                Logger.getLogger(getClass().getName()).log(Level.SEVERE, ex.getMessage(), ex);
+            }
+        }
+             
+        
+    }
+    
     
 }

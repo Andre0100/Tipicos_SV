@@ -15,16 +15,12 @@ import sv.edu.ues.occ.ingenieria.tpi335_2024.pupasv.control.OrdenBeanIT;
 /**
  *
  * @author morales
-// */
+ */
+
 @Suite
 @SelectClasses({
-    ComboBeanIT.class,
-    OrdenBeanIT.class,
-    ProductoResourceIT.class,
-    ComboResourceIT.class,
-  
     PupaSvAppE2EIT.class
 })
-public class IntegrationTestSuite {
+public class SystemIntegrationSuite {
     
 }

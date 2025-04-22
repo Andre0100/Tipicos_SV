@@ -13,6 +13,22 @@ CREATE TABLE public.combo (
 
 ALTER TABLE public.combo OWNER TO postgres;
 
+CREATE SEQUENCE public.combo_id_combo_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER SEQUENCE public.combo_id_combo_seq OWNER TO postgres;
+
+
+
+ALTER SEQUENCE public.combo_id_combo_seq OWNED BY public.combo.id_combo;
+
+
+
 --
 -- TOC entry 225 (class 1259 OID 25334)
 -- Name: combo_detalle; Type: TABLE; Schema: public; Owner: postgres
@@ -449,13 +465,163 @@ ALTER TABLE ONLY public.tipo_producto ALTER COLUMN id_tipo_producto SET DEFAULT 
 -- Data for Name: tipo_producto; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-INSERT INTO public.tipo_producto VALUES (1, 'bebida', true, NULL);
-INSERT INTO public.tipo_producto VALUES (2, 'comida', true, NULL);
-INSERT INTO public.tipo_producto VALUES (3, 'tipicos', true, NULL);
+-- Insertar tipos de producto
+INSERT INTO public.tipo_producto (id_tipo_producto, nombre, activo, observaciones) VALUES 
+(1, 'bebida', true, NULL),
+(2, 'comida', true, NULL),
+(3, 'tipicos', true, NULL),
+(4, 'postres', true, NULL);
 
-INSERT INTO public.orden VALUES (1431, '2025-01-01', 'ZARZA', false);
-INSERT INTO public.orden VALUES (1432, '2025-01-01', 'ZARZA', false);
-INSERT INTO public.orden VALUES (1433, '2025-01-01', 'ZARZA', false);
+-- Insertar productos (comidas típicas, comida rápida, bebidas y postres)
+INSERT INTO public.producto (id_producto, nombre, activo, observaciones) VALUES
+-- Comidas típicas
+(1, 'Pupusa revueltas', true, 'Pupusas de queso, frijol y chicharrón'),
+(2, 'Pupusa de queso', true, 'Pupusas de queso'),
+(3, 'Pupusa de frijol', true, 'Pupusas de frijol'),
+(4, 'Tamales de elote', true, 'Tamales dulces de maíz'),
+(5, 'Yuca frita', true, 'Yuca frita con chicharrón y curtido'),
+(6, 'Sopa de pata', true, 'Sopa tradicional con pata de res'),
+(7, 'Enchiladas', true, 'Tortillas fritas con carne y vegetales'),
+(8, 'Atol de elote', true, 'Bebida caliente de maíz dulce'),
+-- Comida rápida
+(9, 'Hamburguesa clásica', true, 'Hamburguesa con queso y vegetales'),
+(10, 'Pizza familiar', true, 'Pizza de 12 porciones'),
+(11, 'Hot dog', true, 'Perro caliente con todos los ingredientes'),
+(12, 'Papas fritas', true, 'Porción de papas fritas'),
+-- Bebidas
+(13, 'Coca Cola', true, 'Gaseosa de 500ml'),
+(14, 'Pepsi', true, 'Gaseosa de 500ml'),
+(15, 'Fanta Naranja', true, 'Gaseosa de naranja 500ml'),
+(16, 'Jugo de tamarindo', true, 'Jugo natural de tamarindo'),
+(17, 'Jugo de horchata', true, 'Bebida de arroz y semillas'),
+(18, 'Cerveza Pilsener', true, 'Cerveza nacional 355ml'),
+(19, 'Cerveza Golden', true, 'Cerveza premium 355ml'),
+(20, 'Café', true, 'Café negro o con leche'),
+-- Postres
+(21, 'Quesadilla', true, 'Pan dulce con queso'),
+(22, 'Semita', true, 'Postre de piña o dulce de leche'),
+(23, 'Pastel tres leches', true, 'Pastel tradicional'),
+(24, 'Empanada de platano', true, 'Empanada dulce de plátano');
+
+-- Insertar relación de productos con tipos
+INSERT INTO public.producto_detalle (id_tipo_producto, id_producto, activo, observaciones) VALUES
+-- Comidas típicas
+(3, 1, true, NULL),
+(3, 2, true, NULL),
+(3, 3, true, NULL),
+(3, 4, true, NULL),
+(3, 5, true, NULL),
+(3, 6, true, NULL),
+(3, 7, true, NULL),
+
+
+-- Bebidas
+(1, 8, true, NULL),
+(1, 13, true, NULL),
+(1, 14, true, NULL),
+(1, 15, true, NULL),
+(1, 16, true, NULL),
+(1, 17, true, NULL),
+(1, 18, true, NULL),
+(1, 19, true, NULL),
+(1, 20, true, NULL),
+
+-- Comida rápida
+(2, 9, true, NULL),
+(2, 10, true, NULL),
+(2, 11, true, NULL),
+(2, 12, true, NULL),
+
+-- Postres
+(4, 21, true, NULL),
+(4, 22, true, NULL),
+(4, 23, true, NULL),
+(4, 24, true, NULL);
+
+
+-- Insertar precios de productos
+INSERT INTO public.producto_precio (id_producto_precio, id_producto, fecha_desde, fecha_hasta, precio_sugerido) VALUES
+-- Comidas típicas
+(1, 1, '2025-01-01', NULL, 0.50),
+(2, 2, '2025-01-01', NULL, 0.75),
+(3, 3, '2025-01-01', NULL, 0.50),
+(4, 4, '2025-01-01', NULL, 0.50),
+(5, 5, '2025-01-01', NULL, 1.50),
+(6, 6, '2025-01-01', NULL, 3.00),
+(7, 7, '2025-01-01', NULL, 0.50),
+(8, 8, '2025-01-01', NULL, 1.00),
+-- Comida rápida
+(9, 9, '2025-01-01', NULL, 2.00),
+(10, 10, '2025-01-01', NULL, 8.00),
+(11, 11, '2025-01-01', NULL, 2.00),
+(12, 12, '2025-01-01', NULL, 1.75),
+-- Bebidas
+(13, 13, '2025-01-01', NULL, 1.25),
+(14, 14, '2025-01-01', NULL, 1.20),
+(15, 15, '2025-01-01', NULL, 1.20),
+(16, 16, '2025-01-01', NULL, 0.50),
+(17, 17, '2025-01-01', NULL, 0.50),
+(18, 18, '2025-01-01', NULL, 1.50),
+(19, 19, '2025-01-01', NULL, 1.30),
+(20, 20, '2025-01-01', NULL, 0.50),
+-- Postres
+(21, 21, '2025-01-01', NULL, 1.25),
+(22, 22, '2025-01-01', NULL, 1.00),
+(23, 23, '2025-01-01', NULL, 2.50),
+(24, 24, '2025-01-01', NULL, 0.50);
+
+-- Insertar combos
+INSERT INTO public.combo (id_combo, nombre, activo, descripcion_publica) VALUES
+(1, 'Combo pupusero', true, '2 pupusas revueltas + bebida'),
+(2, 'Combo desayuno típico', true, 'Tamal de elote + atol de elote'),
+(3, 'Combo rápido', true, 'Hamburguesa + papas + gaseosa'),
+(4, 'Combo cervecero', true, '2 cervezas + yuca frita');
+
+-- Insertar detalles de combos
+INSERT INTO public.combo_detalle (id_combo, id_producto, cantidad, activo) VALUES
+-- Combo pupusero
+(1, 1, 2, true),
+(1, 13, 1, true),
+-- Combo desayuno típico
+(2, 4, 1, true),
+(2, 8, 1, true),
+-- Combo rápido
+(3, 9, 1, true),
+(3, 12, 1, true),
+(3, 13, 1, true),
+-- Combo cervecero
+(4, 18, 2, true),
+(4, 5, 1, true);
+
+-- Insertar órdenes
+INSERT INTO public.orden (id_orden, fecha, sucursal, anulada) VALUES
+(1, '2025-02-15', 'S001', false),	
+(2, '2025-02-15', 'S002', false),
+(3, '2025-02-16', 'S001', false);
+
+-- Insertar detalles de órdenes
+INSERT INTO public.orden_detalle (id_orden, id_producto_precio, cantidad, precio, observaciones) VALUES
+-- Orden 1
+(1, 1, 3, 0.75, 'Con curtido extra'),
+(1, 13, 2, 1.25, 'Una Coca Cola y una Fanta'),
+-- Orden 2
+(2, 9, 1, 3.75, 'Sin mostaza'),
+(2, 12, 1, 1.75, 'Con catsup extra'),
+-- Orden 3
+(3, 4, 2, 1.50, 'Tamales bien cocidos'),
+(3, 8, 2, 1.25, 'Uno con canela');
+
+-- Insertar pagos
+INSERT INTO public.pago (id_pago, id_orden, fecha, metodo_pago, referencia) VALUES
+(1, 1, '2025-02-15', 'EFECTIVO', NULL),
+(2, 2, '2025-02-15', 'TARJETA', 'TRX-12345'),
+(3, 3, '2025-02-16', 'EFECTIVO', NULL);
+
+-- Insertar detalles de pagos
+INSERT INTO public.pago_detalle (id_pago_detalle, id_pago, monto, observaciones) VALUES
+(1, 1, 4.75, 'Pago exacto'),
+(2, 2, 5.50, 'Pago con tarjeta visa'),
+(3, 3, 5.50, 'Pago con cambio de 10');
 
 
 

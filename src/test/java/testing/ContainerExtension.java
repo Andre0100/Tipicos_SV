@@ -22,14 +22,14 @@ public class ContainerExtension implements BeforeAllCallback, AfterAllCallback{
     
     private static boolean contenedorIniciado = false;
     private static int numClassTest = 0;
+    private static boolean SystemTest = false;
     
     protected static final Network red = Network.newNetwork();
     
-    protected static final PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>("postgres:16-alpine")
+    protected static PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>("postgres:16-alpine")
             .withDatabaseName("PupaSV")
             .withPassword("abc123")
             .withUsername("postgres")
-            .withInitScript("pupa_db.sql")
             .withExposedPorts(5432)
             .withNetwork(red)
             .withNetworkAliases("db");
@@ -47,15 +47,38 @@ public class ContainerExtension implements BeforeAllCallback, AfterAllCallback{
             .waitingFor(Wait.forLogMessage(".*The app server is ready to run a smarter planet.*", 1));
     
     
+    public static void configurarParaE2E(){
+        SystemTest = true;
+        postgres = postgres.withInitScript("pupadb.sql");
+    }
+    
+    public static void configurarParaIT(){
+        SystemTest= false;
+        postgres = postgres.withInitScript("pupa_db.sql");
+    }
+    
+    
     @Override
-    public void beforeAll(ExtensionContext contex) throws Exception{
+    public void beforeAll(ExtensionContext context) throws Exception{
         synchronized (ContainerExtension.class) {
+            //Configurar segun el tipo de prueba
+            
+             if (context.getTestClass().isPresent()) {
+                Class<?> testClass = context.getTestClass().get();
+                if (testClass.getName().contains("E2E") || testClass.getName().contains("SystemTest")) {
+                    configurarParaE2E();
+                } else {
+                    configurarParaIT();
+                }
+            }
+            
             numClassTest++;
             if(!contenedorIniciado){
                 postgres.start();
                 openliberty.start();
                 contenedorIniciado = true;
                 System.out.println("Contenedores iniciados");
+                System.out.println("Usando script SQL: " + (SystemTest ? "pupadb.sql" : "pupa_db.sql"));
                 
                 Runtime.getRuntime().addShutdownHook(new Thread(()->{
                     if(contenedorIniciado){
@@ -89,5 +112,9 @@ public class ContainerExtension implements BeforeAllCallback, AfterAllCallback{
     
     private static MountableFile getWarFile() {
         return MountableFile.forHostPath(Paths.get("target/PupaSv-1.0-SNAPSHOT.war").toAbsolutePath());
+    }
+    
+     public static boolean isSystemTest() {
+        return SystemTest;
     }
 }

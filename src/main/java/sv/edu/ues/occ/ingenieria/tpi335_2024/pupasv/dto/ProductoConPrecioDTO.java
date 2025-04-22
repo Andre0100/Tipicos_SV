@@ -30,6 +30,10 @@ public class ProductoConPrecioDTO implements Serializable{
             this.fechaValidezPrecio = precio.getFechaHasta();
         }
     }
+    
+    public ProductoConPrecioDTO() {
+        // Constructor vacío necesario para Jackson
+    }
 
     public Long getIdProductoPrecio() {
         return idProductoPrecio;

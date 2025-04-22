@@ -33,6 +33,11 @@ public class ComboProductosDTO implements Serializable{
         }
     }
 
+    public ComboProductosDTO() {
+    }
+    
+    
+
     public Long getIdProductoPrecio() {
         return idProductoPrecio;
     }
