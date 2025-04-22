@@ -8,20 +8,26 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import org.mockito.junit.jupiter.MockitoExtension;
+import sv.edu.ues.occ.ingenieria.tpi335_2024.pupasv.dto.ComboProductosDTO;
 import sv.edu.ues.occ.ingenieria.tpi335_2024.pupasv.entity.Combo;
+import sv.edu.ues.occ.ingenieria.tpi335_2024.pupasv.entity.Producto;
+import sv.edu.ues.occ.ingenieria.tpi335_2024.pupasv.entity.ProductoPrecio;
 
 /**
  *
@@ -46,8 +52,26 @@ public class ComboBeanTest {
     private final List<Combo> combos = Arrays.asList(
             new Combo(1L),
             new Combo(2L)
-    );
+    ); 
+    
+     @Test
+    public void testSetAndGetEntityManager() {
+        // Crear un mock del EntityManager
+        EntityManager emMock = Mockito.mock(EntityManager.class);
 
+        // Crear una instancia de ComboBean
+        ComboBean comboBean = new ComboBean();
+
+        // Establecer el EntityManager utilizando el setter
+        comboBean.setEntityManager(emMock);
+
+        // Obtener el EntityManager usando el getter y verificar que es el mismo que se configuró
+        EntityManager result = comboBean.getEntityManager();
+
+        // Asegurarse de que el EntityManager configurado y el recuperado son el mismo
+        assertEquals(emMock, result, "El EntityManager debería ser el que fue configurado.");
+    }
+    
     @Test
     void findRange_DeberiaRetornarCombosActivosConPaginacion() {
         // Configurar
@@ -87,7 +111,7 @@ public class ComboBeanTest {
     }
 
     @Test
-     void count_DeberiaContarCombosActivos() {
+    void count_DeberiaContarCombosActivos() {
         // Configurar
         when(em.createNamedQuery("Combo.countActivos", Long.class))
                 .thenReturn(countQuery);
@@ -162,4 +186,33 @@ public class ComboBeanTest {
                 () -> cut.findByIdWithDetalles(999)
         );
     }
+
+    @Test
+    public void testGetProductosAgrupadosPorCombo() {
+        // Preparamos los datos esperados
+        List<Object[]> resultados = Arrays.asList(
+                new Object[]{"Combo1", new Producto(), new ProductoPrecio(), 3},
+                new Object[]{"Combo1", new Producto(), new ProductoPrecio(), 2},
+                new Object[]{"Combo2", new Producto(), new ProductoPrecio(), 1}
+        );
+
+        // Creamos un mock de TypedQuery para simular la consulta
+        TypedQuery<Object[]> query = mock(TypedQuery.class);
+
+        // Hacemos que el mock de EntityManager devuelva el mock de query
+        when(em.createNamedQuery("Combo.findProductosConPrecios", Object[].class)).thenReturn(query);
+        when(query.getResultList()).thenReturn(resultados);
+
+        // Llamamos al método real del ComboBean
+        Map<String, List<ComboProductosDTO>> result = cut.getProductosAgrupadosPorCombo();
+
+        // Validamos que el resultado no sea nulo y contenga los combos esperados
+        assertNotNull(result);
+        assertEquals(2, result.size()); // Debería haber 2 combos (Combo1 y Combo2)
+        assertTrue(result.containsKey("Combo1"));
+        assertTrue(result.containsKey("Combo2"));
+        assertEquals(2, result.get("Combo1").size()); // Combo1 debería tener 2 productos
+        assertEquals(1, result.get("Combo2").size()); // Combo2 debería tener 1 producto
+    }
+
 }
