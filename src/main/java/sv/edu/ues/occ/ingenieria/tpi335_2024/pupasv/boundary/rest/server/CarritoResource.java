@@ -9,7 +9,7 @@ import sv.edu.ues.occ.ingenieria.tpi335_2024.pupasv.control.CarritoBean;
 import sv.edu.ues.occ.ingenieria.tpi335_2024.pupasv.dto.CarritoDTO;
 import sv.edu.ues.occ.ingenieria.tpi335_2024.pupasv.dto.CarritoItemDTO;
 
-@Path("/carrito")
+@Path("carrito")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 public class CarritoResource {

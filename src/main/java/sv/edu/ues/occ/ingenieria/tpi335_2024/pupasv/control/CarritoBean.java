@@ -32,6 +32,7 @@ public class CarritoBean implements Serializable {
             item.setNombreProducto(productoPrecio.getIdProducto().getNombre());
             item.setPrecio(productoPrecio.getPrecioSugerido());
             itemsCarrito.add(item);
+            System.out.println("Item agregado"+ item);
         }
     
     }

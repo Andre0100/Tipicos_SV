@@ -154,6 +154,7 @@ public class OrdenResource implements Serializable {
     @POST
     @Path("desde-carrito")
     @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
     public Response ordenarDesdeCarrito(@QueryParam("sucursal") String sucursal) {
         try {
             List<CarritoItemDTO> itemsCarrito = carritoBean.obtenerItems();
