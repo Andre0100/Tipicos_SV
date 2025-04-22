@@ -65,7 +65,7 @@ pipeline {
     post {
         always {
             junit '**/target/surefire-reports/*.xml'
-            junit '**/target/failsafe-reports/*.xml'
+            //junit '**/target/failsafe-reports/*.xml'
             echo 'Pipeline finalizado.'
         }
         failure {
