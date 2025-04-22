@@ -42,7 +42,7 @@ pipeline {
         stage('Pruebas de Integración') {
             steps {
                 echo 'Ejecutando pruebas de integración...'
-                sh 'mvn verify -P integracion-test'
+                sh 'mvn verify -Pintegration-tests -Dtest=IntegrationTestSuite'
             }
         }
 
