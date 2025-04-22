@@ -10,6 +10,8 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import java.io.Serializable;
 import java.util.List;
+import java.util.Map;
+import sv.edu.ues.occ.ingenieria.tpi335_2024.pupasv.dto.ProductoConPrecioDTO;
 import sv.edu.ues.occ.ingenieria.tpi335_2024.pupasv.entity.Combo;
 
 @Stateless
@@ -56,5 +58,8 @@ public class ComboBean extends AbstractDataPersistence<Combo> implements Seriali
                 .setParameter("idCombo", idCombo)
                 .getSingleResult();
     }
-}
+    
+    
+    
+} 
 
