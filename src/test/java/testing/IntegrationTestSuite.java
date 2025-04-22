@@ -15,8 +15,9 @@ import sv.edu.ues.occ.ingenieria.tpi335_2024.pupasv.control.OrdenBeanIT;
 // */
 @Suite
 @SelectClasses({
-    OrdenBeanIT.class,     // Se ejecuta primero
-    ProductoResourceIT.class  // Se ejecuta después
+    OrdenBeanIT.class,
+    
+    ProductoResourceIT.class  
 })
 public class IntegrationTestSuite {
     

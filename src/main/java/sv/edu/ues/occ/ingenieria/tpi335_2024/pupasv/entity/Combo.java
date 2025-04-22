@@ -53,7 +53,7 @@ public class Combo implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
-
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_combo")
     private Long idCombo;
 
@@ -70,7 +70,7 @@ public class Combo implements Serializable {
     private String nombre_combo;
 
     @OneToMany(mappedBy = "combo", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<ComboDetalle> detalles = new ArrayList<>();
+    private List<ComboDetalle> ComboDetalleList = new ArrayList<>();
 
     public Combo() {
     }
@@ -137,11 +137,11 @@ public class Combo implements Serializable {
     }
 
     public List<ComboDetalle> getDetalles() {
-        return detalles;
+        return ComboDetalleList;
     }
 
     public void setDetalles(List<ComboDetalle> detalles) {
-        this.detalles = detalles;
+        this.ComboDetalleList = detalles;
     }
 
 }
