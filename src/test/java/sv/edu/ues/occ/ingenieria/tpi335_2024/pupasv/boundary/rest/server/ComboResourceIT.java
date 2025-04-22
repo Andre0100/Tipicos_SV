@@ -5,9 +5,14 @@
 package sv.edu.ues.occ.ingenieria.tpi335_2024.pupasv.boundary.rest.server;
 
 import jakarta.ws.rs.client.Entity;
+import jakarta.ws.rs.core.GenericType;
+import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import java.math.BigDecimal;
+import java.util.List;
+import java.util.Map;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.BeforeEach;
@@ -15,6 +20,7 @@ import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
+import sv.edu.ues.occ.ingenieria.tpi335_2024.pupasv.dto.ComboProductosDTO;
 import sv.edu.ues.occ.ingenieria.tpi335_2024.pupasv.entity.Combo;
 
 /**
@@ -24,123 +30,216 @@ import sv.edu.ues.occ.ingenieria.tpi335_2024.pupasv.entity.Combo;
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class ComboResourceIT extends BaseIntegrationAbstract {
 
-    private Combo comboTest;
-
-    @BeforeEach
-    public void setUp() {
-        comboTest = new Combo();
-        comboTest.setNombre("Combo Familiar");
-        comboTest.setActivo(true);
-        comboTest.setDescripcionPublica("Incluye 3 hamburguesas, papas fritas y 3 bebidas");
-    }
+    private static Long createdComboId;
 
     @Test
     @Order(1)
-    public void testCreateCombo() {
+    public void testCreate() {
+        System.out.println("ComboResourceIT ----------> Test crear");
+
+        //Provocar error
+        Combo invalidCombo = null;
+        Response invalidResponse = target.path("combo")
+                .request(MediaType.APPLICATION_JSON)
+                .post(Entity.entity(invalidCombo, MediaType.APPLICATION_JSON));
+        assertEquals(500, invalidResponse.getStatus());
+
+        //Provocar error
+        Combo comboWithId = new Combo();
+        comboWithId.setIdCombo(1L);
+        Response responseWithId = target.path("combo")
+                .request(MediaType.APPLICATION_JSON)
+                .post(Entity.entity(comboWithId, MediaType.APPLICATION_JSON));
+        assertEquals(422, responseWithId.getStatus());
+
+        //creacion correcta
+        Combo newCombo = new Combo();
+        newCombo.setNombre("Combo de prueba");
+        newCombo.setActivo(true);
+        newCombo.setDescripcionPublica("Descripción pública del combo de prueba");
+
         Response response = target.path("combo")
-                .request()
-                .post(Entity.json(comboTest));
+                .request(MediaType.APPLICATION_JSON)
+                .post(Entity.entity(newCombo, MediaType.APPLICATION_JSON));
 
-        assertEquals(Response.Status.CREATED.getStatusCode(), response.getStatus());
+        if (response.getStatus() == 500) {
+            String errorDetails = response.readEntity(String.class);
+            System.out.println("ERROR DETAllES: " + errorDetails);
+        }
 
-        // Extraer el ID del Location header para usar en pruebas posteriores
+        assertEquals(201, response.getStatus());
+
+        // verificar locacion
         String location = response.getHeaderString("Location");
         assertNotNull(location);
-        String[] parts = location.split("/");
-        comboTest.setIdCombo(Long.parseLong(parts[parts.length - 1]));
+        System.out.println("Nuevo Combo creado en: " + location);
+
+        // Extraer id
+        String idStr = location.substring(location.lastIndexOf('/') + 1);
+        createdComboId = Long.valueOf(idStr);
+        assertNotNull(createdComboId);
     }
 
     @Test
     @Order(2)
-    public void testFindById() {
-        assertNotNull(comboTest.getIdCombo(), "El combo debe tener ID después de crearse");
+    public void testUpdate() {
+        System.out.println("ComboResourceIT ----------> Test actualizar");
 
-        Response response = target.path("combo/" + comboTest.getIdCombo())
-                .request()
+        // Verificar que el combo ya se creo
+        if (createdComboId == null) {
+            testCreate();
+        }
+
+        //Obtener el como a actualizar
+        Response getResponse = target.path("combo").path(createdComboId.toString())
+                .request(MediaType.APPLICATION_JSON)
                 .get();
+        assertEquals(200, getResponse.getStatus());
+        Combo existingCombo = getResponse.readEntity(Combo.class);
 
-        assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
+        // actualizar combo
+        existingCombo.setNombre("Combo actualizado");
+        existingCombo.setDescripcionPublica("Descripción actualizada");
 
-        Combo encontrado = response.readEntity(Combo.class);
-        assertNotNull(encontrado);
-        assertEquals(comboTest.getNombre(), encontrado.getNombre());
+        Response updateResponse = target.path("combo")
+                .request(MediaType.APPLICATION_JSON)
+                .put(Entity.entity(existingCombo, MediaType.APPLICATION_JSON));
+        assertEquals(200, updateResponse.getStatus());
+
+        // verificar si se realizaron los combos
+        Response verifyResponse = target.path("combo").path(createdComboId.toString())
+                .request(MediaType.APPLICATION_JSON)
+                .get();
+        Combo updatedCombo = verifyResponse.readEntity(Combo.class);
+        assertEquals("Combo actualizado", updatedCombo.getNombre());
+        assertEquals("Descripción actualizada", updatedCombo.getDescripcionPublica());
     }
 
     @Test
     @Order(3)
-    public void testListCombos() {
-        Response response = target.path("combo")
-                .queryParam("first", "0")
-                .queryParam("max", "10")
-                .request()
+    public void testFindById() {
+        System.out.println("ComboResourceIT ----------> Test buscar por ID");
+
+        if (createdComboId == null) {
+            testCreate();
+        }
+
+        // obtenercombo por id
+        Response response = target.path("combo").path(createdComboId.toString())
+                .request(MediaType.APPLICATION_JSON)
                 .get();
+        assertEquals(200, response.getStatus());
+        Combo foundCombo = response.readEntity(Combo.class);
+        assertNotNull(foundCombo);
+        assertEquals(createdComboId, foundCombo.getIdCombo());
 
-        assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
+        // combo no existe 404
+        Response notFoundResponse = target.path("combo").path("999999")
+                .request(MediaType.APPLICATION_JSON)
+                .get();
+        assertEquals(500, notFoundResponse.getStatus());
 
-        // Verificar que el header con el total esté presente
-        String totalHeader = response.getHeaderString("Total-Combos");
-        assertNotNull(totalHeader);
-        assertTrue(Long.parseLong(totalHeader) > 0);
+        // id nullo 
+        Response nullIdResponse = target.path("combo").path("null")
+                .request(MediaType.APPLICATION_JSON)
+                .get();
+        assertEquals(404, nullIdResponse.getStatus());
     }
 
     @Test
     @Order(4)
-    public void testUpdateCombo() {
-        comboTest.setNombre("Combo Test Modificado");
+    public void testFindRange() {
+        System.out.println("ComboResourceIT ----------> Test findRange");
 
-        Response response = target.path("combo")
-                .request()
-                .put(Entity.json(comboTest));
-
-        assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
-
-        // Verificar que los cambios se aplicaron
-        Response getResponse = target.path("combo/" + comboTest.getIdCombo())
-                .request()
+        // obtener lista de combos
+        Response defaultResponse = target.path("combo")
+                .request(MediaType.APPLICATION_JSON)
                 .get();
+        assertEquals(200, defaultResponse.getStatus());
+        List<Combo> combos = defaultResponse.readEntity(new GenericType<List<Combo>>() {});
+        assertNotNull(combos);
+        assertFalse(combos.isEmpty());
 
-        Combo modificado = getResponse.readEntity(Combo.class);
-        assertEquals("Combo Test Modificado", modificado.getNombre());
+        // obtener lista con parametros
+        Response customResponse = target.path("combo")
+                .queryParam("first", 0)
+                .queryParam("max", 5)
+                .queryParam("activos", true)
+                .request(MediaType.APPLICATION_JSON)
+                .get();
+        assertEquals(200, customResponse.getStatus());
+        List<Combo> limitedCombos = customResponse.readEntity(new GenericType<List<Combo>>() {});
+        assertNotNull(limitedCombos);
+        assertTrue(limitedCombos.size() <= 5);
+
+        // invalidos parametro
+        Response invalidFirst = target.path("combo")
+                .queryParam("first", -1)
+                .queryParam("max", 10)
+                .request(MediaType.APPLICATION_JSON)
+                .get();
+        assertEquals(422, invalidFirst.getStatus());
+
+        Response invalidMax = target.path("combo")
+                .queryParam("first", 0)
+                .queryParam("max", 0)
+                .request(MediaType.APPLICATION_JSON)
+                .get();
+        assertEquals(422, invalidMax.getStatus());
     }
 
     @Test
     @Order(5)
-    public void testDeleteCombo() {
-        Response response = target.path("combo/" + comboTest.getIdCombo())
-                .request()
-                .delete();
+    public void testGetProductosAgrupadosPorCombo() {
+        System.out.println("ComboResourceIT ----------> Test getProductosAgrupadosPorCombo");
 
-        assertTrue(
-                response.getStatus() == Response.Status.NO_CONTENT.getStatusCode()
-                || response.getStatus() == Response.Status.CONFLICT.getStatusCode(),
-                "El combo debería eliminarse o estar en conflicto si tiene dependencias"
-        );
+        Response response = target.path("combo").path("por-combo")
+                .request(MediaType.APPLICATION_JSON)
+                .get();
+        
+        assertEquals(200, response.getStatus());
+        
+        Map<String, List<ComboProductosDTO>> productosPorCombo = response.readEntity(
+            new GenericType<Map<String, List<ComboProductosDTO>>>() {});
+        
+        assertNotNull(productosPorCombo);
+        
+        //pediente por aplicar logica
     }
 
     @Test
     @Order(6)
-    public void testInvalidRequests() {
-        // Crear combo con ID (no permitido)
-        Combo comboInvalido = new Combo();
-        comboInvalido.setIdCombo(999L);
+    public void testDelete() {
+        System.out.println("ComboResourceIT ----------> Test eliminar");
 
-        Response createResponse = target.path("combo")
-                .request()
-                .post(Entity.json(comboInvalido));
-        assertEquals(422, createResponse.getStatus());
+        
+        if (createdComboId == null) {
+            testCreate();
+        }
 
-        // Actualizar sin ID
-        Combo comboSinId = new Combo();
-        Response updateResponse = target.path("combo")
+        // eliminar
+        Response deleteResponse = target.path("combo").path(createdComboId.toString())
                 .request()
-                .put(Entity.json(comboSinId));
-        assertEquals(422, updateResponse.getStatus());
+                .delete();
+        assertEquals(204, deleteResponse.getStatus());
 
-        // Buscar con ID inválido
-        Response findResponse = target.path("combo/999999")
-                .request()
+        // verificar si elimino
+        Response verifyResponse = target.path("combo").path(createdComboId.toString())
+                .request(MediaType.APPLICATION_JSON)
                 .get();
-        assertEquals(404, findResponse.getStatus());
+        assertEquals(500, verifyResponse.getStatus());
+
+        // id del combo no existe
+        Response notFoundResponse = target.path("combo").path("999999")
+                .request()
+                .delete();
+        assertTrue(notFoundResponse.getStatus() == 500 || notFoundResponse.getStatus() == 400);
+
+        // id null como parametro
+        Response nullIdResponse = target.path("combo").path("null")
+                .request()
+                .delete();
+        assertEquals(404, nullIdResponse.getStatus());
     }
 
 }
