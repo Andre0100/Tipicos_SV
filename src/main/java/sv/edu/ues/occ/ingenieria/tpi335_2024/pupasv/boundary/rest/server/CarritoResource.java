@@ -18,18 +18,63 @@ public class CarritoResource {
     CarritoBean carritoBean;
 
     @POST
-    public Response agregarItems(List<CarritoItemDTO> items) {
+public Response agregarItems(List<CarritoItemDTO> items) {
+    try {
+        // Validar que la lista de items no sea nula o vacía
+        if (items == null || items.isEmpty()) {
+            return Response.status(Response.Status.BAD_REQUEST)
+                    .entity("La lista de items no puede estar vacía o ser nula")
+                    .build();
+        }
+        
+        // Validar cada item individualmente
+        for (CarritoItemDTO item : items) {
+            if (item == null || item.getIdProductoPrecio()== null || item.getCantidad() <= 0) {
+                return Response.status(Response.Status.BAD_REQUEST)
+                        .entity("Cada item debe tener un producto válido y una cantidad positiva")
+                        .build();
+            }
+        }
+        
         carritoBean.agregarItem(items);
         return Response.ok().build();
+        
+    } catch (IllegalArgumentException e) {
+        // Captura excepciones de validación de negocio
+        return Response.status(Response.Status.BAD_REQUEST)
+                .entity(e.getMessage())
+                .build();
+    } catch (Exception e) {
+        // Captura cualquier otra excepción inesperada
+        return Response.serverError()
+                .entity("Ocurrió un error al procesar la solicitud: " + e.getMessage())
+                .build();
     }
+}
 
-    @GET
-    public Response obtenerCarrito() {
+@GET
+public Response obtenerCarrito() {
+    try {
         CarritoDTO carrito = new CarritoDTO();
         carrito.setItemsCarrito(carritoBean.obtenerItems());
         carrito.setTotal(carritoBean.calcularTotal());
+        
+        // Podría validarse si el carrito está vacío para devolver un código diferente
+        if (carrito.getItemsCarrito() == null || carrito.getItemsCarrito().isEmpty()) {
+            return Response.status(Response.Status.NO_CONTENT)
+                    .entity("El carrito está vacío")
+                    .build();
+        }
+        
         return Response.ok(carrito).build();
+        
+    } catch (Exception e) {
+        // Captura cualquier excepción inesperada
+        return Response.serverError()
+                .entity("Ocurrió un error al obtener el carrito: " + e.getMessage())
+                .build();
     }
+}
 
     @DELETE
     @Path("/{idProductoPrecio}")
