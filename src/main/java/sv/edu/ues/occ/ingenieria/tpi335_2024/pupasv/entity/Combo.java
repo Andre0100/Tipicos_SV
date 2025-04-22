@@ -44,8 +44,26 @@ import sv.edu.ues.occ.ingenieria.tpi335_2024.pupasv.entity.ComboDetalle;
             query = "SELECT COUNT(c) FROM Combo c WHERE c.activo = true"),
 
     @NamedQuery(name = "Combo.findWithDetalles",
-            query = "SELECT c FROM Combo c LEFT JOIN FETCH c.detalles WHERE c.idCombo = :idCombo"),
-    @NamedQuery(name = "Combo.findRange", query = "SELECT c FROM Combo c")
+            query = "SELECT c FROM Combo c LEFT JOIN FETCH c.ComboDetalleList WHERE c.idCombo = :idCombo"),
+    @NamedQuery(name = "Combo.findRange", query = "SELECT c FROM Combo c"),
+    @NamedQuery(
+    name = "Combo.findAllNombres",
+    query = "SELECT DISTINCT c.nombre FROM Combo c WHERE c.activo = true"
+    ),
+    @NamedQuery(
+        name  = "Combo.findProductosConPrecios",
+        query = "SELECT c.nombre, p, pp, cd.cantidad FROM Combo c " +
+            "JOIN c.ComboDetalleList cd " +
+            "JOIN cd.producto p " +
+            "LEFT JOIN p.productoPrecioList pp ON " +
+            "pp.fechaDesde = (SELECT MAX(pp2.fechaDesde) FROM ProductoPrecio pp2 " +
+            "WHERE pp2.idProducto = p AND " +
+            "(pp2.fechaHasta IS NULL OR pp2.fechaHasta >= CURRENT_DATE)) " +
+            "WHERE c.activo = true " +
+            "AND p.activo = true " +
+            "AND cd.activo = true " +
+            "ORDER BY c.nombre"
+    )
 })
 
 public class Combo implements Serializable {

@@ -9,10 +9,15 @@ import jakarta.ejb.Stateless;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import sv.edu.ues.occ.ingenieria.tpi335_2024.pupasv.dto.ComboProductosDTO;
 import sv.edu.ues.occ.ingenieria.tpi335_2024.pupasv.dto.ProductoConPrecioDTO;
 import sv.edu.ues.occ.ingenieria.tpi335_2024.pupasv.entity.Combo;
+import sv.edu.ues.occ.ingenieria.tpi335_2024.pupasv.entity.Producto;
+import sv.edu.ues.occ.ingenieria.tpi335_2024.pupasv.entity.ProductoPrecio;
 
 @Stateless
 @LocalBean
@@ -59,7 +64,24 @@ public class ComboBean extends AbstractDataPersistence<Combo> implements Seriali
                 .getSingleResult();
     }
     
+      public Map<String, List<ComboProductosDTO>> getProductosAgrupadosPorCombo(){
+        
+        List<Object[]> resultados = em.createNamedQuery("Combo.findProductosConPrecios", Object[].class)
+            .getResultList();
     
+        Map<String, List<ComboProductosDTO>> map = new HashMap<>();
+
+        resultados.forEach(row -> {
+            String nombreCombo = (String) row[0];
+            Producto producto = (Producto) row[1];
+            ProductoPrecio precio = (ProductoPrecio) row[2];
+            Integer cantidad = (Integer) row[3];
+
+            map.computeIfAbsent(nombreCombo, k -> new ArrayList<>())
+               .add(new ComboProductosDTO(producto, precio, cantidad));
+        });
+        return map;
+    }
     
 } 
 

@@ -17,7 +17,7 @@ public class CarritoResource {
     @Inject
     CarritoBean carritoBean;
 
-      @POST
+    @POST
     public Response agregarItems(List<CarritoItemDTO> items) {
         carritoBean.agregarItem(items);
         return Response.ok().build();

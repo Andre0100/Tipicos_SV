@@ -23,9 +23,12 @@ import jakarta.ws.rs.core.UriInfo;
 import jakarta.validation.Valid; 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import sv.edu.ues.occ.ingenieria.tpi335_2024.pupasv.control.ComboBean;
+import sv.edu.ues.occ.ingenieria.tpi335_2024.pupasv.dto.ComboProductosDTO;
+import sv.edu.ues.occ.ingenieria.tpi335_2024.pupasv.dto.ProductoConPrecioDTO;
 import sv.edu.ues.occ.ingenieria.tpi335_2024.pupasv.entity.Combo;
 
 /**
@@ -41,6 +44,22 @@ public class ComboResource implements Serializable {
 
     private static final Logger LOG = Logger.getLogger(ComboResource.class.getName());
 
+    // Endpoint para obtener productos agrupados por tipo con sus precios
+    @Path("/por-combo")
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getProductosAgrupadosPorCombo() {
+        try {
+            Map<String, List<ComboProductosDTO>> productosPorCombo = CBean.getProductosAgrupadosPorCombo();
+            return Response.ok(productosPorCombo).build();
+        } catch (Exception e) {
+            LOG.log(Level.SEVERE, "Error al obtener productos por tipo", e);
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                         .entity("Error al obtener productos: " + e.getMessage())
+                         .build();
+        }
+    }
+   
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response list(
@@ -140,5 +159,5 @@ public class ComboResource implements Serializable {
             LOG.log(Level.SEVERE, e.getMessage(), e);
             return Response.status(500).entity(e.getMessage()).build();
         }
-    }
+    }      
 }
