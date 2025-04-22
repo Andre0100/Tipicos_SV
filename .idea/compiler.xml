@@ -12,7 +12,7 @@
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
-      <module name="PupaSv" options="-endorseddirs $PROJECT_DIR$/target/endorsed" />
+      <module name="PupaSv" options="-endorseddirs $PROJECT_DIR$/target/endorsed --enable-preview --enable-preview" />
     </option>
   </component>
 </project>

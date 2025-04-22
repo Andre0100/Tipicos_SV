@@ -23,6 +23,7 @@ import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 public class ProductoBeanTest {
+    
     @InjectMocks
     private ProductoBean cut;
 
