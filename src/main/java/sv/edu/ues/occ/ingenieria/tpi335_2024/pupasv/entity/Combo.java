@@ -19,8 +19,6 @@ import jakarta.persistence.NamedQuery;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
-import java.util.ArrayList;
-import sv.edu.ues.occ.ingenieria.tpi335_2024.pupasv.entity.ComboDetalle;
 
 /**
  *
