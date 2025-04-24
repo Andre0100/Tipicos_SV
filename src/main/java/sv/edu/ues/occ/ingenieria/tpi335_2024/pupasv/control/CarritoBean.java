@@ -17,7 +17,7 @@ import java.util.List;
 @SessionScoped
 public class CarritoBean implements Serializable {
 
-    private final List<CarritoItemDTO> itemsCarrito = new ArrayList<>();
+    private  List<CarritoItemDTO> itemsCarrito = new ArrayList<>();
 
     @Inject
     ProductoPrecioBean productoPrecioBean;

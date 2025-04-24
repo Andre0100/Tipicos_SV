@@ -19,6 +19,7 @@ import org.testcontainers.containers.GenericContainer;
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Testcontainers;
 import testing.ContainerExtension;
+import testing.NeedsLiberty;
 
 /**
  *
@@ -36,29 +37,38 @@ public abstract class BaseIntegrationAbstract {
     @BeforeAll
     public void initializeClient() {
         PostgreSQLContainer<?> postgres = ContainerExtension.getPostgres();
-        GenericContainer<?> openliberty = ContainerExtension.getOpenLiberty();
         
         assertTrue(postgres.isRunning());
-        assertTrue(openliberty.isRunning());
         
         //System.out.println("=== PostgreSQL Logs ===");
         //
-//System.out.println(postgres.getLogs());
-        System.out.println("=== Liberty Logs ===");
-        System.out.println(openliberty.getLogs());
+        //System.out.println(postgres.getLogs());
         
-        cliente = ClientBuilder.newClient();
-        target = cliente.target(getBaseUrl());
-        System.out.println("Testing URL: " + getBaseUrl());
         
+        //Inicialiaz liberty y postgres si la el test lo requiere
+        if(this.getClass().isAnnotationPresent(NeedsLiberty.class)){
+            GenericContainer<?> openliberty = ContainerExtension.getOpenLiberty();
+            assertTrue(openliberty.isRunning());
+            //System.out.println("=== Liberty Logs ===");
+            //System.out.println(openliberty.getLogs());
+        
+
+            cliente = ClientBuilder.newClient();
+            target = cliente.target(getBaseUrl());
+            System.out.println("Testing URL: " + getBaseUrl());
+        }
+            
         Map<String, Object> propiedades = new HashMap<>();
         propiedades.put("jakarta.persistence.jdbc.url", String.format("jdbc:postgresql://localhost:%d/PupaSV", postgres.getMappedPort(5432)));
         emf = Persistence.createEntityManagerFactory("PupaIP", propiedades);
     }
     
     protected String getBaseUrl() {
-        return String.format("http://localhost:%d/PupaSV-1.0-SNAPSHOT/v1/", 
-               ContainerExtension.getOpenLiberty().getMappedPort(9080));
+        if (this.getClass().isAnnotationPresent(NeedsLiberty.class)) {
+            return String.format("http://localhost:%d/PupaSV-1.0-SNAPSHOT/v1/", 
+                   ContainerExtension.getOpenLiberty().getMappedPort(9080));
+        }
+        return null;
     }
     
     

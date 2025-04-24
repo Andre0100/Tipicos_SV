@@ -160,7 +160,7 @@ public class PupaSvAppE2EIT extends BaseIntegrationAbstract{
             .request(MediaType.APPLICATION_JSON)
             .get();
         
-        
+        assertEquals(200, carritoResponse.getStatus());
 
         CarritoDTO carrito = carritoResponse.readEntity(CarritoDTO.class);
         

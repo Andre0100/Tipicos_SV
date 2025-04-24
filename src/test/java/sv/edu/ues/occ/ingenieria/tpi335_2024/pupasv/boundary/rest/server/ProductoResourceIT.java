@@ -20,14 +20,19 @@ import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
+import org.junit.jupiter.api.extension.ExtendWith;
 import sv.edu.ues.occ.ingenieria.tpi335_2024.pupasv.dto.ProductoConPrecioDTO;
 import sv.edu.ues.occ.ingenieria.tpi335_2024.pupasv.entity.Producto;
+import testing.ContainerExtension;
+import testing.NeedsLiberty;
 
 /**
  *
  * @author morales
  */
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
+@ExtendWith(ContainerExtension.class)
+@NeedsLiberty
 public class ProductoResourceIT extends BaseIntegrationAbstract {
 
     private static Long productoCreadoId;

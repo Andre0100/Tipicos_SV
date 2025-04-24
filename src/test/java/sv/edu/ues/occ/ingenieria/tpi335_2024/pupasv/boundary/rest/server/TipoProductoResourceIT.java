@@ -15,13 +15,18 @@ import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
+import org.junit.jupiter.api.extension.ExtendWith;
 import sv.edu.ues.occ.ingenieria.tpi335_2024.pupasv.entity.TipoProducto;
+import testing.ContainerExtension;
+import testing.NeedsLiberty;
 
 /**
  *
  * @author andrea
  */
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
+@ExtendWith(ContainerExtension.class)
+@NeedsLiberty
 public class TipoProductoResourceIT extends BaseIntegrationAbstract{
     
     @Test

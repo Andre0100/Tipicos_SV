@@ -20,7 +20,9 @@ import org.testcontainers.utility.MountableFile;
  */
 public class ContainerExtension implements BeforeAllCallback, AfterAllCallback{
     
-    private static boolean contenedorIniciado = false;
+    private static final Object lock = new Object();
+    private static boolean postgresStart = false;
+    private static boolean libertyStart = false;
     private static int numClassTest = 0;
     private static boolean SystemTest = false;
     
@@ -60,7 +62,7 @@ public class ContainerExtension implements BeforeAllCallback, AfterAllCallback{
     
     @Override
     public void beforeAll(ExtensionContext context) throws Exception{
-        synchronized (ContainerExtension.class) {
+        synchronized (lock) {
             //Configurar segun el tipo de prueba
             
              if (context.getTestClass().isPresent()) {
@@ -71,23 +73,43 @@ public class ContainerExtension implements BeforeAllCallback, AfterAllCallback{
                     configurarParaIT();
                 }
             }
+             
+            //determinar si se necesita el contenedor de liberty
+            boolean needLiberty = context.getTestClass()
+                    .map(cls -> cls.isAnnotationPresent(NeedsLiberty.class))
+                    .orElse(false);
+            
+            System.out.println("CLASE ANOTACION OPENLIBERTY ESTADO"+ needLiberty);
             
             numClassTest++;
-            if(!contenedorIniciado){
+            
+            if(!postgresStart){
                 postgres.start();
+                postgresStart = true;
+            }
+            
+            if(needLiberty && !libertyStart){
                 openliberty.start();
-                contenedorIniciado = true;
-                System.out.println("Contenedores iniciados");
-                System.out.println("Usando script SQL: " + (SystemTest ? "pupadb.sql" : "pupa_db.sql"));
-                
+                libertyStart = true;
+            }
+            
+            //configurar shutdown hook solo una vez
+            if(numClassTest == 1){
                 Runtime.getRuntime().addShutdownHook(new Thread(()->{
-                    if(contenedorIniciado){
-                        openliberty.stop();
-                        postgres.stop();
-                        System.out.println("Contenedores detenidos");
+                    synchronized (lock) {
+                        if(libertyStart){
+                            openliberty.stop();
+                            libertyStart = false;
+                        }
+                        if(postgresStart){
+                            postgres.stop();
+                            postgresStart=false;
+                        }
                     }
                 }));
             }
+            
+            
         }
     }
     
@@ -95,9 +117,16 @@ public class ContainerExtension implements BeforeAllCallback, AfterAllCallback{
     public void afterAll(ExtensionContext context) throws Exception {
         synchronized (ContainerExtension.class) {
             numClassTest--;
-            if (numClassTest == 0 && contenedorIniciado) {
-                // No detenemos aquí, el shutdown hook se encargará
-            }
+//            if (numClassTest == 0) {
+//                if (libertyStart) {
+//                    openliberty.stop();
+//                    libertyStart = false;
+//                }
+//                if (postgresStart) {
+//                    postgres.stop();
+//                    postgresStart = false;
+//                }
+//            }    
         }
     }
     

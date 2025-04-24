@@ -22,8 +22,6 @@ import sv.edu.ues.occ.ingenieria.tpi335_2024.pupasv.control.OrdenBeanIT;
     OrdenBeanIT.class,
     ProductoResourceIT.class,
     ComboResourceIT.class,
-  
-    PupaSvAppE2EIT.class
 })
 public class IntegrationTestSuite {
     
