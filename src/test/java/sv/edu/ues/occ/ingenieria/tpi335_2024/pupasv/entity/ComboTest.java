@@ -39,6 +39,7 @@ public class ComboTest {
         assertNotNull(combo.getComboDetalleList());
         assertEquals(1, combo.getComboDetalleList().size());
         assertEquals(combo, combo.getComboDetalleList().get(0).getCombo());
+         System.out.println("ComboTest --> testConstructorAndGettersSetters");
     }
 
     @Test
@@ -51,6 +52,7 @@ public class ComboTest {
         assertNotEquals(combo1, combo3);
         assertEquals(combo1.hashCode(), combo2.hashCode());
         assertNotEquals(combo1.hashCode(), combo3.hashCode());
+        System.out.println("ComboTest --> testEqualsAndHashCode");
     }
 
     @Test
@@ -59,6 +61,7 @@ public class ComboTest {
         Combo combo2 = new Combo();
 
         assertEquals(combo1, combo2); // Ambos tienen id nulo, se considera igual en esta implementación
+        System.out.println("ComboTest --> testEqualsWithNullId");
     }
 
     @Test
@@ -66,6 +69,7 @@ public class ComboTest {
         Combo combo = new Combo(5L);
         String expected = "sv.edu.ues.occ.ingenieria.tpi335_2024.pupasv.entity.Combo[ idCombo=5 ]";
         assertEquals(expected, combo.toString());
+        System.out.println("ComboTest --> testToString"); 
     }
     
 }

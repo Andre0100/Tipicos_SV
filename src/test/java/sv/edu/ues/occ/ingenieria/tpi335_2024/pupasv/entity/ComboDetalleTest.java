@@ -27,6 +27,7 @@ public class ComboDetalleTest {
         Assertions.assertEquals(pk, comboDetalle.getComboDetallePK());
         Assertions.assertEquals(10, comboDetalle.getCantidad());
         Assertions.assertTrue(comboDetalle.getActivo());
+         System.out.println("ComboDetalleTest --> testConstructorAndGetters");
     }
 
     @Test
@@ -47,6 +48,7 @@ public class ComboDetalleTest {
 
         // Test hashCode
         Assertions.assertEquals(comboDetalle1.hashCode(), comboDetalle2.hashCode(), "Los hashcodes deberían ser iguales");
+        System.out.println("ComboDetalleTest --> testEqualsAndHashCode"); 
     }
 
     @Test
@@ -62,6 +64,7 @@ public class ComboDetalleTest {
         // Verificar que los valores se hayan actualizado correctamente
         Assertions.assertEquals(15, comboDetalle.getCantidad());
         Assertions.assertFalse(comboDetalle.getActivo());
+        System.out.println("ComboDetalleTest --> testSettersAndGetters"); 
     }
     
     @Test
@@ -73,6 +76,7 @@ public class ComboDetalleTest {
         
         // Test toString method
         Assertions.assertEquals(expectedString, comboDetalle.toString());
+        System.out.println("ComboDetalleTest --> testToString"); 
     }
     
 }

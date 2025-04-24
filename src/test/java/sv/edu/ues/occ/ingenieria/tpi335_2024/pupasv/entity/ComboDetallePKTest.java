@@ -11,7 +11,6 @@ import org.junit.jupiter.api.Test;
  *
  * @author andrea
  */
-
 public class ComboDetallePKTest {
 
     @Test
@@ -20,6 +19,7 @@ public class ComboDetallePKTest {
 
         Assertions.assertEquals(10L, comboDetallePK.getIdCombo(), "idCombo debe ser 10");
         Assertions.assertEquals(20L, comboDetallePK.getIdProducto(), "idProducto debe ser 20");
+        System.out.println("ComboDetallePKTest --> testConstructorAndGetters");
     }
 
     @Test
@@ -30,6 +30,7 @@ public class ComboDetallePKTest {
 
         Assertions.assertEquals(5L, comboDetallePK.getIdCombo(), "idCombo debe ser 5");
         Assertions.assertEquals(15L, comboDetallePK.getIdProducto(), "idProducto debe ser 15");
+        System.out.println("ComboDetallePKTest --> testSetters");
     }
 
     @Test
@@ -42,6 +43,7 @@ public class ComboDetallePKTest {
         Assertions.assertNotEquals(pk1, pk3, "pk1 no debe ser igual a pk3");
         Assertions.assertNotEquals(pk1, null, "pk1 no debe ser igual a null");
         Assertions.assertNotEquals(pk1, "otro objeto", "pk1 no debe ser igual a un objeto de otro tipo");
+        System.out.println("ComboDetallePKTest --> testEquals");
     }
 
     @Test
@@ -50,6 +52,7 @@ public class ComboDetallePKTest {
         String other = "no es ComboDetallePK";
 
         Assertions.assertFalse(pk.equals(other), "Debe retornar false al comparar con un objeto de otro tipo");
+        System.out.println("ComboDetallePKTest --> testEqualsWithDifferentObjectType");
     }
 
     @Test
@@ -58,6 +61,7 @@ public class ComboDetallePKTest {
         ComboDetallePK pk2 = new ComboDetallePK(1L, 3L); // diferente idProducto
 
         Assertions.assertFalse(pk1.equals(pk2), "Debe retornar false si los idProducto son distintos");
+        System.out.println("ComboDetallePKTest --> testEqualsDifferentIdProducto");
     }
 
     @Test
@@ -68,6 +72,7 @@ public class ComboDetallePKTest {
 
         Assertions.assertEquals(pk1.hashCode(), pk2.hashCode(), "hashCode de pk1 y pk2 deben coincidir");
         Assertions.assertNotEquals(pk1.hashCode(), pk3.hashCode(), "hashCode de pk1 y pk3 no deben coincidir");
+        System.out.println("ComboDetallePKTest --> testHashCode");
     }
 
     @Test
@@ -76,6 +81,7 @@ public class ComboDetallePKTest {
         String expected = "sv.edu.ues.occ.ingenieria.tpi335_2024.pupasv.entity.ComboDetallePK[ idCombo=100, idProducto=200 ]";
 
         Assertions.assertEquals(expected, comboDetallePK.toString(), "toString debe retornar el formato esperado");
+        System.out.println("ComboDetallePKTest --> testToString");
     }
 
 }
