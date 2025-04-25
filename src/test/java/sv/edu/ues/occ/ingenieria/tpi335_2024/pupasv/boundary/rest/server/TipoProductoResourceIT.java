@@ -4,6 +4,7 @@
  */
 package sv.edu.ues.occ.ingenieria.tpi335_2024.pupasv.boundary.rest.server;
 
+import testing.BaseIntegrationAbstract;
 import jakarta.ws.rs.client.Entity;
 import jakarta.ws.rs.core.GenericType;
 import jakarta.ws.rs.core.MediaType;

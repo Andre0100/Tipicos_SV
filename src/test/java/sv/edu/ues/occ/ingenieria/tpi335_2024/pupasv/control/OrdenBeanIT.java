@@ -14,7 +14,7 @@ import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.junit.jupiter.api.extension.ExtendWith;
-import sv.edu.ues.occ.ingenieria.tpi335_2024.pupasv.boundary.rest.server.BaseIntegrationAbstract;
+import testing.BaseIntegrationAbstract;
 import sv.edu.ues.occ.ingenieria.tpi335_2024.pupasv.entity.Orden;
 import testing.ContainerExtension;
 

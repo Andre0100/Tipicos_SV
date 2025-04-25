@@ -4,6 +4,7 @@
  */
 package sv.edu.ues.occ.ingenieria.tpi335_2024.pupasv.boundary.rest.server;
 
+import testing.BaseIntegrationAbstract;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;

@@ -13,7 +13,7 @@ import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.junit.jupiter.api.extension.ExtendWith;
-import sv.edu.ues.occ.ingenieria.tpi335_2024.pupasv.boundary.rest.server.BaseIntegrationAbstract;
+import testing.BaseIntegrationAbstract;
 import sv.edu.ues.occ.ingenieria.tpi335_2024.pupasv.entity.Combo;
 import sv.edu.ues.occ.ingenieria.tpi335_2024.pupasv.entity.Orden;
 import testing.ContainerExtension;
@@ -29,7 +29,7 @@ public class ComboBeanIT extends BaseIntegrationAbstract{
     @Test
     @Order(1)
     public void insertar(){
-        System.out.println("ComboBean ----------> Insertar");
+        System.out.println("ComboBeanIT ----------> Insertar");
         ComboBean cut = new ComboBean();
         
         EntityManager em = emf.createEntityManager();
@@ -69,7 +69,7 @@ public class ComboBeanIT extends BaseIntegrationAbstract{
     @Test
     @Order(2)
     public void testContar(){
-        System.out.println("ComboBean  -------   ContarIT");
+        System.out.println("ComboBeanIT  -------   ContarIT");
         ComboBean cut = new ComboBean();
         
         EntityManager em = emf.createEntityManager();
@@ -81,10 +81,10 @@ public class ComboBeanIT extends BaseIntegrationAbstract{
         Assertions.assertEquals(esperado, resultado);
     }
     
-      @Test
+    @Test
     @Order(3)
     public void actualizar(){
-        System.out.println("ComboBean  -------   actualizar");
+        System.out.println("ComboBeanIT  -------   actualizar");
         ComboBean cut = new ComboBean();
         EntityManager em = emf.createEntityManager();
         
@@ -109,10 +109,38 @@ public class ComboBeanIT extends BaseIntegrationAbstract{
             } catch (Exception ex) {
                 Logger.getLogger(getClass().getName()).log(Level.SEVERE, ex.getMessage(), ex);
             }
-        }
-             
-        
+        }   
     }
     
-    
+    @Test
+    @Order(4)
+    public void eliminar(){
+        System.out.println("OrdenBeanIT ------------> ");
+        ComboBean cut = new ComboBean();
+        EntityManager em = emf.createEntityManager();
+        
+        cut.em = em;
+        
+        try {
+            //Obtener registro a eliminar
+            Combo registro = cut.findById(2L);
+            Assertions.assertNotNull(registro);
+            
+            cut.em.getTransaction().begin();
+            cut.delete(registro);
+            cut.em.getTransaction().commit();
+            
+            Combo eliminado = cut.findById(2L);
+            Assertions.assertNull(eliminado);
+            System.out.println("Registro Eliminado");
+            
+        } catch (Exception e) {
+            Logger.getLogger(getClass().getName()).log(Level.SEVERE, e.getMessage(), e);
+             try {
+                cut.em.getTransaction().rollback();
+            } catch (Exception ex) {
+                Logger.getLogger(getClass().getName()).log(Level.SEVERE, ex.getMessage(), ex);
+            }
+        }
+    }
 }
