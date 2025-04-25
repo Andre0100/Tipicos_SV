@@ -65,30 +65,6 @@ public class ProductoBeanTest {
         assertTrue(resultadoConExcepcion.isEmpty(), "La lista debe estar vacía debido a la excepción");
     }
 
-    @Test
-    public void findBybebidaPrecio() {
-        System.out.println("ProductoBeanTest --> findBybebidaPrecio");
-        TypedQuery<Producto> queryBebida = mock(TypedQuery.class);
-        when(em.createNamedQuery("Producto.findByBebida", Producto.class)).thenReturn(queryBebida);
-        when(queryBebida.getResultList()).thenReturn(List.of(new Producto()));  // Simulamos que se devuelven productos
-
-        // Ejecuta el método
-        List<Producto> resultado = cut.findBybebidaPrecio();
-
-        // Verificación
-        assertNotNull(resultado);
-        assertFalse(resultado.isEmpty(), "La lista no debe estar vacía");
-
-        // Excepción
-        when(queryBebida.getResultList()).thenThrow(new RuntimeException("Database error"));
-
-        // Ejecuta el con una excepción
-        List<Producto> resultadoConExcepcion = cut.findBybebidaPrecio();
-
-        // Verificación de la excepción
-        assertNotNull(resultadoConExcepcion);
-        assertTrue(resultadoConExcepcion.isEmpty(), "La lista debe estar vacía debido a la excepción");
-    }
 
     @Test
     public void getProductosAgrupadosPorTipo() {

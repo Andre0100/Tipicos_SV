@@ -30,12 +30,12 @@ public class ComboDetalle implements Serializable {
     private boolean activo = true;
 
     @MapsId("idCombo")
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "id_combo", referencedColumnName = "id_combo")
     private Combo combo;
     
     @MapsId("idProducto")
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "id_producto", referencedColumnName = "id_producto")
     private Producto producto;
 

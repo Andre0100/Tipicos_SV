@@ -50,7 +50,7 @@ public abstract class BaseIntegrationAbstract {
             GenericContainer<?> openliberty = ContainerExtension.getOpenLiberty();
             assertTrue(openliberty.isRunning());
             //System.out.println("=== Liberty Logs ===");
-            System.out.println(openliberty.getLogs());
+            //System.out.println(openliberty.getLogs());
         
 
             cliente = ClientBuilder.newClient();
@@ -61,7 +61,7 @@ public abstract class BaseIntegrationAbstract {
         Map<String, Object> propiedades = new HashMap<>();
         propiedades.put("jakarta.persistence.jdbc.url", String.format("jdbc:postgresql://%s:%d/PupaSV", host, postgres.getMappedPort(5432)));
         emf = Persistence.createEntityManagerFactory("PupaIP", propiedades);
-        System.out.println("VER URL DE POSTGRES"+ postgres.getHost());
+        //System.out.println("VER URL DE POSTGRES"+ postgres.getHost());
 
     }
     

@@ -49,17 +49,6 @@ public class ProductoBean extends AbstractDataPersistence<Producto> implements S
     }
     
     
-    public List<Producto> findBybebidaPrecio(){
-        
-        try{
-            return em.createNamedQuery("Producto.findByBebida", Producto.class).getResultList();
- 
-        }catch(Exception e){
-            Logger.getLogger(getClass().getName()).log(Level.SEVERE, e.getMessage(), e);
-        }
-        return List.of();
-    }
-    
     public Map<String, List<ProductoConPrecioDTO>> getProductosAgrupadosPorTipo(){
         
         Map<String, List<ProductoConPrecioDTO>> resultados = new HashMap<>();
