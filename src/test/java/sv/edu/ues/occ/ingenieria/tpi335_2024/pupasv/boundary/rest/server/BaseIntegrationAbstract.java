@@ -67,7 +67,8 @@ public abstract class BaseIntegrationAbstract {
     
     protected String getBaseUrl() {
         if (this.getClass().isAnnotationPresent(NeedsLiberty.class)) {
-            return String.format("http://localhost:%d/PupaSV-1.0-SNAPSHOT/v1/", 
+            String hostliberty = ContainerExtension.getOpenLiberty().getHost();
+            return String.format("http://%s:%d/PupaSV-1.0-SNAPSHOT/v1/", hostliberty, 
                    ContainerExtension.getOpenLiberty().getMappedPort(9080));
         }
         return null;
