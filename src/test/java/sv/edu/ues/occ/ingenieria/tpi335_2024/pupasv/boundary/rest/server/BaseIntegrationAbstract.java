@@ -61,6 +61,8 @@ public abstract class BaseIntegrationAbstract {
         Map<String, Object> propiedades = new HashMap<>();
         propiedades.put("jakarta.persistence.jdbc.url", String.format("jdbc:postgresql://localhost:%d/PupaSV", postgres.getMappedPort(5432)));
         emf = Persistence.createEntityManagerFactory("PupaIP", propiedades);
+        System.setProperty("DB_URL", postgres.getJdbcUrl());
+
     }
     
     protected String getBaseUrl() {
