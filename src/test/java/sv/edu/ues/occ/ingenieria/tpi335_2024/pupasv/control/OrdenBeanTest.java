@@ -39,6 +39,7 @@ public class OrdenBeanTest {
 
     @BeforeEach
     void setUp() {
+        //Carga de producto
         producto = new Producto();
         producto.setNombre("Pupusa");
         productoPrecio = new ProductoPrecio();
