@@ -5,52 +5,60 @@ import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import sv.edu.ues.occ.ingenieria.tpi335_2024.pupasv.control.CarritoBean;
+import sv.edu.ues.occ.ingenieria.tpi335_2024.pupasv.control.OrdenBean;
 import sv.edu.ues.occ.ingenieria.tpi335_2024.pupasv.dto.CarritoDTO;
 import sv.edu.ues.occ.ingenieria.tpi335_2024.pupasv.dto.CarritoItemDTO;
+import sv.edu.ues.occ.ingenieria.tpi335_2024.pupasv.entity.Orden;
 
 @Path("carrito")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 public class CarritoResource {
 
+    private static final Logger LOGGER = Logger.getLogger(OrdenResource.class.getName());
+
     @Inject
     CarritoBean carritoBean;
+    @Inject
+    OrdenBean ordenBean;
 
     @POST
-public Response agregarItems(List<CarritoItemDTO> items) {
-    try {
-        // Validar que la lista de items no sea nula o vacía
-        if (items == null || items.isEmpty()) {
-            return Response.status(Response.Status.BAD_REQUEST)
-                    .entity("La lista de items no puede estar vacía o ser nula")
-                    .build();
-        }
-        
-        // Validar cada item individualmente
-        for (CarritoItemDTO item : items) {
-            if (item == null || item.getIdProductoPrecio()== null || item.getCantidad() <= 0) {
+    public Response agregarItems(List<CarritoItemDTO> items) {
+        try {
+            // Validar que la lista de items no sea nula o vacía
+            if (items == null || items.isEmpty()) {
                 return Response.status(Response.Status.BAD_REQUEST)
-                        .entity("Cada item debe tener un producto válido y una cantidad positiva")
+                        .entity("La lista de items no puede estar vacía o ser nula")
                         .build();
             }
+
+            // Validar cada item individualmente
+            for (CarritoItemDTO item : items) {
+                if (item == null || item.getIdProductoPrecio()== null || item.getCantidad() <= 0) {
+                    return Response.status(Response.Status.BAD_REQUEST)
+                            .entity("Cada item debe tener un producto válido y una cantidad positiva")
+                            .build();
+                }
+            }
+
+            carritoBean.agregarItem(items);
+            return Response.ok().build();
+
+        } catch (IllegalArgumentException e) {
+            // Captura excepciones de validación de negocio
+            return Response.status(Response.Status.BAD_REQUEST)
+                    .entity(e.getMessage())
+                    .build();
+        } catch (Exception e) {
+            // Captura cualquier otra excepción inesperada
+            return Response.serverError()
+                    .entity("Ocurrió un error al procesar la solicitud: " + e.getMessage())
+                    .build();
         }
-        
-        carritoBean.agregarItem(items);
-        return Response.ok().build();
-        
-    } catch (IllegalArgumentException e) {
-        // Captura excepciones de validación de negocio
-        return Response.status(Response.Status.BAD_REQUEST)
-                .entity(e.getMessage())
-                .build();
-    } catch (Exception e) {
-        // Captura cualquier otra excepción inesperada
-        return Response.serverError()
-                .entity("Ocurrió un error al procesar la solicitud: " + e.getMessage())
-                .build();
     }
-}
 
 @GET
 public Response obtenerCarrito() {
@@ -81,5 +89,29 @@ public Response obtenerCarrito() {
     public Response eliminarItem(@PathParam("idProductoPrecio") Long idProductoPrecio) {
         carritoBean.eliminarItem(idProductoPrecio);
         return Response.ok().build();
+    }
+
+    @POST
+    @Path("/ordenar")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response ordenarDesdeCarrito(List<CarritoItemDTO> itemsCarrito) {
+        try {
+            if (itemsCarrito == null || itemsCarrito.isEmpty()) {
+                LOGGER.log(Level.WARNING, "No se puede ordenar con un carrito vacío.");
+                return Response.status(Response.Status.BAD_REQUEST)
+                        .entity("El carrito está vacío.")
+                        .build();
+            }
+            Orden orden = ordenBean.crearOrdenCarrito(itemsCarrito, "Sucursal");
+            carritoBean.limpiarCarrito();
+            LOGGER.log(Level.INFO, "Orden creada desde carrito con ID: {0}", orden.getIdOrden());
+            return Response.status(Response.Status.CREATED).entity(orden).build();
+        } catch (Exception e) {
+            LOGGER.log(Level.SEVERE, "Error al crear la orden desde el carrito. ", e);
+            return Response.serverError()
+                    .entity("Error al crear la orden: " + e.getMessage())
+                    .build();
+        }
     }
 }

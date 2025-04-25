@@ -138,5 +138,9 @@ public class ProductoPrecio implements Serializable {
     public String toString() {
         return "sv.edu.ues.occ.ingenieria.tpi335_2024.pupasv.entity.ProductoPrecio[ idProductoPrecio=" + idProductoPrecio + " ]";
     }
+
+    public void setPrecioSugerido(double d) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
     
 }

@@ -6,6 +6,7 @@ package sv.edu.ues.occ.ingenieria.tpi335_2024.pupasv.control;
 
 import jakarta.persistence.EntityManager;
 import java.util.Date;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.junit.jupiter.api.Assertions;
@@ -44,7 +45,7 @@ public class OrdenBeanIT extends BaseIntegrationAbstract{
     
     @Test
     @Order(1)
-    public void insertar(){
+    public void testInsertar(){
         System.out.println("OrdenBean  -------   Insertar");
         
         OrdenBean cut = new OrdenBean();
@@ -75,6 +76,8 @@ public class OrdenBeanIT extends BaseIntegrationAbstract{
             cut.create(registro3);
             cut.em.getTransaction().commit();
             Assertions.assertNotNull(registro.getIdOrden());
+            Assertions.assertNotNull(registro2.getIdOrden());
+            Assertions.assertNotNull(registro3.getIdOrden());
             System.out.println("Registro Creado con ID "+registro.getIdOrden());
             System.out.println("Registro Creado con ID "+registro2.getIdOrden());
             System.out.println("Registro Creado con ID "+registro3.getIdOrden());
@@ -91,8 +94,27 @@ public class OrdenBeanIT extends BaseIntegrationAbstract{
     
     @Test
     @Order(3)
-    public void actualizar(){
-        System.out.println("OrdenBean  -------   actualizar");
+    public void testBuscarPorId(){
+        System.out.println("OrdenBeanIT ------------->  Buscar Por id");
+        OrdenBean cut = new OrdenBean();
+        EntityManager em = emf.createEntityManager();
+        
+        cut.em = em;
+        
+        try {
+            Orden registro = cut.findById(1L);
+            Assertions.assertNotNull(cut);
+        } catch (Exception e) {
+                  
+            Logger.getLogger(getClass().getName()).log(Level.SEVERE, e.getMessage(), e);
+
+        }
+    }   
+    
+    @Test
+    @Order(4)
+    public void testActualizar(){
+        System.out.println("OrdenBean  ------------->   actualizar");
         OrdenBean cut = new OrdenBean();
         EntityManager em = emf.createEntityManager();
         
@@ -102,6 +124,7 @@ public class OrdenBeanIT extends BaseIntegrationAbstract{
         try {
             //obtener un registro
             Orden registro =  cut.findById(3L);
+            Assertions.assertNotNull(registro);
             registro.setAnulada(true);
             
             cut.em.getTransaction().begin();
@@ -118,14 +141,12 @@ public class OrdenBeanIT extends BaseIntegrationAbstract{
                 Logger.getLogger(getClass().getName()).log(Level.SEVERE, ex.getMessage(), ex);
             }
         }
-             
-        
+              
     }
     
-    
     @Test
-    @Order(4)
-    public void eliminar(){
+    @Order(5)
+    public void testEliminar(){
         System.out.println("OrdenBean  -------   eliminar");
         OrdenBean cut = new OrdenBean();
         EntityManager em = emf.createEntityManager();
@@ -152,6 +173,23 @@ public class OrdenBeanIT extends BaseIntegrationAbstract{
                 Logger.getLogger(getClass().getName()).log(Level.SEVERE, ex.getMessage(), ex);
             }
         }
+    }
+    
+    @Test
+    @Order(6)
+    public void testListarTodos(){
+        System.out.println("TiposProductosBeanIT --------------> Listar Todos");
+        OrdenBean cut = new OrdenBean();
+        EntityManager em = emf.createEntityManager();
+        
+        cut.em = em;
+        
+        List<Orden> resultados = cut.findRange(0, 10);
+        Assertions.assertNotNull(resultados);
+        Assertions.assertFalse(resultados.isEmpty());
+        
+        resultados.forEach(tp -> System.out.println("ID: " + tp.getIdOrden() + 
+                ", Fecha: " + tp.getFecha()));
     }
     
 }

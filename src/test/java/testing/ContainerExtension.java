@@ -79,7 +79,7 @@ public class ContainerExtension implements BeforeAllCallback, AfterAllCallback{
                     .map(cls -> cls.isAnnotationPresent(NeedsLiberty.class))
                     .orElse(false);
             
-            System.out.println("CLASE ANOTACION OPENLIBERTY ESTADO"+ needLiberty);
+         //   System.out.println("CLASE ANOTACION OPENLIBERTY ESTADO"+ needLiberty);
             
             numClassTest++;
             

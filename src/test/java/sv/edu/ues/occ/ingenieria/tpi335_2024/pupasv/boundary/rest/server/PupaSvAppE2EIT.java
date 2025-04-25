@@ -8,10 +8,7 @@ import testing.BaseIntegrationAbstract;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
-import jakarta.ws.rs.client.Client;
-import jakarta.ws.rs.client.ClientBuilder;
 import jakarta.ws.rs.client.Entity;
-import jakarta.ws.rs.client.WebTarget;
 import jakarta.ws.rs.core.GenericType;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.NewCookie;
@@ -28,7 +25,6 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.junit.jupiter.api.extension.ExtendWith;
 import sv.edu.ues.occ.ingenieria.tpi335_2024.pupasv.dto.CarritoDTO;
@@ -52,6 +48,7 @@ public class PupaSvAppE2EIT extends BaseIntegrationAbstract{
     private Map<String, List<ProductoConPrecioDTO>> productosPorTipo;
     private Map<String, List<ComboProductosDTO>> productosPorCombo;
     private List<CarritoItemDTO> productosItem = new ArrayList<>();
+    private NewCookie sessionCookie;
     
     @BeforeAll
     public static void setup(){
@@ -160,7 +157,7 @@ public class PupaSvAppE2EIT extends BaseIntegrationAbstract{
             .post(Entity.entity(itemsParaAgregar, MediaType.APPLICATION_JSON));
 
         // Guardar la cookie de sesión
-        NewCookie sessionCookie = postResponse.getCookies().get("JSESSIONID");
+        sessionCookie = postResponse.getCookies().get("JSESSIONID");
         assertEquals(200, postResponse.getStatus());
         System.out.println("CARRITO ITEM"+ itemsParaAgregar);
       
@@ -199,16 +196,30 @@ public class PupaSvAppE2EIT extends BaseIntegrationAbstract{
         //Obtener el carrito actual
         Response carritoResponse = target.path("carrito")
             .request(MediaType.APPLICATION_JSON)
+            .cookie(sessionCookie)
             .get();
 
         CarritoDTO carrito = carritoResponse.readEntity(CarritoDTO.class);
-        assertTrue(carrito.getItemsCarrito().isEmpty());
+        assertFalse(carrito.getItemsCarrito().isEmpty());
+        
+        String carritoId = carritoResponse.getHeaderString("X-Carrito-ID");
+        System.out.println("DI CARRO"+ carritoId);
+        
+        // Imprimir contenido del carrito
+        System.out.println("\n=== CONTENIDO ACTUAL DEL CARRITO ===");
+        carrito.getItemsCarrito().forEach(item -> {
+            System.out.printf("%s x%d - $%.2f%n", 
+                item.getNombreProducto(), 
+                item.getCantidad(), 
+                item.getPrecio().multiply(BigDecimal.valueOf(item.getCantidad())));
+        });
+        System.out.printf("TOTAL: $%.2f%n", carrito.getTotal());
+
 
         //Crear orden desde el carrito
-        Response ordenResponse = target.path("orden/desde-carrito")
-            .queryParam("sucursal", "CENTRAL")
+        Response ordenResponse = target.path("carrito/ordenar")
             .request(MediaType.APPLICATION_JSON)
-            .post(Entity.json(null));
+            .post(Entity.entity(carrito.getItemsCarrito(), MediaType.APPLICATION_JSON));
 
         assertEquals(Response.Status.CREATED.getStatusCode(), ordenResponse.getStatus());
 
@@ -227,6 +238,7 @@ public class PupaSvAppE2EIT extends BaseIntegrationAbstract{
         // 4. Verificar que el carrito quedó vacío
         carritoResponse = target.path("carrito")
             .request(MediaType.APPLICATION_JSON)
+            .cookie(sessionCookie)
             .get();
 
         carrito = carritoResponse.readEntity(CarritoDTO.class);

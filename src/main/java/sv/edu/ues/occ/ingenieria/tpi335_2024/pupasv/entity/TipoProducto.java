@@ -45,7 +45,7 @@ public class TipoProducto implements Serializable {
     private Integer idTipoProducto;
     @Basic(optional = false)
     @Column(name = "nombre")
-    private String nombre;
+    private String nombre;  
     @Column(name = "activo")
     private Boolean activo;
     @Column(name = "observaciones")
