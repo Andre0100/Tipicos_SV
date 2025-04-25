@@ -153,8 +153,8 @@ public class ProductoBeanIT extends BaseIntegrationAbstract{
         Assertions.assertFalse(resultados.isEmpty());
         Assertions.assertEquals(3, resultados.size()); 
         
-        resultados.forEach(tp -> System.out.println("ID: " + tp.getIdProducto() + 
-                                               ", Nombre: " + tp.getNombre()));
+        //resultados.forEach(tp -> System.out.println("ID: " + tp.getIdProducto() + 
+                                             //  ", Nombre: " + tp.getNombre()));
     }
     
     @Test
@@ -196,8 +196,8 @@ public class ProductoBeanIT extends BaseIntegrationAbstract{
         Assertions.assertFalse(productosActivos.isEmpty());
         Assertions.assertTrue(productosActivos.stream().allMatch(Producto::getActivo));
 
-        System.out.println("Productos activos encontrados: " + productosActivos.size());
-        productosActivos.forEach(p -> System.out.println(p.getNombre()));
+        //System.out.println("Productos activos encontrados: " + productosActivos.size());
+        //productosActivos.forEach(p -> System.out.println(p.getNombre()));
     }
     
     @Test
@@ -257,17 +257,17 @@ public class ProductoBeanIT extends BaseIntegrationAbstract{
         Map<String, List<ProductoConPrecioDTO>> resultados = cut.getProductosAgrupadosPorTipo();
 
         // Verificaciones
-        Assertions.assertNotNull(resultados);
+        Assertions.assertNotNull(resultados);   
         Assertions.assertFalse(resultados.isEmpty());
         Assertions.assertTrue(resultados.containsKey("Bebida"));
         Assertions.assertTrue(resultados.containsKey("Comida"));
 
-        System.out.println("Resultados agrupados por tipo:");
-        resultados.forEach((tipo, productos) -> {
-            System.out.println("Tipo: " + tipo);
-            productos.forEach(p -> System.out.println(" - " + p.getNombre() + 
-                                                   ": $" + p.getPrecio()));
-        });
+//        System.out.println("Resultados agrupados por tipo:");
+//        resultados.forEach((tipo, productos) -> {
+//            System.out.println("Tipo: " + tipo);
+//            productos.forEach(p -> System.out.println(" - " + p.getNombre() + 
+//                                                   ": $" + p.getPrecio()));
+//        });
     }
     
      @Test
