@@ -20,11 +20,10 @@ import sv.edu.ues.occ.ingenieria.tpi335_2024.pupasv.control.TipoProductoBeanIT;
 // */
 @Suite
 @SelectClasses({
+    TipoProductoBeanIT.class,
     ProductoBeanIT.class,
     ComboBeanIT.class,
     OrdenBeanIT.class,
-    ProductoBeanIT.class,
-    TipoProductoBeanIT.class,
     ProductoResourceIT.class,
     ComboResourceIT.class,
 })

@@ -5,6 +5,7 @@
 package sv.edu.ues.occ.ingenieria.tpi335_2024.pupasv.control;
 
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.Query;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
@@ -200,8 +201,50 @@ public class ProductoBeanIT extends BaseIntegrationAbstract{
         //productosActivos.forEach(p -> System.out.println(p.getNombre()));
     }
     
-    @Test
+    
+    
+    
+    
+      @Test
     @Order(7)
+    public void testEliminar(){
+        System.out.println("ProductoBeanIT --------------> Eliminar");
+        ProductoBean cut = new ProductoBean();
+        EntityManager em = emf.createEntityManager();
+        
+        cut.em = em;
+        
+        try {
+            Producto registro = cut.findById(3L);
+           
+            Assertions.assertNotNull(registro);
+           
+            cut.em.getTransaction().begin();
+            cut.delete(registro);
+           
+            cut.em.getTransaction().commit();   
+            
+            Producto eliminado = cut.findById(3L);
+            Assertions.assertNull(eliminado);
+            System.out.println("Registro Eliminado");
+            
+            
+
+        } catch (Exception e) {
+        
+            Logger.getLogger(getClass().getName()).log(Level.SEVERE, e.getMessage(), e);
+            try {
+                cut.em.getTransaction().rollback();
+            } catch (Exception ex) {
+                Logger.getLogger(getClass().getName()).log(Level.SEVERE, ex.getMessage(), ex);
+            }
+        }
+    }
+    
+    
+    
+    @Test
+    @Order(8)
     public void testGetProductosAgrupadosPorTipo() {
         System.out.println("ProductoBeanIT --------------> getProductosAgrupadosPorTipo");
         ProductoBean cut = new ProductoBean();
@@ -222,6 +265,7 @@ public class ProductoBeanIT extends BaseIntegrationAbstract{
             TipoProducto bebidas = new TipoProducto();
             bebidas.setNombre("Bebida");
             em.persist(bebidas);
+
 
             TipoProducto comidas = new TipoProducto();
             comidas.setNombre("Comida");
@@ -244,7 +288,8 @@ public class ProductoBeanIT extends BaseIntegrationAbstract{
             precioComida1.setIdProducto(comida1);
             precioComida1.setPrecioSugerido(BigDecimal.valueOf(0.75));
             em.persist(precioComida1);
-
+            
+            
             em.getTransaction().commit();
         } catch (Exception e) {
             if(em.getTransaction().isActive()) {
@@ -268,45 +313,8 @@ public class ProductoBeanIT extends BaseIntegrationAbstract{
 //            productos.forEach(p -> System.out.println(" - " + p.getNombre() + 
 //                                                   ": $" + p.getPrecio()));
 //        });
+
     }
     
-     @Test
-    @Order(8)
-    public void testEliminar(){
-        System.out.println("ProductoBeanIT --------------> Eliminar");
-        ProductoBean cut = new ProductoBean();
-        EntityManager em = emf.createEntityManager();
-        
-        cut.em = em;
-        
-        try {
-            Producto registro = cut.findById(3L);
-            Producto registro2 = cut.findById(2L);
-            Producto registro3 = cut.findById(1L);
-            Assertions.assertNotNull(registro);
-            Assertions.assertNotNull(registro2);
-            Assertions.assertNotNull(registro3);
-            cut.em.getTransaction().begin();
-            cut.delete(registro);
-            cut.delete(registro2);
-            cut.delete(registro3);
-            cut.em.getTransaction().commit();   
-            
-            Producto eliminado = cut.findById(3L);
-            Assertions.assertNull(eliminado);
-            System.out.println("Registro Eliminado");
-            
-            
-
-        } catch (Exception e) {
-        
-            Logger.getLogger(getClass().getName()).log(Level.SEVERE, e.getMessage(), e);
-            try {
-                cut.em.getTransaction().rollback();
-            } catch (Exception ex) {
-                Logger.getLogger(getClass().getName()).log(Level.SEVERE, ex.getMessage(), ex);
-            }
-        }
-    }
 
 }
