@@ -57,12 +57,11 @@ public abstract class BaseIntegrationAbstract {
             target = cliente.target(getBaseUrl());
             System.out.println("Testing URL: " + getBaseUrl());
         }
-            
+        String host = postgres.getHost();
         Map<String, Object> propiedades = new HashMap<>();
-        propiedades.put("jakarta.persistence.jdbc.url", String.format("jdbc:postgresql://localhost:%d/PupaSV", postgres.getMappedPort(5432)));
+        propiedades.put("jakarta.persistence.jdbc.url", String.format("jdbc:postgresql://%s:%d/PupaSV", host, postgres.getMappedPort(5432)));
         emf = Persistence.createEntityManagerFactory("PupaIP", propiedades);
-        System.out.println("VER URL DE POSTGRES"+ postgres.getJdbcUrl());
-        System.setProperty("DB_URL", postgres.getJdbcUrl());
+        System.out.println("VER URL DE POSTGRES"+ postgres.getHost());
 
     }
     
