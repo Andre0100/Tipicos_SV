@@ -1,11 +1,31 @@
 #!/bin/bash
-#Credenciales de la base de datos
-export DB_HOST=localhost
+# --------------------------------------------
+# Configuración Docker Compose
+export DOCKER_COMPOSE_FILE=./docker-compose.yml
+export DOCKER_NETWORK=host  # Usando network_mode: host
+
+# --------------------------------------------
+# Configuración PostgreSQL Container
+export DB_HOST=localhost  # Cuando usas network_mode: host
 export DB_PORT=5432
 export DB_USER=postgres
-export DB_PASSWORD=root
-export DB_NAME=tipicos_tpi135
-#Ubicación de el servidor de liberty
-export LIBERTY_INSTALL_DIR=/opt/openliberty
-#Ubicación de el driver de postgres
-export SHARED_LIB_DIR=/home/natangh/TPI135/drivers
+export DB_PASSWORD=abc123  # Actualizado para coincidir con tu compose
+export DB_NAME=postgres    # Postgres crea una DB llamada 'postgres' por defecto
+
+# --------------------------------------------
+# Configuración PGAdmin
+export PGADMIN_URL=http://localhost:5050
+export PGADMIN_EMAIL=sl20016@ues.edu.sv
+export PGADMIN_PASSWORD=abc123
+
+# --------------------------------------------
+# Configuración OpenLiberty (ajustada)
+export LIBERTY_HOME=/usr/local/openliberty/wlp10_24_0_0_8
+export SERVER_NAME=tpi135_2025
+export SERVER_DIR=$LIBERTY_HOME/usr/servers/$SERVER_NAME
+export WAR_FILE=$SERVER_DIR/dropins/PupaSV-1.0-SNAPSHOT.war
+
+# --------------------------------------------
+# Variables para operación
+export LIBERTY_BIN=$LIBERTY_HOME/bin/server
+export LOG_FILE=$SERVER_DIR/logs/messages.log
