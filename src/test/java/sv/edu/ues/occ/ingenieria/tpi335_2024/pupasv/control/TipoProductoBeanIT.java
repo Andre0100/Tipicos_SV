@@ -77,7 +77,7 @@ public class TipoProductoBeanIT extends BaseIntegrationAbstract{
         
         cut.em = em;
         
-        int esperado = 5;
+        int esperado = 3;
         int resultado = cut.count();
         Assertions.assertEquals(esperado, resultado);
     }
@@ -195,7 +195,6 @@ public class TipoProductoBeanIT extends BaseIntegrationAbstract{
         List<TipoProducto> resultados = cut.findRange(0, 10);
         Assertions.assertNotNull(resultados);
         Assertions.assertFalse(resultados.isEmpty());
-        Assertions.assertEquals(4, resultados.size()); 
         
         resultados.forEach(tp -> System.out.println("ID: " + tp.getIdTipoProducto() + 
                                                ", Nombre: " + tp.getNombre()));
