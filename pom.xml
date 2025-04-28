@@ -41,7 +41,7 @@
         </dependency>
 
         <!--Dependencias para pruebas unitarias-->
-         <dependency>
+        <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-params</artifactId>
             <version>5.10.2</version>
@@ -59,7 +59,7 @@
             <version>5.10.2</version>
             <scope>test</scope>
         </dependency>
-         <dependency>
+        <dependency>
             <groupId>org.junit.platform</groupId>
             <artifactId>junit-platform-suite-api</artifactId>
             <version>1.10.0</version>
@@ -107,7 +107,7 @@
             <scope>test</scope>
         </dependency>
 
-          <!--Dependencias para pruebas de integración para el cliente -->
+        <!--Dependencias para pruebas de integración para el cliente -->
         <dependency>
             <groupId>org.glassfish.jersey.core</groupId>
             <artifactId>jersey-client</artifactId>
@@ -134,8 +134,16 @@
             <artifactId>logback-classic</artifactId>
             <version>1.4.14</version>
             <scope>test</scope>
+        </dependency> 
+        
+        <dependency>
+            <groupId>org.glassfish</groupId>
+            <artifactId>jakarta.el</artifactId>
+            <version>4.0.2</version>
+            <scope>test</scope>
         </dependency>
 
+        
         <!-- <dependency>
             <groupId>sv.edu.ues.occ.ingenieria.tpi135.pupasv.core</groupId>
             <artifactId>PupaSV</artifactId>
@@ -148,6 +156,16 @@
             <artifactId>mockito-core</artifactId>
             <version>5.12.0</version>
             <type>jar</type>
+        </dependency>
+        <dependency>
+            <groupId>jakarta.validation</groupId>
+            <artifactId>jakarta.validation-api</artifactId>
+            <version>3.0.2</version>
+        </dependency>
+        <dependency>
+            <groupId>org.hibernate.validator</groupId>
+            <artifactId>hibernate-validator</artifactId>
+            <version>8.0.1.Final</version>
         </dependency>
     </dependencies>
 
@@ -197,7 +215,7 @@
                 </executions>
             </plugin>
 
-<!--            plugin de maven para ejecutar pruebas unitarias -->
+            <!--            plugin de maven para ejecutar pruebas unitarias -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
@@ -270,47 +288,47 @@
 
 
     <profiles>
-         <!-- Perfil para pruebas de integración (default) -->
-    <profile>
-        <id>integration-tests</id>
-        <activation>
-            <activeByDefault>true</activeByDefault>
-        </activation>
-        <build>
-            <plugins>
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-surefire-plugin</artifactId>
-                    <configuration>
-                        <includes>
-                            <include>**/*IT.class</include>
-                        </includes>
-                        <excludes>
-                            <exclude>**/PupaSvAppE2EIT.class</exclude>
-                        </excludes>
-                    </configuration>
-                </plugin>
-            </plugins>
-        </build>
-    </profile>
+        <!-- Perfil para pruebas de integración (default) -->
+        <profile>
+            <id>integration-tests</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-surefire-plugin</artifactId>
+                        <configuration>
+                            <includes>
+                                <include>**/*IT.class</include>
+                            </includes>
+                            <excludes>
+                                <exclude>**/PupaSvAppE2EIT.class</exclude>
+                            </excludes>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
 
-    <!-- Perfil para pruebas de sistema/E2E -->
-    <profile>
-        <id>system-tests</id>
-        <build>
-            <plugins>
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-surefire-plugin</artifactId>
-                    <configuration>
-                        <includes>
-                            <include>**/PupaSvAppE2EIT.class</include>
-                        </includes>
-                    </configuration>
-                </plugin>
-            </plugins>
-        </build>
-    </profile>
+        <!-- Perfil para pruebas de sistema/E2E -->
+        <profile>
+            <id>system-tests</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-surefire-plugin</artifactId>
+                        <configuration>
+                            <includes>
+                                <include>**/PupaSvAppE2EIT.class</include>
+                            </includes>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
          
     </profiles>
 

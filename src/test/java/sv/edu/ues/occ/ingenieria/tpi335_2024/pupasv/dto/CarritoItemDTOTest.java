@@ -37,7 +37,7 @@ public class CarritoItemDTOTest {
         assertEquals(precio, item.getPrecio());
         assertEquals(observaciones, item.getObservaciones());
 
-        System.out.println("✓ testSettersYGetters ejecutado");
+        System.out.println("CarritoItemDTOTest --> testSettersYGetters ");
     }
 
     @Test
@@ -50,7 +50,7 @@ public class CarritoItemDTOTest {
         assertNull(item.getPrecio());
         assertNull(item.getObservaciones());
 
-        System.out.println("✓ testValoresPorDefecto ejecutado");
+        System.out.println("CarritoItemDTOTest --> testValoresPorDefecto ");
     }
     
 }

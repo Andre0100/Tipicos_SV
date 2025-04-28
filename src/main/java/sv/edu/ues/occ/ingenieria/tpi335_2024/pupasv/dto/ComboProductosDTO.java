@@ -14,7 +14,8 @@ import sv.edu.ues.occ.ingenieria.tpi335_2024.pupasv.entity.ProductoPrecio;
  *
  * @author morales
  */
-public class ComboProductosDTO implements Serializable{
+public class ComboProductosDTO implements Serializable {
+
     private Long idProductoPrecio;
     private String nombre;
     private String observaciones;
@@ -31,13 +32,29 @@ public class ComboProductosDTO implements Serializable{
             this.precio = productoPrecio.getPrecioSugerido();
             this.fechaValidezPrecio = productoPrecio.getFechaHasta();
         }
-    }
-
+    } 
+    
+//    public ComboProductosDTO(Producto producto, ProductoPrecio productoPrecio, Integer cantidad) {
+//    this.nombre = producto.getNombre();
+//    this.observaciones = producto.getObservaciones();
+//    this.cantidad = cantidad;
+//    
+//    // Verificar si productoPrecio es null antes de acceder a sus métodos
+//    if (productoPrecio != null) {
+//        this.idProductoPrecio = productoPrecio.getIdProductoPrecio();
+//        this.precio = productoPrecio.getPrecioSugerido();
+//        this.fechaValidezPrecio = productoPrecio.getFechaHasta();
+//    } else {
+//        // Si productoPrecio es null, asignar valores predeterminados
+//        this.idProductoPrecio = null;
+//        this.precio = BigDecimal.ZERO; // O el valor predeterminado que prefieras
+//        this.fechaValidezPrecio = null; // O el valor predeterminado que prefieras
+//    }
+    
     public ComboProductosDTO() {
-    }
+    } 
     
-    
-
+    //Getters Getters
     public Long getIdProductoPrecio() {
         return idProductoPrecio;
     }
@@ -62,5 +79,29 @@ public class ComboProductosDTO implements Serializable{
         return fechaValidezPrecio;
     }
     
+     // Setters
+    public void setIdProductoPrecio(Long idProductoPrecio) {
+        this.idProductoPrecio = idProductoPrecio;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public void setObservaciones(String observaciones) {
+        this.observaciones = observaciones;
+    }
+
+    public void setPrecio(BigDecimal precio) {
+        this.precio = precio;
+    }
+
+    public void setCantidad(Integer cantidad) {
+        this.cantidad = cantidad;
+    }
+
+    public void setFechaValidezPrecio(Date fechaValidezPrecio) {
+        this.fechaValidezPrecio = fechaValidezPrecio;
+    }
     
 }

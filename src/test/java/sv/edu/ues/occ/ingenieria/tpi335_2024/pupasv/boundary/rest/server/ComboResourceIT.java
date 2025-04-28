@@ -217,7 +217,6 @@ public class ComboResourceIT extends BaseIntegrationAbstract {
     @Order(6)
     public void testDelete() {
         System.out.println("ComboResourceIT ----------> Test eliminar");
-
         
         if (createdComboId == null) {
             testCreate();
