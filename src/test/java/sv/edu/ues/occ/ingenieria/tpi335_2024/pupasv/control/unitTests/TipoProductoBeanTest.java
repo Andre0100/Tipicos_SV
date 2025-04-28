@@ -1,19 +1,14 @@
-package sv.edu.ues.occ.ingenieria.tpi335_2024.pupasv.control;
+package sv.edu.ues.occ.ingenieria.tpi335_2024.pupasv.control.unitTests;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
-import jakarta.persistence.criteria.CriteriaBuilder;
-import jakarta.persistence.criteria.CriteriaQuery;
-import jakarta.persistence.criteria.Expression;
-import jakarta.persistence.criteria.Root;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import sv.edu.ues.occ.ingenieria.tpi335_2024.pupasv.entity.TipoProducto;
+import sv.edu.ues.occ.ingenieria.tpi335_2024.pupasv.control.TipoProductoBean;
 
-import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;

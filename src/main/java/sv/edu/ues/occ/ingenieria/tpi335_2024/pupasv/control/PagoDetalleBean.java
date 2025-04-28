@@ -12,7 +12,7 @@ import java.io.Serializable;
 public class PagoDetalleBean extends AbstractDataPersistence<PagoDetalle> implements Serializable {
 
     @PersistenceContext(unitName = "PupaPU")
-    private EntityManager em;
+    EntityManager em;
 
     public PagoDetalleBean() {
         super(PagoDetalle.class);

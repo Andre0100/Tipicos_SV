@@ -16,7 +16,7 @@ import sv.edu.ues.occ.ingenieria.tpi335_2024.pupasv.entity.TipoProducto;
 public class TipoProductoBean extends AbstractDataPersistence<TipoProducto> implements Serializable{
 
     @PersistenceContext(unitName = "PupaPU")
-    EntityManager em;
+    public EntityManager em;
     
     @Override
     public EntityManager getEntityManager() {

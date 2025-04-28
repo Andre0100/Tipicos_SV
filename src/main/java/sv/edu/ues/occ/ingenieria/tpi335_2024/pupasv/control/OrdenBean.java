@@ -21,7 +21,7 @@ import sv.edu.ues.occ.ingenieria.tpi335_2024.pupasv.entity.ProductoPrecio;
 public class OrdenBean extends AbstractDataPersistence<Orden> implements Serializable{
 
     @PersistenceContext(unitName = "PupaPU")
-    EntityManager em;
+    public EntityManager em;
 
     @Inject
     ProductoPrecioBean productoPrecioBean;

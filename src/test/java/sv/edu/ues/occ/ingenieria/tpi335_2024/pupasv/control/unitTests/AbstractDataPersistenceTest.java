@@ -1,4 +1,4 @@
-package sv.edu.ues.occ.ingenieria.tpi335_2024.pupasv.control;
+package sv.edu.ues.occ.ingenieria.tpi335_2024.pupasv.control.unitTests;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
@@ -7,6 +7,7 @@ import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Root;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
+import sv.edu.ues.occ.ingenieria.tpi335_2024.pupasv.control.AbstractDataPersistence;
 
 import java.util.List;
 

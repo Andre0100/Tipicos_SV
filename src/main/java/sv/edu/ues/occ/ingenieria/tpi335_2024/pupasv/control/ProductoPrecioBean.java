@@ -12,7 +12,7 @@ import java.io.Serializable;
 public class ProductoPrecioBean extends AbstractDataPersistence<ProductoPrecio> implements Serializable {
 
     @PersistenceContext(unitName = "PupaPU")
-    private EntityManager em;
+    EntityManager em;
 
     public ProductoPrecioBean() {
         super(ProductoPrecio.class);

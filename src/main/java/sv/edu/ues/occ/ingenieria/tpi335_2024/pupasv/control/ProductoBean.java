@@ -22,10 +22,10 @@ import sv.edu.ues.occ.ingenieria.tpi335_2024.pupasv.entity.ProductoPrecio;
 public class ProductoBean extends AbstractDataPersistence<Producto> implements Serializable{
 
     @Inject
-    protected TipoProductoBean tPBean;
+    public TipoProductoBean tPBean;
     
     @PersistenceContext(unitName = "PupaPU")
-    EntityManager em;
+    public EntityManager em;
     
     @Override
     public EntityManager getEntityManager() {

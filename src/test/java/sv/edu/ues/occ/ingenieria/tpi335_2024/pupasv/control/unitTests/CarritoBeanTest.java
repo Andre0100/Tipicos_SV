@@ -1,15 +1,13 @@
-package sv.edu.ues.occ.ingenieria.tpi335_2024.pupasv.control;
+package sv.edu.ues.occ.ingenieria.tpi335_2024.pupasv.control.unitTests;
 
-import jakarta.inject.Inject;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-import sv.edu.ues.occ.ingenieria.tpi335_2024.pupasv.dto.CarritoDTO;
+import sv.edu.ues.occ.ingenieria.tpi335_2024.pupasv.control.CarritoBean;
+import sv.edu.ues.occ.ingenieria.tpi335_2024.pupasv.control.ProductoPrecioBean;
 import sv.edu.ues.occ.ingenieria.tpi335_2024.pupasv.dto.CarritoItemDTO;
 import sv.edu.ues.occ.ingenieria.tpi335_2024.pupasv.entity.Producto;
 import sv.edu.ues.occ.ingenieria.tpi335_2024.pupasv.entity.ProductoPrecio;

@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package sv.edu.ues.occ.ingenieria.tpi335_2024.pupasv.control;
+package sv.edu.ues.occ.ingenieria.tpi335_2024.pupasv.control.integrationTests;
 
 import jakarta.persistence.EntityManager;
 import java.util.List;
@@ -14,6 +14,7 @@ import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.junit.jupiter.api.extension.ExtendWith;
+import sv.edu.ues.occ.ingenieria.tpi335_2024.pupasv.control.TipoProductoBean;
 import sv.edu.ues.occ.ingenieria.tpi335_2024.pupasv.entity.TipoProducto;
 import testing.BaseIntegrationAbstract;
 import testing.ContainerExtension;

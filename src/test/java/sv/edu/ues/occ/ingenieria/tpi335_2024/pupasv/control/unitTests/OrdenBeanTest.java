@@ -1,4 +1,4 @@
-package sv.edu.ues.occ.ingenieria.tpi335_2024.pupasv.control;
+package sv.edu.ues.occ.ingenieria.tpi335_2024.pupasv.control.unitTests;
 
 import jakarta.persistence.EntityManager;
 import org.junit.jupiter.api.Assertions;
@@ -8,6 +8,9 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import sv.edu.ues.occ.ingenieria.tpi335_2024.pupasv.control.OrdenBean;
+import sv.edu.ues.occ.ingenieria.tpi335_2024.pupasv.control.OrdenDetalleBean;
+import sv.edu.ues.occ.ingenieria.tpi335_2024.pupasv.control.ProductoPrecioBean;
 import sv.edu.ues.occ.ingenieria.tpi335_2024.pupasv.dto.CarritoItemDTO;
 import sv.edu.ues.occ.ingenieria.tpi335_2024.pupasv.entity.Orden;
 import sv.edu.ues.occ.ingenieria.tpi335_2024.pupasv.entity.OrdenDetalle;

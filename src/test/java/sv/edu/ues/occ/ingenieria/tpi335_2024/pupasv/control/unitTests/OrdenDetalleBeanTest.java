@@ -1,15 +1,17 @@
-package sv.edu.ues.occ.ingenieria.tpi335_2024.pupasv.control;
+package sv.edu.ues.occ.ingenieria.tpi335_2024.pupasv.control.unitTests;
 
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.junit.jupiter.MockitoExtension;
+import sv.edu.ues.occ.ingenieria.tpi335_2024.pupasv.control.AbstractDataPersistence;
+import sv.edu.ues.occ.ingenieria.tpi335_2024.pupasv.control.OrdenDetalleBean;
 import sv.edu.ues.occ.ingenieria.tpi335_2024.pupasv.entity.OrdenDetalle;
 import sv.edu.ues.occ.ingenieria.tpi335_2024.pupasv.entity.OrdenDetallePK;
 
 import java.util.List;
 
 @ExtendWith(MockitoExtension.class)
-public class OrdenDetalleBeanTest extends AbstractDataPersistenceTest<OrdenDetalle>{
+public class OrdenDetalleBeanTest extends AbstractDataPersistenceTest<OrdenDetalle> {
 
     @InjectMocks
     OrdenDetalleBean cut;

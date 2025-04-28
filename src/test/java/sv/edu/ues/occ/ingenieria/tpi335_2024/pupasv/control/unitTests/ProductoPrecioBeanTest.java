@@ -1,10 +1,11 @@
-package sv.edu.ues.occ.ingenieria.tpi335_2024.pupasv.control;
+package sv.edu.ues.occ.ingenieria.tpi335_2024.pupasv.control.unitTests;
 
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.junit.jupiter.MockitoExtension;
+import sv.edu.ues.occ.ingenieria.tpi335_2024.pupasv.control.AbstractDataPersistence;
+import sv.edu.ues.occ.ingenieria.tpi335_2024.pupasv.control.ProductoPrecioBean;
 import sv.edu.ues.occ.ingenieria.tpi335_2024.pupasv.entity.ProductoPrecio;
-import sv.edu.ues.occ.ingenieria.tpi335_2024.pupasv.entity.TipoProducto;
 
 import java.util.List;
 
