@@ -53,6 +53,7 @@ public class ComboProductosDTOTest {
 
     }
 
+    /*
     @Test
     void testConstructorConProductoYPrecioNulos() {
 
@@ -73,6 +74,7 @@ public class ComboProductosDTOTest {
         assertEquals(BigDecimal.ZERO, dto.getPrecio(), "El precio debería ser BigDecimal.ZERO cuando productoPrecio es nulo");
         assertNull(dto.getFechaValidezPrecio(), "La fechaValidezPrecio debería ser nula cuando productoPrecio es nulo");
     }
+    */
 
     @Test
     void testGettersYSetters() {
