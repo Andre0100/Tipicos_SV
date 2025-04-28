@@ -39,12 +39,11 @@ public class OrdenResourceTest {
         when(ordenBean.findRange(first, pageSize)).thenReturn(ordenes);
         when(ordenBean.count()).thenReturn(2);
 
-        // Caso éxito
         Response response = ordenResource.findRange(first, pageSize);
         assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
         assertNotNull(response.getEntity());
 
-        // Caso error inesperado
+        // Excepciones
         when(ordenBean.findRange(first, pageSize)).thenThrow(new RuntimeException("Error interno"));
         Response responseError = ordenResource.findRange(first, pageSize);
         assertEquals(Response.Status.INTERNAL_SERVER_ERROR.getStatusCode(), responseError.getStatus());
@@ -56,7 +55,6 @@ public class OrdenResourceTest {
         Long idNoExistente = 2L;
         Long idError = 3L;
 
-        // Caso exitoso - Orden encontrada
         Orden ordenMock = new Orden();
         ordenMock.setIdOrden(idExistente);
         when(ordenBean.findById(idExistente)).thenReturn(ordenMock);
@@ -65,14 +63,13 @@ public class OrdenResourceTest {
         assertEquals(Response.Status.OK.getStatusCode(), respuestaExistente.getStatus());
         assertEquals(ordenMock, respuestaExistente.getEntity());
 
-        // Caso de error controlado - Orden no encontrada
+        // Excepciones
         when(ordenBean.findById(idNoExistente)).thenReturn(null);
 
         Response respuestaNoExistente = ordenResource.findById(idNoExistente);
         assertEquals(Response.Status.NOT_FOUND.getStatusCode(), respuestaNoExistente.getStatus());
         assertNotNull(respuestaNoExistente.getHeaders().getFirst(RestResourceHeaderPattern.DETALLE_ERROR));
 
-        // Caso de excepción - Error interno
         when(ordenBean.findById(idError)).thenThrow(new RuntimeException("Error simulado"));
 
         Response respuestaError = ordenResource.findById(idError);
@@ -85,7 +82,7 @@ public class OrdenResourceTest {
         Orden nuevaOrden = new Orden();
         nuevaOrden.setIdOrden(1L);
 
-        // Caso orden nula
+        // Orden null
         Response responseNula = ordenResource.create(null);
         assertEquals(RestResourceHeaderPattern.STATUS_PARAMETRO_FALTANTE, responseNula.getStatus());
 
@@ -95,7 +92,7 @@ public class OrdenResourceTest {
         assertEquals(nuevaOrden, responseExitosa.getEntity());
         verify(ordenBean).create(nuevaOrden);
 
-        // Caso error en creación
+        // Excepción
         doThrow(new RuntimeException("Error en creación")).when(ordenBean).create(any());
         Response responseError = ordenResource.create(new Orden());
         assertEquals(Response.Status.BAD_REQUEST.getStatusCode(), responseError.getStatus());
@@ -113,17 +110,17 @@ public class OrdenResourceTest {
         when(ordenBean.findById(idExistente)).thenReturn(ordenExistente);
         when(ordenBean.findById(idNoExistente)).thenReturn(null);
 
-        // Caso orden encontrada y actualizada
+        // Orden encontrada y actualizada
         Response responseActualizada = ordenResource.update(idExistente, nuevaOrden);
         assertEquals(Response.Status.OK.getStatusCode(), responseActualizada.getStatus());
         assertEquals(idExistente, ((Orden) responseActualizada.getEntity()).getIdOrden());
         verify(ordenBean).update(any());
 
-        // Caso orden no encontrada
+        // Orden no encontrada
         Response responseNoEncontrada = ordenResource.update(idNoExistente, nuevaOrden);
         assertEquals(Response.Status.NOT_FOUND.getStatusCode(), responseNoEncontrada.getStatus());
 
-        // Caso error inesperado
+        // Excepcion
         when(ordenBean.findById(null)).thenThrow(new RuntimeException("Error interno"));
         Response responseError = ordenResource.update(null, nuevaOrden);
         assertEquals(Response.Status.BAD_REQUEST.getStatusCode(), responseError.getStatus());
@@ -139,16 +136,15 @@ public class OrdenResourceTest {
         when(ordenBean.findById(idExistente)).thenReturn(ordenExistente);
         when(ordenBean.findById(idNoExistente)).thenReturn(null);
 
-        // Caso orden encontrada y eliminada
         Response responseEliminada = ordenResource.delete(idExistente);
         assertEquals(Response.Status.NO_CONTENT.getStatusCode(), responseEliminada.getStatus());
         verify(ordenBean).delete(ordenExistente);
 
-        // Caso orden no encontrada
+        // Orden no encontrada
         Response responseNoEncontrada = ordenResource.delete(idNoExistente);
         assertEquals(Response.Status.NOT_FOUND.getStatusCode(), responseNoEncontrada.getStatus());
 
-        // Caso error inesperado
+        // Error inesperado
         when(ordenBean.findById(null)).thenThrow(new RuntimeException("Error interno"));
         Response responseError = ordenResource.delete(null);
         assertEquals(Response.Status.INTERNAL_SERVER_ERROR.getStatusCode(), responseError.getStatus());

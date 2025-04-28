@@ -27,8 +27,7 @@ public class ProductoDetalleResourceTest {
     ProductoDetalleResource productoDetalleResource;
 
     @Test
-    void testProductoList() {
-        // Caso éxito
+    void productoList() {
         int first = 0;
         int max = 20;
         ProductoDetalle producto1 = new ProductoDetalle();
@@ -44,14 +43,13 @@ public class ProductoDetalleResourceTest {
         assertNotNull(response.getEntity());
         assertEquals(String.valueOf(totalProductos), response.getHeaderString("Total-Productos"));
 
-        // Caso parámetros inválidos
+        // Excepciones
         int invalidFirst = -1;
         int invalidMax = 60;
 
         Response responseInvalid = productoDetalleResource.ProductoList(invalidFirst, invalidMax);
         assertEquals(422, responseInvalid.getStatus()); // Usamos directamente el valor numérico 422
 
-        // Caso error interno
         int errorFirst = 5;
         int errorMax = 10;
 
