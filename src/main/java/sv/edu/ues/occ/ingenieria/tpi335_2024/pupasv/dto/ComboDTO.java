@@ -18,6 +18,9 @@ import java.util.List;
  */
 public class ComboDTO implements Serializable{
     
+    
+    // comentario 
+    
     private Long idCombo;
 
     @NotBlank(message = "El nombre del combo es obligatorio")
