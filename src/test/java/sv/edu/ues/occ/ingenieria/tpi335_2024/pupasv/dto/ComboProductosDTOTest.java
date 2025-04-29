@@ -74,8 +74,7 @@ public class ComboProductosDTOTest {
         assertEquals(BigDecimal.ZERO, dto.getPrecio(), "El precio debería ser BigDecimal.ZERO cuando productoPrecio es nulo");
         assertNull(dto.getFechaValidezPrecio(), "La fechaValidezPrecio debería ser nula cuando productoPrecio es nulo");
     }
-    */
-
+     */
     @Test
     void testGettersYSetters() {
         // Crear un objeto ComboProductosDTO
@@ -94,6 +93,9 @@ public class ComboProductosDTOTest {
         assertEquals(BigDecimal.valueOf(7.50), dto.getPrecio(), "El precio debería ser 7.50");
         assertEquals(3, dto.getCantidad(), "La cantidad debería ser 3");
         assertNotNull(dto.getFechaValidezPrecio(), "La fecha de validez debería no ser nula");
+
+        System.out.println("ComboProductosDTOTest --> testGettersYSetters");
+
     }
 
     @Test
@@ -104,6 +106,9 @@ public class ComboProductosDTOTest {
 
         // Verificar que la cantidad sea nula
         assertNull(dto.getCantidad(), "La cantidad debería ser nula");
+
+        System.out.println("ComboProductosDTOTest --> testCantidadNula");
+
     }
 
 }
