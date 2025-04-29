@@ -19,7 +19,8 @@ public class PagoResource {
 
     @Inject
     PagoBean pagoBean;
-    @Inject CarritoBean carritoBean;
+    @Inject
+    CarritoBean carritoBean;
 
     @POST
     public Response realizarPago(PagoRequestDTO pagoRequest){

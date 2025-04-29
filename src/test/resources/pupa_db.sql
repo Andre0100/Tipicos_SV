@@ -465,13 +465,25 @@ ALTER TABLE ONLY public.tipo_producto ALTER COLUMN id_tipo_producto SET DEFAULT 
 -- Data for Name: tipo_producto; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
---INSERT INTO public.tipo_producto VALUES (1, 'bebida', true, NULL);
---INSERT INTO public.tipo_producto VALUES (2, 'comida', true, NULL);
---INSERT INTO public.tipo_producto VALUES (3, 'tipicos', true, NULL);
+-- Insertar tipos de producto
+INSERT INTO public.tipo_producto (id_tipo_producto, nombre, activo, observaciones) VALUES
+(3, 'comida', true, NULL);
 
---INSERT INTO public.orden VALUES (1431, '2025-01-01', 'ZARZA', false);
---INSERT INTO public.orden VALUES (1432, '2025-01-01', 'ZARZA', false);
---INSERT INTO public.orden VALUES (1433, '2025-01-01', 'ZARZA', false);
+-- Insertar productos (comidas típicas, comida rápida, bebidas y postres)
+INSERT INTO public.producto (id_producto, nombre, activo, observaciones) VALUES
+-- Comidas típicas
+(6, 'Pupusa revueltas', true, 'Pupusas de queso, frijol y chicharrón');
+
+-- Insertar relación de productos con tipos
+INSERT INTO public.producto_detalle (id_tipo_producto, id_producto, activo, observaciones) VALUES
+-- Comidas típicas
+(3, 6, true, NULL);
+
+
+-- Insertar precios de productos
+INSERT INTO public.producto_precio (id_producto_precio, id_producto, fecha_desde, fecha_hasta, precio_sugerido) VALUES
+-- Comidas típicas
+(8, 6, '2025-01-01', NULL, 0.50);
 
 
 --

@@ -86,4 +86,16 @@ public class OrdenBean extends AbstractDataPersistence<Orden> implements Seriali
         
         return ordenDTO;
     }
+
+    //Setters para pruebas
+    public void setEm(EntityManager em) {
+        this.em = em;
+    }
+    public void setProductoPrecioBean(ProductoPrecioBean productoPrecioBean) {
+        this.productoPrecioBean = productoPrecioBean;
+    }
+
+    public void setOrdenDetalleBean(OrdenDetalleBean ordenDetalleBean) {
+        this.ordenDetalleBean = ordenDetalleBean;
+    }
 }

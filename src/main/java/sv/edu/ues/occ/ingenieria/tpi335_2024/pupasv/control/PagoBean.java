@@ -74,4 +74,18 @@ public class PagoBean extends AbstractDataPersistence<Pago> implements Serializa
                 .map(detalle -> detalle.getPrecio().multiply(BigDecimal.valueOf(detalle.getCantidad())))
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
+
+    // Setters para pruebas
+    public void setEm(EntityManager em) {
+        this.em = em;
+    }
+
+    public void setOrdenBean(OrdenBean ordenBean) {
+        this.ordenBean = ordenBean;
+    }
+
+    public void setPagoDetalleBean(PagoDetalleBean pagoDetalleBean) {
+        this.pagoDetalleBean = pagoDetalleBean;
+    }
+
 }

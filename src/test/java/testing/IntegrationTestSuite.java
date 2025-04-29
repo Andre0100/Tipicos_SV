@@ -8,10 +8,7 @@ import org.junit.platform.suite.api.SelectClasses;
 import org.junit.platform.suite.api.Suite;
 import sv.edu.ues.occ.ingenieria.tpi335_2024.pupasv.boundary.rest.server.integrationTests.ComboResourceIT;
 import sv.edu.ues.occ.ingenieria.tpi335_2024.pupasv.boundary.rest.server.integrationTests.ProductoResourceIT;
-import sv.edu.ues.occ.ingenieria.tpi335_2024.pupasv.control.integrationTests.ComboBeanIT;
-import sv.edu.ues.occ.ingenieria.tpi335_2024.pupasv.control.integrationTests.OrdenBeanIT;
-import sv.edu.ues.occ.ingenieria.tpi335_2024.pupasv.control.integrationTests.ProductoBeanIT;
-import sv.edu.ues.occ.ingenieria.tpi335_2024.pupasv.control.integrationTests.TipoProductoBeanIT;
+import sv.edu.ues.occ.ingenieria.tpi335_2024.pupasv.control.integrationTests.*;
 
 /**
  *
@@ -25,6 +22,7 @@ import sv.edu.ues.occ.ingenieria.tpi335_2024.pupasv.control.integrationTests.Tip
     OrdenBeanIT.class,
     ProductoResourceIT.class,
     ComboResourceIT.class,
+        PagoBeanIT.class,
 })
 public class IntegrationTestSuite {
     
