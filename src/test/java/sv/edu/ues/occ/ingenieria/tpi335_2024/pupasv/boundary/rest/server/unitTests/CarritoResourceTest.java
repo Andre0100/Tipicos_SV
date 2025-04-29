@@ -127,35 +127,4 @@ public class CarritoResourceTest {
         verify(carritoBean).eliminarItem(1L);
     }
 
-//    @Test
-//    void ordenarDesdeCarrito() {
-//        System.out.println("CarritoResourceTest --> ordenarDesdeCarrito");
-//        CarritoItemDTO item = new CarritoItemDTO();
-//        item.setIdProductoPrecio(1L);
-//        item.setCantidad(2);
-//        List<CarritoItemDTO> itemsCarrito = List.of(item);
-//
-//        Orden ordenEsperada = new Orden();
-//        ordenEsperada.setIdOrden(1L);
-//
-//        // Stubbing leniente para evitar el UnnecessaryStubbingException
-//        lenient().when(ordenBean.crearOrdenCarrito(anyList(), anyString())).thenReturn(ordenEsperada);
-//
-//        Response responseOk = carritoResource.ordenarDesdeCarrito(itemsCarrito);
-//        assertEquals(Response.Status.CREATED.getStatusCode(), responseOk.getStatus());
-//        Orden ordenResult = (Orden) responseOk.getEntity();
-//        assertEquals(1L, ordenResult.getIdOrden());
-//
-//        // Carrito vacío
-//        lenient().when(ordenBean.crearOrdenCarrito(anyList(), anyString())).thenThrow(new IllegalArgumentException("El carrito está vacío."));
-//        Response responseVacio = carritoResource.ordenarDesdeCarrito(new ArrayList<>());
-//        assertEquals(Response.Status.BAD_REQUEST.getStatusCode(), responseVacio.getStatus());
-//        assertEquals("El carrito está vacío.", responseVacio.getEntity());
-//
-//        // Excepción general
-//        doThrow(new RuntimeException("Error al crear la orden")).when(ordenBean).crearOrdenCarrito(anyList(), anyString());
-//        Response responseError = carritoResource.ordenarDesdeCarrito(itemsCarrito);
-//        assertEquals(Response.Status.INTERNAL_SERVER_ERROR.getStatusCode(), responseError.getStatus());
-//        assertTrue(((String) responseError.getEntity()).contains("Error al crear la orden"));
-//    }
 }
