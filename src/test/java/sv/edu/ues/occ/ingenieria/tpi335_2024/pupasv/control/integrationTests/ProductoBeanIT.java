@@ -86,7 +86,7 @@ public class ProductoBeanIT extends BaseIntegrationAbstract{
         
         cut.em = em;
         
-        int esperado = 3;
+        int esperado = 4;
         int resultado = cut.count();
         Assertions.assertEquals(esperado, resultado);
     }
@@ -154,7 +154,7 @@ public class ProductoBeanIT extends BaseIntegrationAbstract{
         List<Producto> resultados = cut.findRange(0, 10);
         Assertions.assertNotNull(resultados);
         Assertions.assertFalse(resultados.isEmpty());
-        Assertions.assertEquals(3, resultados.size()); 
+        Assertions.assertEquals(4, resultados.size());
         
         //resultados.forEach(tp -> System.out.println("ID: " + tp.getIdProducto() + 
                                              //  ", Nombre: " + tp.getNombre()));

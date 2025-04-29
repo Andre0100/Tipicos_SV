@@ -4,7 +4,9 @@
  */
 package sv.edu.ues.occ.ingenieria.tpi335_2024.pupasv.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 import jakarta.persistence.Basic;
@@ -34,6 +36,7 @@ import jakarta.persistence.TemporalType;
     @NamedQuery(name = "Pago.findByFecha", query = "SELECT p FROM Pago p WHERE p.fecha = :fecha"),
     @NamedQuery(name = "Pago.findByMetodoPago", query = "SELECT p FROM Pago p WHERE p.metodoPago = :metodoPago"),
     @NamedQuery(name = "Pago.findByReferencia", query = "SELECT p FROM Pago p WHERE p.referencia = :referencia")})
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Pago implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -134,5 +137,14 @@ public class Pago implements Serializable {
     public String toString() {
         return "sv.edu.ues.occ.ingenieria.tpi335_2024.pupasv.entity.Pago[ idPago=" + idPago + " ]";
     }
-    
+
+    public BigDecimal getMontoPagado() {
+        BigDecimal montoPagado = BigDecimal.ZERO;
+        for (PagoDetalle detalle : pagoDetalleList) {
+            montoPagado = montoPagado.add(detalle.getMonto());
+        }
+        return montoPagado;
+    }
+
+
 }

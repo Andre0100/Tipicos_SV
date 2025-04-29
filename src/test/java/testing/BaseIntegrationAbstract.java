@@ -49,8 +49,8 @@ public abstract class BaseIntegrationAbstract {
         if(this.getClass().isAnnotationPresent(NeedsLiberty.class)){
             GenericContainer<?> openliberty = ContainerExtension.getOpenLiberty();
             assertTrue(openliberty.isRunning());
-            //System.out.println("=== Liberty Logs ===");
-            //System.out.println(openliberty.getLogs());
+//            System.out.println("=== Liberty Logs ===");
+//            System.out.println(openliberty.getLogs());
         
 
             cliente = ClientBuilder.newClient();

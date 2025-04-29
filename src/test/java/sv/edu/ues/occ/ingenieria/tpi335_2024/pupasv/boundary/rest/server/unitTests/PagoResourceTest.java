@@ -7,6 +7,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import sv.edu.ues.occ.ingenieria.tpi335_2024.pupasv.boundary.rest.server.PagoResource;
+import sv.edu.ues.occ.ingenieria.tpi335_2024.pupasv.control.CarritoBean;
 import sv.edu.ues.occ.ingenieria.tpi335_2024.pupasv.control.PagoBean;
 import sv.edu.ues.occ.ingenieria.tpi335_2024.pupasv.dto.PagoRequestDTO;
 import sv.edu.ues.occ.ingenieria.tpi335_2024.pupasv.entity.Pago;
@@ -22,12 +23,15 @@ public class PagoResourceTest {
 
     @Mock
     PagoBean pagoBean;
+    @Mock
+    CarritoBean carritoBean;
 
     @InjectMocks
     PagoResource pagoResource;
 
     @Test
     void realizarPago() {
+        System.out.println("PagoResourceTest -- > realizarPago");
         PagoRequestDTO requestExitoso = new PagoRequestDTO();
         requestExitoso.setIdOrden(1L);
         requestExitoso.setMetodoPago("EFECTIVO");

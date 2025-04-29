@@ -11,6 +11,7 @@ import java.util.Date;
 import java.util.List;
 
 import sv.edu.ues.occ.ingenieria.tpi335_2024.pupasv.dto.CarritoItemDTO;
+import sv.edu.ues.occ.ingenieria.tpi335_2024.pupasv.dto.OrdenDTO;
 import sv.edu.ues.occ.ingenieria.tpi335_2024.pupasv.entity.Orden;
 import sv.edu.ues.occ.ingenieria.tpi335_2024.pupasv.entity.OrdenDetalle;
 import sv.edu.ues.occ.ingenieria.tpi335_2024.pupasv.entity.OrdenDetallePK;
@@ -37,7 +38,7 @@ public class OrdenBean extends AbstractDataPersistence<Orden> implements Seriali
         return em; 
     }
 
-    public Orden crearOrdenCarrito(List<CarritoItemDTO> itemsCarrito, String sucursal){
+    public OrdenDTO crearOrdenCarrito(List<CarritoItemDTO> itemsCarrito, String sucursal){
         if(itemsCarrito == null || itemsCarrito.isEmpty()){
 
             throw new IllegalArgumentException("El carrito está vacío.");
@@ -48,6 +49,8 @@ public class OrdenBean extends AbstractDataPersistence<Orden> implements Seriali
         orden.setAnulada(false);
 
         this.create(orden);
+        getEntityManager().flush(); // Forzar sincronización con la base de datos ya que no se esta usando un bean
+
 
         if(orden.getIdOrden() == null){
             throw new IllegalArgumentException("No se pudo crear el ID de la orden.");
@@ -73,6 +76,26 @@ public class OrdenBean extends AbstractDataPersistence<Orden> implements Seriali
         }
 
         orden.setOrdenDetalleList(ordenDetalles);
-        return orden;
+        
+        OrdenDTO ordenDTO = new OrdenDTO();
+        ordenDTO.setIdOrden(orden.getIdOrden());
+        ordenDTO.setSucursal(orden.getSucursal());
+        ordenDTO.setFecha(orden.getFecha());
+        ordenDTO.setAnulada(orden.getAnulada());
+       
+        
+        return ordenDTO;
+    }
+
+    //Setters para pruebas
+    public void setEm(EntityManager em) {
+        this.em = em;
+    }
+    public void setProductoPrecioBean(ProductoPrecioBean productoPrecioBean) {
+        this.productoPrecioBean = productoPrecioBean;
+    }
+
+    public void setOrdenDetalleBean(OrdenDetalleBean ordenDetalleBean) {
+        this.ordenDetalleBean = ordenDetalleBean;
     }
 }

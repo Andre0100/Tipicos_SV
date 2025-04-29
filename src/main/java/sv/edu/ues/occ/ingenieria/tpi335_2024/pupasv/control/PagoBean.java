@@ -58,7 +58,7 @@ public class PagoBean extends AbstractDataPersistence<Pago> implements Serializa
         pago.setIdOrden(orden);
 
         this.create(pago);
-
+        getEntityManager().flush(); // Forzar sincronización con la base de datos ya que no se esta usando un bean
         // Crear el PagoDetalle
         PagoDetalle detalle = new PagoDetalle();
         detalle.setIdPago(pago);
@@ -74,4 +74,18 @@ public class PagoBean extends AbstractDataPersistence<Pago> implements Serializa
                 .map(detalle -> detalle.getPrecio().multiply(BigDecimal.valueOf(detalle.getCantidad())))
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
+
+    // Setters para pruebas
+    public void setEm(EntityManager em) {
+        this.em = em;
+    }
+
+    public void setOrdenBean(OrdenBean ordenBean) {
+        this.ordenBean = ordenBean;
+    }
+
+    public void setPagoDetalleBean(PagoDetalleBean pagoDetalleBean) {
+        this.pagoDetalleBean = pagoDetalleBean;
+    }
+
 }

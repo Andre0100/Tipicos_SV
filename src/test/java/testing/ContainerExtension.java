@@ -51,7 +51,7 @@ public class ContainerExtension implements BeforeAllCallback, AfterAllCallback{
     
     public static void configurarParaE2E(){
         SystemTest = true;
-        postgres = postgres.withInitScript("pupadb.sql");
+        postgres = postgres.withInitScript("pupadb_E2E.sql");
     }
     
     public static void configurarParaIT(){
@@ -117,6 +117,8 @@ public class ContainerExtension implements BeforeAllCallback, AfterAllCallback{
     public void afterAll(ExtensionContext context) throws Exception {
         synchronized (ContainerExtension.class) {
             numClassTest--;
+//            System.out.println("LOGS OPENLIBERTY");
+//            System.out.println("\n "+ openliberty.getLogs());
 //            if (numClassTest == 0) {
 //                if (libertyStart) {
 //                    openliberty.stop();

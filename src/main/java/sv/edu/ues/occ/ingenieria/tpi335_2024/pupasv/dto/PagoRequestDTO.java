@@ -9,6 +9,9 @@ public class PagoRequestDTO {
     private BigDecimal monto;
     private String observaciones;
 
+    public PagoRequestDTO() {
+    }
+    
     public Long getIdOrden() {
         return idOrden;
     }

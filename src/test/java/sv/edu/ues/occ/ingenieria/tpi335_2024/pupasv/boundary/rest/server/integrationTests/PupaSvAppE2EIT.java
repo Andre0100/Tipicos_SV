@@ -14,12 +14,15 @@ import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.NewCookie;
 import jakarta.ws.rs.core.Response;
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import org.junit.jupiter.api.Assertions;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.MethodOrderer;
@@ -30,8 +33,11 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import sv.edu.ues.occ.ingenieria.tpi335_2024.pupasv.dto.CarritoDTO;
 import sv.edu.ues.occ.ingenieria.tpi335_2024.pupasv.dto.CarritoItemDTO;
 import sv.edu.ues.occ.ingenieria.tpi335_2024.pupasv.dto.ComboProductosDTO;
+import sv.edu.ues.occ.ingenieria.tpi335_2024.pupasv.dto.OrdenDTO;
+import sv.edu.ues.occ.ingenieria.tpi335_2024.pupasv.dto.PagoRequestDTO;
 import sv.edu.ues.occ.ingenieria.tpi335_2024.pupasv.dto.ProductoConPrecioDTO;
 import sv.edu.ues.occ.ingenieria.tpi335_2024.pupasv.entity.Orden;
+import sv.edu.ues.occ.ingenieria.tpi335_2024.pupasv.entity.Pago;
 import testing.ContainerExtension;
 import testing.NeedsLiberty;
 
@@ -49,6 +55,9 @@ public class PupaSvAppE2EIT extends BaseIntegrationAbstract{
     private Map<String, List<ComboProductosDTO>> productosPorCombo;
     private List<CarritoItemDTO> productosItem = new ArrayList<>();
     private NewCookie sessionCookie;
+    private Long idOrden; 
+    private OrdenDTO orden;
+    private CarritoDTO carritoDTO;
     
     @BeforeAll
     public static void setup(){
@@ -186,11 +195,15 @@ public class PupaSvAppE2EIT extends BaseIntegrationAbstract{
                 item.getPrecio().multiply(BigDecimal.valueOf(item.getCantidad())));
         });
         System.out.printf("TOTAL: $%.2f%n", carrito.getTotal());
+        
+        
+        //despues probar metodos para actualizar y eliminar items
+        
     }
 
     @Test
     @Order(3)
-    public void crearOrdenDesdeCarrito() {
+    public void crearOrdenDesdeCarrito() throws JsonProcessingException {
         System.out.println("\n=== CREANDO ORDEN DESDE CARRITO ===");
 
         //Obtener el carrito actual
@@ -199,51 +212,88 @@ public class PupaSvAppE2EIT extends BaseIntegrationAbstract{
             .cookie(sessionCookie)
             .get();
 
-        CarritoDTO carrito = carritoResponse.readEntity(CarritoDTO.class);
-        assertFalse(carrito.getItemsCarrito().isEmpty());
-        
-        String carritoId = carritoResponse.getHeaderString("X-Carrito-ID");
-        System.out.println("DI CARRO"+ carritoId);
+        carritoDTO = carritoResponse.readEntity(CarritoDTO.class);
+        assertFalse(carritoDTO.getItemsCarrito().isEmpty());
         
         // Imprimir contenido del carrito
         System.out.println("\n=== CONTENIDO ACTUAL DEL CARRITO ===");
-        carrito.getItemsCarrito().forEach(item -> {
+        carritoDTO.getItemsCarrito().forEach(item -> {
             System.out.printf("%s x%d - $%.2f%n", 
                 item.getNombreProducto(), 
                 item.getCantidad(), 
                 item.getPrecio().multiply(BigDecimal.valueOf(item.getCantidad())));
         });
-        System.out.printf("TOTAL: $%.2f%n", carrito.getTotal());
-
-
+        System.out.printf("TOTAL: $%.2f%n", carritoDTO.getTotal());
+        
         //Crear orden desde el carrito
-        Response ordenResponse = target.path("carrito/ordenar")
+        Response ordenResponse = target.path("orden/desde-carrito")
+            .queryParam("sucursal", "ZARZA")
             .request(MediaType.APPLICATION_JSON)
-            .post(Entity.entity(carrito.getItemsCarrito(), MediaType.APPLICATION_JSON));
+            .cookie(sessionCookie)
+            .post(null);
+        
 
         assertEquals(Response.Status.CREATED.getStatusCode(), ordenResponse.getStatus());
 
         //Verificar que la orden se creó correctamente
-        Orden orden = ordenResponse.readEntity(Orden.class);
+        //parsear fecha con
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.setDateFormat(new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"));
+        orden = mapper.readValue(ordenResponse.readEntity(String.class), OrdenDTO.class);
+        
         assertNotNull(orden);
         assertNotNull(orden.getIdOrden());
 
         System.out.printf("\nOrden creada con ID: %d%n", orden.getIdOrden());
         System.out.printf("Sucursal: %s%n", orden.getSucursal());
         System.out.printf("Fecha: %s%n", orden.getFecha());
-        System.out.printf("Total: $%.2f%n", orden.getOrdenDetalleList().stream()
-            .map(d -> d.getPrecio().multiply(BigDecimal.valueOf(d.getCantidad())))
-            .reduce(BigDecimal.ZERO, BigDecimal::add));
-
-        // 4. Verificar que el carrito quedó vacío
-        carritoResponse = target.path("carrito")
+        System.out.println("Estado: " + orden.getAnulada());
+        
+    }
+    
+    @Test
+    @Order(4)
+    public void testprocederAlPago() throws JsonProcessingException{
+        System.out.println("PROCESO DE PAGO");
+    
+        PagoRequestDTO pagoDTO = new PagoRequestDTO();
+        pagoDTO.setIdOrden(orden.getIdOrden());
+        pagoDTO.setMetodoPago("Efectivo");
+        pagoDTO.setReferencia("Pago de orden");
+        pagoDTO.setMonto(carritoDTO.getTotal());
+        pagoDTO.setObservaciones("Monto exacto pagado en efectivo");
+        
+        //Probar resource de pago
+        Response responsePago = target.path("pago")
+                .request(MediaType.APPLICATION_JSON)
+                .cookie(sessionCookie)
+                .post(Entity.entity(pagoDTO, MediaType.APPLICATION_JSON));
+        assertEquals(201, responsePago.getStatus());
+        
+ 
+        
+        //parsear fecha
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.setDateFormat(new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"));
+        Pago pago = mapper.readValue(responsePago.readEntity(String.class), Pago.class);
+        
+        assertNotNull(pago);
+       
+        System.out.println("========PAGO DE ORDEN=======");
+        System.out.println("ID PAGO: " +  pago.getIdPago());
+        System.out.println("ID ORDEN: "+ pago.getIdOrden());
+        System.out.println("FECHA: " + pago.getFecha());
+        System.out.println("METODO: " + pago.getMetodoPago());
+        System.out.println("REFERENCIA: "+ pago.getReferencia());
+        
+        //Verificar que el carrito quedo vacío
+        Response carritoResponseVacio = target.path("carrito")
             .request(MediaType.APPLICATION_JSON)
             .cookie(sessionCookie)
             .get();
-
-        carrito = carritoResponse.readEntity(CarritoDTO.class);
-        assertTrue(carrito.getItemsCarrito().isEmpty());
+        
+        assertEquals(204, carritoResponseVacio.getStatus());
+        carritoDTO= carritoResponseVacio.readEntity(CarritoDTO.class);
+        assertNull(carritoDTO);
     }
-
-
 }

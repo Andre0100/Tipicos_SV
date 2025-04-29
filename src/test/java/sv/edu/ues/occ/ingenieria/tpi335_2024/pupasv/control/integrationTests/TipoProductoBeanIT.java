@@ -78,7 +78,7 @@ public class TipoProductoBeanIT extends BaseIntegrationAbstract{
         
         cut.em = em;
         
-        int esperado = 3;
+        int esperado = 4;
         int resultado = cut.count();
         Assertions.assertEquals(esperado, resultado);
     }
@@ -171,7 +171,7 @@ public class TipoProductoBeanIT extends BaseIntegrationAbstract{
             cut.delete(registro);
             cut.em.getTransaction().commit();
             
-            TipoProducto eliminado = cut.findById(3);
+            TipoProducto eliminado = cut.findById(5);
             Assertions.assertNull(eliminado);
             System.out.println("Registro Eliminado: ID 3");
         } catch (Exception e) {
