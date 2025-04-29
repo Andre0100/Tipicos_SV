@@ -66,12 +66,6 @@ public class PagoBean extends AbstractDataPersistence<Pago> implements Serializa
         detalle.setObservaciones(observaciones);
 
         pagoDetalleBean.create(detalle);
-
-        /*// Asignar la lista de detalles al pago
-        List<PagoDetalle> detalles = new ArrayList<>();
-        detalles.add(detalle);
-        pago.setPagoDetalleList(detalles); */
-
         return pago;
     }
 
