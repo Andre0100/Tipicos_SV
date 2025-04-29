@@ -15,10 +15,11 @@ import sv.edu.ues.occ.ingenieria.tpi335_2024.pupasv.entity.ProductoPrecio;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 public class CarritoBeanTest {
@@ -274,4 +275,42 @@ public class CarritoBeanTest {
         Assertions.assertEquals(totalEsperado, cut.calcularTotal());
     }
 
+    @Test
+    void actualizarItem() {
+        System.out.println("CarritoBeanTest --> actualizarItem");
+
+        // Datos iniciales
+        Producto producto = new Producto();
+        producto.setIdProducto(1L);
+        producto.setNombre("Pupusa");
+
+        ProductoPrecio productoPrecio = new ProductoPrecio();
+        productoPrecio.setIdProductoPrecio(1L);
+        productoPrecio.setPrecioSugerido(new BigDecimal("0.75"));
+        productoPrecio.setIdProducto(producto);
+
+        when(ppBean.findById(1L)).thenReturn(productoPrecio);
+
+        CarritoItemDTO item = new CarritoItemDTO();
+        item.setIdProductoPrecio(1L);
+        item.setCantidad(2);
+        item.setObservaciones("Revuelta");
+
+        List<CarritoItemDTO> list = new ArrayList<>();
+        list.add(item);
+
+        cut.agregarItem(list);
+
+        // Verificación antes de la actualización
+        CarritoItemDTO antes = cut.obtenerItems().get(0);
+        assertEquals(2, antes.getCantidad());
+        assertEquals("Revuelta", antes.getObservaciones());
+
+        // Actualización
+        cut.actualizarItem(1L, 5, "Sin queso");
+
+        CarritoItemDTO despues = cut.obtenerItems().get(0);
+        assertEquals(5, despues.getCantidad());
+        assertEquals("Sin queso", despues.getObservaciones());
+    }
 }

@@ -30,10 +30,4 @@ public class PagoDetalleBean extends AbstractDataPersistence<PagoDetalle> implem
     public void setEm(EntityManager em) {
         this.em = em;
     }
-
-    public List<PagoDetalle> findByPago(Pago pago) {
-        TypedQuery<PagoDetalle> query = em.createQuery("SELECT pd FROM PagoDetalle pd WHERE pd.idPago = :pago", PagoDetalle.class);
-        query.setParameter("pago", pago);
-        return query.getResultList();
-    }
 }

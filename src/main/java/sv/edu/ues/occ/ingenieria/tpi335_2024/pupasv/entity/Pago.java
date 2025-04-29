@@ -138,13 +138,4 @@ public class Pago implements Serializable {
         return "sv.edu.ues.occ.ingenieria.tpi335_2024.pupasv.entity.Pago[ idPago=" + idPago + " ]";
     }
 
-    public BigDecimal getMontoPagado() {
-        BigDecimal montoPagado = BigDecimal.ZERO;
-        for (PagoDetalle detalle : pagoDetalleList) {
-            montoPagado = montoPagado.add(detalle.getMonto());
-        }
-        return montoPagado;
-    }
-
-
 }
