@@ -593,38 +593,6 @@ INSERT INTO public.combo_detalle (id_combo, id_producto, cantidad, activo) VALUE
 (4, 18, 2, true),
 (4, 5, 1, true);
 
--- Insertar órdenes
-INSERT INTO public.orden (id_orden, fecha, sucursal, anulada) VALUES
-(1, '2025-02-15', 'S001', false),	
-(2, '2025-02-15', 'S002', false),
-(3, '2025-02-16', 'S001', false);
-
--- Insertar detalles de órdenes
-INSERT INTO public.orden_detalle (id_orden, id_producto_precio, cantidad, precio, observaciones) VALUES
--- Orden 1
-(1, 1, 3, 0.75, 'Con curtido extra'),
-(1, 13, 2, 1.25, 'Una Coca Cola y una Fanta'),
--- Orden 2
-(2, 9, 1, 3.75, 'Sin mostaza'),
-(2, 12, 1, 1.75, 'Con catsup extra'),
--- Orden 3
-(3, 4, 2, 1.50, 'Tamales bien cocidos'),
-(3, 8, 2, 1.25, 'Uno con canela');
-
--- Insertar pagos
-INSERT INTO public.pago (id_pago, id_orden, fecha, metodo_pago, referencia) VALUES
-(1, 1, '2025-02-15', 'EFECTIVO', NULL),
-(2, 2, '2025-02-15', 'TARJETA', 'TRX-12345'),
-(3, 3, '2025-02-16', 'EFECTIVO', NULL);
-
--- Insertar detalles de pagos
-INSERT INTO public.pago_detalle (id_pago_detalle, id_pago, monto, observaciones) VALUES
-(1, 1, 4.75, 'Pago exacto'),
-(2, 2, 5.50, 'Pago con tarjeta visa'),
-(3, 3, 5.50, 'Pago con cambio de 10');
-
-
-
 
 --
 -- TOC entry 3508 (class 0 OID 0)

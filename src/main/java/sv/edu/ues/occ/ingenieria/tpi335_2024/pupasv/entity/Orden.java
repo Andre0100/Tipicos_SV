@@ -4,6 +4,7 @@
  */
 package sv.edu.ues.occ.ingenieria.tpi335_2024.pupasv.entity;
 
+import jakarta.json.bind.annotation.JsonbTransient;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
@@ -45,7 +46,6 @@ public class Orden implements Serializable {
     @Column(name = "fecha")
     @Temporal(TemporalType.DATE)
     private Date fecha;
-    @Size(max = 5)
     @Column(name = "sucursal")
     private String sucursal;
     @Column(name = "anulada")
@@ -94,6 +94,7 @@ public class Orden implements Serializable {
         this.anulada = anulada;
     }
 
+    @JsonbTransient
     public List<OrdenDetalle> getOrdenDetalleList() {
         return ordenDetalleList;
     }

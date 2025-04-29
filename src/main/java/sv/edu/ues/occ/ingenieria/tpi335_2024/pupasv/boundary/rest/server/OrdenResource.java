@@ -1,6 +1,8 @@
 package sv.edu.ues.occ.ingenieria.tpi335_2024.pupasv.boundary.rest.server;
 
 import jakarta.inject.Inject;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.CookieParam;
 import jakarta.ws.rs.DELETE;
@@ -12,6 +14,7 @@ import jakarta.ws.rs.Path;
 import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.QueryParam;
+import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.Cookie;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
@@ -23,6 +26,7 @@ import java.util.logging.Logger;
 import sv.edu.ues.occ.ingenieria.tpi335_2024.pupasv.control.CarritoBean;
 import sv.edu.ues.occ.ingenieria.tpi335_2024.pupasv.control.OrdenBean;
 import sv.edu.ues.occ.ingenieria.tpi335_2024.pupasv.dto.CarritoItemDTO;
+import sv.edu.ues.occ.ingenieria.tpi335_2024.pupasv.dto.OrdenDTO;
 import sv.edu.ues.occ.ingenieria.tpi335_2024.pupasv.entity.Orden;
 
 @Path("orden")
@@ -34,6 +38,8 @@ public class OrdenResource implements Serializable {
     OrdenBean ordenBean;
     @Inject
     CarritoBean carritoBean;
+    @Context
+    HttpServletRequest request;
     
 
     @GET
@@ -149,6 +155,34 @@ public class OrdenResource implements Serializable {
             LOGGER.log(Level.SEVERE, "Detalle del error: ", e);
             return Response.serverError()
                     .header(RestResourceHeaderPattern.DETALLE_ERROR, "Error interno: " + e.getMessage())
+                    .build();
+        }
+    }
+    
+    @POST
+    @Path("/desde-carrito")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response ordenarDesdeCarrito(@QueryParam("sucursal") String Sucursal) {
+        
+        System.out.println("Session ID: " + request.getSession(false)); // Imprime la sesión activa
+
+        try {
+            List<CarritoItemDTO> itemsCarrito = carritoBean.obtenerItems();
+            if (itemsCarrito == null || itemsCarrito.isEmpty()) {
+                LOGGER.log(Level.WARNING, "No se puede ordenar con un carrito vacío.");
+                return Response.status(Response.Status.BAD_REQUEST)
+                        .entity("El carrito está vacío.")
+                        .build();
+            }
+            OrdenDTO ordenDTO = ordenBean.crearOrdenCarrito(itemsCarrito, Sucursal);
+            //carritoBean.limpiarCarrito();
+            LOGGER.log(Level.INFO, "Orden creada desde carrito con ID: {0}", ordenDTO.getIdOrden());
+            return Response.status(Response.Status.CREATED).entity(ordenDTO).build();
+        } catch (Exception e) {
+            LOGGER.log(Level.SEVERE, "Error al crear la orden desde el carrito. ", e);
+            return Response.serverError()
+                    .entity("Error al crear la orden: " + e.getMessage())
                     .build();
         }
     }

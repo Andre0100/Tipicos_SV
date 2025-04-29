@@ -22,8 +22,6 @@ public class CarritoResource {
 
     @Inject
     CarritoBean carritoBean;
-    @Inject
-    OrdenBean ordenBean;
 
     @POST
     public Response agregarItems(List<CarritoItemDTO> items) {
@@ -60,29 +58,29 @@ public class CarritoResource {
         }
     }
 
-@GET
-public Response obtenerCarrito() {
-    try {
-        CarritoDTO carrito = new CarritoDTO();
-        carrito.setItemsCarrito(carritoBean.obtenerItems());
-        carrito.setTotal(carritoBean.calcularTotal());
-        
-        // Podría validarse si el carrito está vacío para devolver un código diferente
-        if (carrito.getItemsCarrito() == null || carrito.getItemsCarrito().isEmpty()) {
-            return Response.status(Response.Status.NO_CONTENT)
-                    .entity("El carrito está vacío")
+    @GET
+    public Response obtenerCarrito() {
+        try {
+            CarritoDTO carrito = new CarritoDTO();
+            carrito.setItemsCarrito(carritoBean.obtenerItems());
+            carrito.setTotal(carritoBean.calcularTotal());
+
+            // Podría validarse si el carrito está vacío para devolver un código diferente
+            if (carrito.getItemsCarrito() == null || carrito.getItemsCarrito().isEmpty()) {
+                return Response.status(Response.Status.NO_CONTENT)
+                        .entity("El carrito está vacío")
+                        .build();
+            }
+
+            return Response.ok(carrito).build();
+
+        } catch (Exception e) {
+            // Captura cualquier excepción inesperada
+            return Response.serverError()
+                    .entity("Ocurrió un error al obtener el carrito: " + e.getMessage())
                     .build();
         }
-        
-        return Response.ok(carrito).build();
-        
-    } catch (Exception e) {
-        // Captura cualquier excepción inesperada
-        return Response.serverError()
-                .entity("Ocurrió un error al obtener el carrito: " + e.getMessage())
-                .build();
     }
-}
 
     @DELETE
     @Path("/{idProductoPrecio}")
@@ -91,27 +89,4 @@ public Response obtenerCarrito() {
         return Response.ok().build();
     }
 
-    @POST
-    @Path("/ordenar")
-    @Produces(MediaType.APPLICATION_JSON)
-    @Consumes(MediaType.APPLICATION_JSON)
-    public Response ordenarDesdeCarrito(List<CarritoItemDTO> itemsCarrito) {
-        try {
-            if (itemsCarrito == null || itemsCarrito.isEmpty()) {
-                LOGGER.log(Level.WARNING, "No se puede ordenar con un carrito vacío.");
-                return Response.status(Response.Status.BAD_REQUEST)
-                        .entity("El carrito está vacío.")
-                        .build();
-            }
-            Orden orden = ordenBean.crearOrdenCarrito(itemsCarrito, "Sucursal");
-            carritoBean.limpiarCarrito();
-            LOGGER.log(Level.INFO, "Orden creada desde carrito con ID: {0}", orden.getIdOrden());
-            return Response.status(Response.Status.CREATED).entity(orden).build();
-        } catch (Exception e) {
-            LOGGER.log(Level.SEVERE, "Error al crear la orden desde el carrito. ", e);
-            return Response.serverError()
-                    .entity("Error al crear la orden: " + e.getMessage())
-                    .build();
-        }
-    }
 }

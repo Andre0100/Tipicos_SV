@@ -24,6 +24,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
+import sv.edu.ues.occ.ingenieria.tpi335_2024.pupasv.dto.OrdenDTO;
 
 @ExtendWith(MockitoExtension.class)
 public class OrdenBeanTest {
@@ -52,7 +53,7 @@ public class OrdenBeanTest {
     }
 
     @Test
-    void crearOrdenCarrito(){
+    void crearOrdenCarrito() {
         System.out.println("OrdenBean --> crearOrdenCarrito");
         CarritoItemDTO item = new CarritoItemDTO();
         item.setIdProductoPrecio(1L);
@@ -61,7 +62,7 @@ public class OrdenBeanTest {
 
         when(ppBean.findById(1L)).thenReturn(productoPrecio);
 
-        doAnswer(invocation ->{
+        doAnswer(invocation -> {
             Orden orden = invocation.getArgument(0);
             orden.setIdOrden(1L);
             return null;
@@ -69,23 +70,17 @@ public class OrdenBeanTest {
 
         doNothing().when(odBean).create(any(OrdenDetalle.class));
 
-        Orden resultado = cut.crearOrdenCarrito(List.of(item), "Sucursal Centro");
+        OrdenDTO resultado = cut.crearOrdenCarrito(List.of(item), "ZARZA");
 
         Assertions.assertNotNull(resultado);
-        Assertions.assertEquals("Sucursal Centro", resultado.getSucursal());
-        Assertions.assertFalse(resultado.getOrdenDetalleList().isEmpty());
-        Assertions.assertEquals(1, resultado.getOrdenDetalleList().size());
-
-        OrdenDetalle ordenDetalle = resultado.getOrdenDetalleList().get(0);
-        Assertions.assertEquals(1L, ordenDetalle.getProductoPrecio().getIdProductoPrecio());
-        Assertions.assertEquals(2, ordenDetalle.getCantidad());
-        Assertions.assertEquals(new BigDecimal("0.75"), ordenDetalle.getPrecio());
+        Assertions.assertEquals("ZARZA", resultado.getSucursal());
+        Assertions.assertEquals(1L, resultado.getIdOrden());
+        Assertions.assertFalse(resultado.getAnulada());
 
         verify(ppBean).findById(1L);
-        verify(odBean).create(any(OrdenDetalle.class));
+        verify(odBean, times(1)).create(any(OrdenDetalle.class));
         verify(em).persist(any(Orden.class));
     }
-
     @Test
     void crearOrdenCarrito_CarritoNulo() {
         System.out.println("OrdenBean --> crearOrdenCarrito_CarritoNulo");

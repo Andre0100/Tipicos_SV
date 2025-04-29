@@ -58,7 +58,7 @@ public class PagoBean extends AbstractDataPersistence<Pago> implements Serializa
         pago.setIdOrden(orden);
 
         this.create(pago);
-
+        getEntityManager().flush(); // Forzar sincronización con la base de datos ya que no se esta usando un bean
         // Crear el PagoDetalle
         PagoDetalle detalle = new PagoDetalle();
         detalle.setIdPago(pago);
