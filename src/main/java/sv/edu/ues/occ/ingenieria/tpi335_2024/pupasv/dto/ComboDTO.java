@@ -19,7 +19,7 @@ import java.util.List;
 public class ComboDTO implements Serializable{
     
     
-    // comentario 
+    
     
     private Long idCombo;
 
