@@ -21,6 +21,9 @@ import sv.edu.ues.occ.ingenieria.tpi335_2024.pupasv.entity.ProductoPrecio;
 @LocalBean
 public class OrdenBean extends AbstractDataPersistence<Orden> implements Serializable{
 
+    
+    // comentario
+    
     @PersistenceContext(unitName = "PupaPU")
     public EntityManager em;
 
