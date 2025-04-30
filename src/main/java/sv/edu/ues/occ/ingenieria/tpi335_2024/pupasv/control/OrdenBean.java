@@ -23,6 +23,8 @@ public class OrdenBean extends AbstractDataPersistence<Orden> implements Seriali
 
     
     // comentario
+    // another 
+    
     
     @PersistenceContext(unitName = "PupaPU")
     public EntityManager em;
