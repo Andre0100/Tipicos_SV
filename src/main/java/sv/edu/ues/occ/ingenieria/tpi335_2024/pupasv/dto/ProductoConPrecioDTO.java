@@ -21,15 +21,32 @@ public class ProductoConPrecioDTO implements Serializable{
     private BigDecimal precio;
     private Date fechaValidezPrecio;
     
+//    public ProductoConPrecioDTO(Producto producto, ProductoPrecio precio){
+//        this.idProductoPrecio = precio.getIdProductoPrecio();
+//        this.nombre = producto.getNombre();
+//        this.observaciones = producto.getObservaciones();
+//        if (precio != null) {
+//            this.precio = precio.getPrecioSugerido();
+//            this.fechaValidezPrecio = precio.getFechaHasta();
+//        }
+//    }
+    
+    
     public ProductoConPrecioDTO(Producto producto, ProductoPrecio precio){
+    if (precio != null) {
         this.idProductoPrecio = precio.getIdProductoPrecio();
+        this.precio = precio.getPrecioSugerido();
+        this.fechaValidezPrecio = precio.getFechaHasta();
+    }
+
+    if (producto != null) {
         this.nombre = producto.getNombre();
         this.observaciones = producto.getObservaciones();
-        if (precio != null) {
-            this.precio = precio.getPrecioSugerido();
-            this.fechaValidezPrecio = precio.getFechaHasta();
-        }
     }
+}
+
+    
+    
     
     public ProductoConPrecioDTO() {
         // Constructor vacío necesario para Jackson
