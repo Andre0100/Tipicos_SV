@@ -4,6 +4,8 @@ import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -67,9 +69,9 @@ public class CarritoResource {
 
             // Podría validarse si el carrito está vacío para devolver un código diferente
             if (carrito.getItemsCarrito() == null || carrito.getItemsCarrito().isEmpty()) {
-                return Response.status(Response.Status.NO_CONTENT)
-                        .entity("El carrito está vacío")
-                        .build();
+                carrito.setItemsCarrito(List.of());
+                carrito.setTotal(BigDecimal.ZERO);
+                return Response.ok(carrito).build();
             }
 
             return Response.ok(carrito).build();

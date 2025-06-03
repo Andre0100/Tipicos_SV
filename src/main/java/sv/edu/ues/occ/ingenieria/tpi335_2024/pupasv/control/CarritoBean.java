@@ -1,6 +1,7 @@
 package sv.edu.ues.occ.ingenieria.tpi335_2024.pupasv.control;
 
 import jakarta.annotation.PostConstruct;
+import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.context.SessionScoped;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
