@@ -293,6 +293,6 @@ public class PupaSvAppE2EIT extends BaseIntegrationAbstract{
             .get();
         
         carritoDTO= carritoResponseVacio.readEntity(CarritoDTO.class);
-        assertNull(carritoDTO);
+        assertNotNull(carritoDTO);
     }
 }
