@@ -104,14 +104,7 @@ public class CarritoResourceTest {
         assertEquals(1, result.getItemsCarrito().size());
         assertEquals(BigDecimal.valueOf(100.00), result.getTotal());
 
-        // Carrito vacío
-        when(carritoBean.obtenerItems()).thenReturn(new ArrayList<>());
-        when(carritoBean.calcularTotal()).thenReturn(BigDecimal.valueOf(0.0));
-
-        //carritoResource.obtenerCarrito();
-        //assertEquals(Response.Status.NO_CONTENT.getStatusCode(), responseVacio.getStatus());
-        //assertEquals("El carrito está vacío", responseVacio.getEntity());
-
+      
         // Excepción general
         when(carritoBean.obtenerItems()).thenThrow(new RuntimeException("Ocurrió un error al obtener el carrito."));
         Response responseError = carritoResource.obtenerCarrito();
