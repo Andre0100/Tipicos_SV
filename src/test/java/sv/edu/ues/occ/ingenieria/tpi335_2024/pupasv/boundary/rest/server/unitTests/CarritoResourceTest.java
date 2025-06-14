@@ -106,6 +106,7 @@ public class CarritoResourceTest {
 
       
         // Excepción general
+        lenient().when(carritoBean.obtenerItems()).thenReturn(null);
         when(carritoBean.obtenerItems()).thenThrow(new RuntimeException("Ocurrió un error al obtener el carrito."));
         Response responseError = carritoResource.obtenerCarrito();
         assertEquals(Response.Status.INTERNAL_SERVER_ERROR.getStatusCode(), responseError.getStatus());
