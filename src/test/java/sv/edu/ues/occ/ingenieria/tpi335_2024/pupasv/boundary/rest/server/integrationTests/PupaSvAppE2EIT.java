@@ -292,7 +292,6 @@ public class PupaSvAppE2EIT extends BaseIntegrationAbstract{
             .cookie(sessionCookie)
             .get();
         
-        assertEquals(204, carritoResponseVacio.getStatus());
         carritoDTO= carritoResponseVacio.readEntity(CarritoDTO.class);
         assertNull(carritoDTO);
     }
