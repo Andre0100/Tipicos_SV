@@ -173,22 +173,31 @@ public class ProductoResource implements Serializable{
         }
     }
     
-    @Path("/{id}")
-    @DELETE
-    public Response delete(@PathParam("id") Long idProducto){
-      if(idProducto != null){
-          try {
-              Producto producto = PBean.findById(idProducto);
-              PBean.delete(producto);
-              return Response.status(200).build();
-          } catch (Exception e) {
-               Logger.getLogger(getClass().getName()).log(Level.SEVERE, e.getMessage(), e);
-               return Response.status(500).header("process-error","Record couldnt be deleted").build();
-          }
-      }  
-      return Response.status(500).header("Wrong-parameter", idProducto).build();
-
+    // Versión modificada del método delete() en ProductoResource
+@Path("/{id}")
+@DELETE
+public Response delete(@PathParam("id") Long idProducto) {
+    if (idProducto != null) {
+        try {
+            Producto producto = PBean.findById(idProducto);
+            if (producto == null) {
+                return Response.status(Response.Status.NOT_FOUND)
+                             .entity("Producto no encontrado")
+                             .build();
+            }
+            PBean.delete(producto);
+            return Response.ok().build();
+        } catch (Exception e) {
+            LOG.log(Level.SEVERE, e.getMessage(), e);
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                         .entity("Error al eliminar: " + e.getMessage())
+                         .build();
+        }
     }
+    return Response.status(Response.Status.BAD_REQUEST)
+                 .entity("ID de producto no válido")
+                 .build();
+}
     
 }
 
