@@ -89,7 +89,10 @@ public class ComboBeanTest {
         assertEquals(2, resultado.size());
         verify(em).createNamedQuery("Combo.findActivos", Combo.class);
         verify(comboQuery).setFirstResult(0);
-        verify(comboQuery).setMaxResults(10);
+        verify(comboQuery).setMaxResults(10); 
+        
+        System.out.println(" Prueba para Combos "); 
+        
     }
 
     @Test
